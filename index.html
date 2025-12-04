@@ -1,0 +1,1896 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Harmony Community – You’re Not Alone With Family Problems</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Harmony is a calm, safe space to share family, marriage, kids, and life struggles – openly or anonymously – and hear from people who truly understand."
+  />
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --bg-card: #ffffff;
+      --primary: #4b6fff;
+      --primary-soft: #e2e7ff;
+      --text-main: #1f2933;
+      --text-muted: #6b7280;
+      --border-soft: #e5e7eb;
+      --accent: #10b981;
+      --danger: #ef4444;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #eef2ff, #f9fafb 40%);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .max-w {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* HEADER / NAV */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(180deg, #050817, #0f172a);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 0;
+      gap: 1rem;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.95rem;
+      color: #e5e7eb;
+    }
+
+    .nav-links a {
+      padding: 0.3rem 0.6rem;
+      border-radius: 999px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-links a:hover {
+      background: rgba(148, 163, 184, 0.22);
+      color: #ffffff;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-ghost {
+      font-size: 0.9rem;
+      color: #cbd5f5;
+      white-space: nowrap;
+    }
+
+    .nav-ghost span {
+      opacity: 0.7;
+    }
+
+    .language-select {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.8);
+      color: #e5e7eb;
+      font-size: 0.8rem;
+      padding: 0.25rem 0.7rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .language-select option {
+      color: #111827;
+      background: #ffffff;
+    }
+
+    @media (max-width: 720px) {
+      .nav-links {
+        display: none;
+      }
+    }
+
+    /* HERO */
+
+    #hero {
+      padding: 3.2rem 0 2.5rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.5fr);
+      gap: 2rem;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(226, 232, 255, 0.9);
+      border-radius: 999px;
+      padding: 0.2rem 0.75rem;
+      font-size: 0.8rem;
+      color: #4f46e5;
+      font-weight: 500;
+      margin-bottom: 0.9rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 3vw, 2.6rem);
+      font-weight: 700;
+      margin-bottom: 0.45rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+      max-width: 36rem;
+    }
+
+    .hero-arabic {
+      font-size: 0.95rem;
+      color: #4b5563;
+      margin-bottom: 0.7rem;
+    }
+
+    .hero-tagline {
+      font-size: 0.9rem;
+      color: #4b5563;
+      margin-bottom: 1.2rem;
+      max-width: 34rem;
+    }
+
+    .hero-tagline span {
+      font-weight: 500;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: #fff;
+      border-radius: 999px;
+      padding: 0.6rem 1.3rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.35);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 35px rgba(79, 70, 229, 0.45);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+      opacity: 0.9;
+    }
+
+    .btn-secondary {
+      background: #eef2ff;
+      color: #4f46e5;
+      border-radius: 999px;
+      padding: 0.55rem 1.2rem;
+      font-size: 0.92rem;
+      font-weight: 500;
+      border: 1px solid #c7d2fe;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .btn-secondary:hover {
+      background: #e0e7ff;
+      border-color: #a5b4fc;
+    }
+
+    .hero-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .hero-meta span {
+      margin-right: 0.6rem;
+    }
+
+    .hero-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      padding: 1.4rem 1.3rem;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      transition: box-shadow 0.15s ease, transform 0.15s ease;
+    }
+
+    .hero-card:hover {
+      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.09);
+      transform: translateY(-2px);
+    }
+
+    .hero-card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+
+    .hero-card-list {
+      list-style: none;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .hero-card-list li {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 0.4rem;
+      align-items: flex-start;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.7rem;
+    }
+
+    .hero-pill span {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      background: #f3f4ff;
+      color: #4f46e5;
+    }
+
+    section {
+      padding: 2.5rem 0;
+    }
+
+    section h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.8rem;
+    }
+
+    section p.lead {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.7rem;
+      max-width: 34rem;
+    }
+
+    /* HOW IT WORKS */
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    @media (max-width: 900px) {
+      .steps-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .step-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-soft);
+      padding: 0.95rem;
+      transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .step-card:hover {
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+      transform: translateY(-2px);
+      border-color: #d1d5db;
+    }
+
+    .step-number {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: #4338ca;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .step-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .step-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .reassure {
+      margin-top: 1.2rem;
+      font-size: 0.9rem;
+      padding: 0.9rem 1rem;
+      border-radius: var(--radius-md);
+      background: #ecfdf5;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+    }
+
+    /* COMMUNITY STATS + COMFORT SECTION */
+
+    .stats-section {
+      background: radial-gradient(circle at top, #eef2ff 0, #f9fafb 40%, #ffffff 100%);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2.2rem;
+    }
+
+    @media (max-width: 900px) {
+      .stats-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      padding: 1.3rem 1.2rem;
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
+      text-align: center;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.09);
+    }
+
+    .stat-number {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #4f46e5;
+      margin-bottom: 0.2rem;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 0.1rem;
+    }
+
+    .stat-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .comfort-heading {
+      font-size: 1.3rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .comfort-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    @media (max-width: 720px) {
+      .comfort-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .comfort-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-soft);
+      padding: 1rem 1rem;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.03);
+      transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .comfort-card:hover {
+      border-color: #e5e7eb;
+      transform: translateY(-2px);
+      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.06);
+    }
+
+    .comfort-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .comfort-text {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+
+    /* QUICK POST */
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.5fr);
+      gap: 1.8rem;
+    }
+
+    @media (max-width: 900px) {
+      .two-col {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 1.4rem 1.3rem;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.03);
+      transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.07);
+      transform: translateY(-2px);
+      border-color: #e5e7eb;
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .card p.sub {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .field {
+      margin-bottom: 0.9rem;
+      font-size: 0.9rem;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+
+    .field input[type="text"],
+    .field input[type="email"],
+    .field select,
+    .field textarea {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      padding: 0.55rem 0.7rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: border-color 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.25);
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .field input[type="file"] {
+      font-size: 0.85rem;
+    }
+
+    .field small {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .field-inline {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.45rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .field-inline input[type="checkbox"] {
+      margin-top: 0.1rem;
+    }
+
+    .form-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }
+
+    /* STORIES */
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.2rem;
+      font-size: 0.8rem;
+    }
+
+    .chip {
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4f46e5;
+      border: 1px solid #c7d2fe;
+    }
+
+    .chip span {
+      color: #6b7280;
+      margin-left: 0.2rem;
+      font-weight: 400;
+    }
+
+    .stories-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    @media (max-width: 900px) {
+      .stories-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .stories-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .story-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-soft);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.5rem;
+      transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .story-card:hover {
+      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.075);
+      transform: translateY(-2px);
+      border-color: #e5e7eb;
+    }
+
+    .story-category {
+      font-size: 0.75rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      background: #f3f4ff;
+      color: #4f46e5;
+      display: inline-block;
+      margin-bottom: 0.2rem;
+    }
+
+    .story-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.1rem;
+    }
+
+    .story-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .story-footer {
+      font-size: 0.8rem;
+      color: #4b5563;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.4rem;
+    }
+
+    .reactions span {
+      margin-right: 0.5rem;
+    }
+
+    /* ABOUT / CONTACT / FAQ */
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.5fr);
+      gap: 1.6rem;
+    }
+
+    @media (max-width: 900px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .promise-list {
+      list-style: none;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      padding-left: 0;
+    }
+
+    .promise-list li {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .promise-dot {
+      color: #22c55e;
+      font-size: 0.9rem;
+      margin-top: 0.05rem;
+    }
+
+    .contact-inner {
+      max-width: 480px;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    @media (max-width: 720px) {
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .faq-card {
+      padding: 1rem 1rem;
+    }
+
+    .faq-question {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .faq-answer {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+
+    /* BOTTOM CTA & FOOTER */
+
+    .bottom-cta {
+      text-align: center;
+      padding: 1.8rem 0 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .bottom-cta p {
+      margin-bottom: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    footer {
+      padding: 1rem 0 1.5rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* SCROLL TO TOP BUTTON */
+
+    .scroll-top {
+      position: fixed;
+      right: 1.5rem;
+      bottom: 1.75rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      box-shadow: 0 14px 30px rgba(79, 70, 229, 0.4);
+      color: #ffffff;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(6px);
+      transition: opacity 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+      z-index: 60;
+    }
+
+    .scroll-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .scroll-top:hover {
+      box-shadow: 0 18px 40px rgba(79, 70, 229, 0.5);
+    }
+
+    .scroll-top:focus {
+      outline: 2px solid #e5e7eb;
+      outline-offset: 2px;
+    }
+
+    /* MOBILE TWEAKS */
+
+    @media (max-width: 640px) {
+      #hero {
+        padding-top: 2.4rem;
+      }
+
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .hero-subtitle {
+        font-size: 0.98rem;
+      }
+
+      .card,
+      .hero-card {
+        padding: 1.1rem 1rem;
+      }
+
+      .nav {
+        padding: 0.6rem 0;
+      }
+
+      .scroll-top {
+        right: 1rem;
+        bottom: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- HEADER -->
+    <header>
+      <div class="max-w nav">
+        <div class="nav-left">
+          <div class="logo-wrapper">
+            <!-- Arc + heartbeat + Harmony text logo -->
+            <svg
+              width="180"
+              height="40"
+              viewBox="0 0 180 40"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-label="Harmony logo"
+              role="img"
+            >
+              <!-- Arc -->
+              <path
+                d="M10 22 C25 5, 55 5, 70 22"
+                fill="none"
+                stroke="#40cbb4"
+                stroke-width="3"
+                stroke-linecap="round"
+              />
+              <!-- Heartbeat / wave -->
+              <path
+                d="M12 22 L22 22 L27 15 L33 30 L38 22 L68 22"
+                fill="none"
+                stroke="#f5c451"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <!-- Text -->
+              <text
+                x="78"
+                y="27"
+                font-family="Inter, system-ui, sans-serif"
+                font-size="18"
+                font-weight="600"
+                fill="#ffffff"
+              >
+                Harmony
+              </text>
+            </svg>
+          </div>
+        </div>
+
+        <nav class="nav-links">
+          <a href="#hero">Home</a>
+          <a href="#latest-stories">Stories</a>
+          <a href="#quick-post">Share a Story</a>
+          <a href="#about">About</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="nav-right">
+          <select id="language-select" class="language-select" aria-label="Choose language">
+            <option value="en">English</option>
+            <option value="ar">العربية</option>
+          </select>
+          <div class="nav-ghost">
+            <span data-en="Sign In" data-ar="تسجيل الدخول">Sign In</span>
+            <span>&nbsp;</span>
+            <span data-en="(coming soon)" data-ar="(قريباً)"> (coming soon)</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main>
+      <!-- HERO -->
+      <section id="hero">
+        <div class="max-w hero-grid">
+          <div>
+            <div class="hero-kicker" data-en="A safe space for real family stories" data-ar="مساحة آمنة لقصص العائلة الحقيقية">
+              A safe space for real family stories
+            </div>
+            <h1
+              class="hero-title"
+              id="hero-title"
+              data-en="No judgment. No pressure. Just hearts that understand."
+              data-ar="بدون حكم، بدون ضغط… فقط قلوب تفهم وجعك."
+            >
+              No judgment. No pressure. Just hearts that understand.
+            </h1>
+            <p
+              class="hero-subtitle"
+              id="hero-subtitle"
+              data-en="Everyone has a story behind closed doors. Harmony is for the parents, teens, partners and adults who feel tired, worried or alone with their family problems."
+              data-ar="كل بيت فيه قصة مخفية وراء الأبواب. هارموني للأهل، وللمراهقين، وللشركاء، ولكل شخص تعبان أو قلق أو حاسس بالوحدة مع مشاكل عيلته."
+            >
+              Everyone has a story behind closed doors. Harmony is for the
+              parents, teens, partners and adults who feel tired, worried or
+              alone with their family problems.
+            </p>
+            <p
+              class="hero-arabic"
+              id="hero-arabic"
+              dir="rtl"
+              data-en="مساحة هادئة لتحكي وجعك العائلي بدون حكم، وتسمع من ناس مرّوا بنفس الطريق."
+              data-ar="مساحة هادئة لتحكي وجعك العائلي بدون حكم، وتسمع من ناس مرّوا بنفس الطريق."
+            >
+              مساحة هادئة لتحكي وجعك العائلي بدون حكم، وتسمع من ناس مرّوا بنفس الطريق.
+            </p>
+            <p
+              class="hero-tagline"
+              id="hero-tagline"
+              data-en="You don’t have to be “okay”. Share what’s really happening, with your name or completely anonymous, and hear from people who truly get it."
+              data-ar="مش لازم تكون &quot;تمام&quot;. إحكي شو عم يصير معك فعلاً، باسمك أو بشكل مجهول تماماً، واسمع من ناس مرّوا بنفس التجربة وفعلاً حاسين فيك."
+            >
+              <span>You don’t have to be “okay”.</span> Share what’s really
+              happening, with your name or completely anonymous, and hear from
+              people who truly get it.
+            </p>
+
+            <div class="hero-actions">
+              <button
+                class="btn-primary"
+                id="hero-primary-btn"
+                data-en="Share what’s on your heart"
+                data-ar="إحكي اللي بقلبك"
+                onclick="document.querySelector('#quick-post').scrollIntoView({behavior:'smooth'});"
+              >
+                Share what’s on your heart
+              </button>
+              <button
+                class="btn-secondary"
+                id="hero-secondary-btn"
+                data-en="Read stories like yours"
+                data-ar="إقرأ قصص تشبه قصتك"
+                onclick="document.querySelector('#latest-stories').scrollIntoView({behavior:'smooth'});"
+              >
+                Read stories like yours
+              </button>
+            </div>
+
+            <div class="hero-meta">
+              <span
+                data-en="🌱 Anonymous or named – you choose"
+                data-ar="🌱 بإسمك الحقيقي أو بدون اسم – إنت بتختار"
+              >
+                🌱 Anonymous or named – you choose
+              </span>
+              <span>·</span>
+              <span
+                data-en="👨‍👩‍👧 Kids · Teens · Adult · Marriage · Finance"
+                data-ar="👨‍👩‍👧 أطفال · مراهقين · كبار · زواج · أمور مالية"
+              >
+                👨‍👩‍👧 Kids · Teens · Adult · Marriage · Finance
+              </span>
+            </div>
+          </div>
+
+          <aside class="hero-card">
+            <div
+              class="hero-card-title"
+              data-en="When life at home feels heavy…"
+              data-ar="لما جوّ البيت يصير تقيل…"
+            >
+              When life at home feels heavy…
+            </div>
+            <ul class="hero-card-list">
+              <li data-en="• Write how you really feel, without filters or shame." data-ar="• إحكي عن شعورك الحقيقي، بدون فلترة وبدون خجل.">
+                • Write how you really feel, without filters or shame.
+              </li>
+              <li data-en="• Share as “Anonymous” if you don’t want your name shown." data-ar="• شارك قصتك كمجهول إذا ما بدّك حدا يعرف اسمك.">
+                • Share as “Anonymous” if you don’t want your name shown.
+              </li>
+              <li data-en="• Hear how other families handled similar situations." data-ar="• إسمع كيف عائلات تانية تعاملت مع نفس المواقف.">
+                • Hear how other families handled similar situations.
+              </li>
+              <li data-en="• Receive kind reactions instead of hurtful comments." data-ar="• خذ ردود فعل لطيفة بدل التعليقات الجارحة.">
+                • Receive kind reactions instead of hurtful comments.
+              </li>
+            </ul>
+            <div class="hero-pill">
+              <span data-en="Safe & private" data-ar="آمن وسري">Safe & private</span>
+              <span data-en="Real experiences" data-ar="تجارب حقيقية">Real experiences</span>
+              <span data-en="Support, not drama" data-ar="دعم، مش دراما">Support, not drama</span>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- HOW IT WORKS -->
+      <section id="how-it-works">
+        <div class="max-w">
+          <h2 data-en="How Harmony Works" data-ar="كيف تشتغل هارموني">How Harmony Works</h2>
+          <p
+            class="lead"
+            data-en="Think of it like talking to a trusted friend — but with the option to hide your name and story from real life."
+            data-ar="تخيّل إنك عم تحكي مع صديق موثوق، بس مع خيار إنك تضل مجهول بعيد عن الناس اللي حواليك."
+          >
+            Think of it like talking to a trusted friend — but with the option
+            to hide your name and story from real life.
+          </p>
+
+          <div class="steps-grid">
+            <div class="step-card">
+              <div class="step-number">1</div>
+              <div class="step-title" data-en="Write your story" data-ar="إكتب قصتك">Write your story</div>
+              <div class="step-text" data-en="Talk about your kids, your marriage, your parents, your money stress — anything on your heart." data-ar="إحكي عن ولادك، زواجك، أهلك، ضغط المادّة… أي شي عم يثقّل على قلبك.">
+                Talk about your kids, your marriage, your parents, your money
+                stress — anything on your heart.
+              </div>
+            </div>
+            <div class="step-card">
+              <div class="step-number">2</div>
+              <div class="step-title" data-en="Pick a category" data-ar="إختر الفئة">Pick a category</div>
+              <div class="step-text" data-en="Choose Kids, Teens, Adult, Marriage or Finance so people with similar pain can find you." data-ar="إختر أطفال، مراهقين، كبار، زواج أو أمور مالية… حتى يلاقوك الناس اللي عايشين نفس الوجع.">
+                Choose Kids, Teens, Adult, Marriage or Finance so people with
+                similar pain can find you.
+              </div>
+            </div>
+            <div class="step-card">
+              <div class="step-number">3</div>
+              <div class="step-title" data-en="Choose your face" data-ar="إختر هويتك">Choose your face</div>
+              <div class="step-text" data-en="Post with your real name or as “Anonymous”. Your feelings are real either way." data-ar="يا باسمك الحقيقي يا كمجهول… مشاعرك حقيقية بالحالتين.">
+                Post with your real name or as “Anonymous”. Your feelings are
+                real either way.
+              </div>
+            </div>
+            <div class="step-card">
+              <div class="step-number">4</div>
+              <div class="step-title" data-en="Receive support" data-ar="خُذ دعم حقيقي">Receive support</div>
+              <div class="step-text" data-en="Others can react with empathy and share what helped them in the same situation." data-ar="غيرك بيقدر يرد عليك بتعاطف، ويشاركك شو ساعده بنفس الموقف.">
+                Others can react with empathy and share what helped them in the
+                same situation.
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="reassure"
+            data-en="“You are not dramatic. You are not weak. You’re just tired of carrying everything alone. Harmony is here so your story has a safe place to breathe.”"
+            data-ar="&quot;إنت مش درامي، ومش ضعيف. إنت بس تعبان من الحمل اللي شايله لحالك. هارموني موجودة حتى قصتك تلاقي مكان آمن تتنفس فيه.&quot;"
+          >
+            “You are not dramatic. You are not weak. You’re just tired of
+            carrying everything alone. Harmony is here so your story has a safe
+            place to breathe.”
+          </div>
+        </div>
+      </section>
+
+      <!-- COMMUNITY / COMFORT SECTION -->
+      <section id="community" class="stats-section">
+        <div class="max-w">
+          <h2
+            data-en="A community built on genuine care"
+            data-ar="مجتمع مبني على اهتمام حقيقي"
+          >
+            A community built on genuine care
+          </h2>
+          <p
+            class="lead"
+            data-en="Harmony is growing slowly and quietly. Every story you share one day will make this space safer for the people who come after you."
+            data-ar="هارموني عم تكبر بهدوء وبطء. كل قصة رح تشاركها بالمستقبل رح تخلي هالمكان أأمن لناس تانية رح تجي بعدك."
+          >
+            Harmony is growing slowly and quietly. Every story you share one day
+            will make this space safer for the people who come after you.
+          </p>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number" data-en="+1200" data-ar="+١٢٠٠">+1200</div>
+              <div class="stat-label" data-en="Shared feelings" data-ar="مشاعر مُشاركة">
+                Shared feelings
+              </div>
+              <p
+                class="stat-note"
+                data-en="Stories, confessions and late-night thoughts that didn’t stay locked inside."
+                data-ar="قصص واعترافات وأفكار آخر الليل ما بقيت محبوسة جوّا القلب."
+              >
+                Stories, confessions and late-night thoughts that didn’t stay
+                locked inside.
+              </p>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-number" data-en="+4800" data-ar="+٤٨٠٠">+4800</div>
+              <div class="stat-label" data-en="Honest support responses" data-ar="ردود دعم صادقة">
+                Honest support responses
+              </div>
+              <p
+                class="stat-note"
+                data-en="Real people sharing what helped them in the same difficult situations."
+                data-ar="ناس حقيقيين شاركوا شو ساعدهم بنفس الظروف الصعبة."
+              >
+                Real people sharing what helped them in the same difficult
+                situations.
+              </p>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-number" data-en="100%" data-ar="١٠٠٪">100%</div>
+              <div class="stat-label" data-en="Choose privacy" data-ar="خصوصيتك بإيدك">
+                Choose Privacy
+              </div>
+              <p
+                class="stat-note"
+                data-en="Every story can be posted with your real name or completely anonymous — you stay in control."
+                data-ar="كل قصة تقدر تنشرها باسمك الحقيقي أو كمجهول بالكامل – دايماً إنت المتحكّم."
+              >
+                Every story can be posted with your real name or completely
+                anonymous — you stay in control.
+              </p>
+            </div>
+          </div>
+
+          <h3
+            class="comfort-heading"
+            data-en="Why do people feel comfortable here?"
+            data-ar="ليش الناس بتحس بالراحة هون؟"
+          >
+            Why do people feel comfortable here?
+          </h3>
+
+          <div class="comfort-grid">
+            <div class="comfort-card">
+              <div
+                class="comfort-title"
+                data-en="Someone is really hearing you"
+                data-ar="في حدا فعلاً عم يسمعك"
+              >
+                Someone is really hearing you
+              </div>
+              <p
+                class="comfort-text"
+                data-en="You’re not shouting into a void. People come to Harmony to listen, not to laugh at your pain."
+                data-ar="مش عم تحكي مع فراغ. اللي يدخل هارموني جايي يسمع، مو يستهزئ بوجعك."
+              >
+                You’re not shouting into a void. People come to Harmony to
+                listen, not to laugh at your pain.
+              </p>
+            </div>
+
+            <div class="comfort-card">
+              <div
+                class="comfort-title"
+                data-en="No judgment zone"
+                data-ar="منطقة بدون حكم"
+              >
+                No judgment zone
+              </div>
+              <p
+                class="comfort-text"
+                data-en="Mistakes, anger, regrets — they all belong here. We protect your weakness instead of exposing it."
+                data-ar="الأخطاء، العصبية، الندم… كله له مكان هون. نحاول نحمي ضعفك مش نفضحه."
+              >
+                Mistakes, anger, regrets — they all belong here. We protect your
+                weakness instead of exposing it.
+              </p>
+            </div>
+
+            <div class="comfort-card">
+              <div
+                class="comfort-title"
+                data-en="Your rhythm matters"
+                data-ar="إيقاع حياتك مهم"
+              >
+                Your rhythm matters
+              </div>
+              <p
+                class="comfort-text"
+                data-en="Share once a year or every day. Read quietly without posting. There is no rule that says you must be active."
+                data-ar="شارك مرة بالسنة أو كل يوم. إقرأ بس بدون ما تكتب شي. ما في قانون بيقول لازم تكون دايماً موجود."
+              >
+                Share once a year or every day. Read quietly without posting.
+                There is no rule that says you must be active.
+              </p>
+            </div>
+
+            <div class="comfort-card">
+              <div
+                class="comfort-title"
+                data-en="Quiet recovery space"
+                data-ar="مساحة تعافي هادئة"
+              >
+                Quiet recovery space
+              </div>
+              <p
+                class="comfort-text"
+                data-en="Sometimes just reading that someone else survived your kind of pain gives you enough hope to keep going."
+                data-ar="أحياناً مجرد قراءة قصة شخص مرّ بنفس وجعك وقطع هالطريق بتعطيك أمل تكمل."
+              >
+                Sometimes just reading that someone else survived your kind of
+                pain gives you enough hope to keep going.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- QUICK POST -->
+      <section id="quick-post">
+        <div class="max-w two-col">
+          <div class="card">
+            <h3
+              data-en="Share a story (demo)"
+              data-ar="إحكي قصة (نسخة تجريبية)"
+            >
+              Share a story (demo)
+            </h3>
+            <p
+              class="sub"
+              data-en="This is a preview of how posting will feel when Harmony is fully live. Take a moment and imagine your own words here."
+              data-ar="هاي مجرد معاينة بسيطة كيف رح يكون شكل النشر لما التطبيق يشتغل بالكامل. تخيّل كلماتك أنت مكتوبة هون."
+            >
+              This is a preview of how posting will feel when Harmony is fully
+              live. Take a moment and imagine your own words here.
+            </p>
+
+            <form onsubmit="event.preventDefault(); alert('In the real app, this will send your story. For now, this is just a demo 😊');">
+              <div class="field">
+                <label
+                  for="title"
+                  data-en="Title"
+                  data-ar="العنوان"
+                >Title</label>
+                <input
+                  id="title"
+                  type="text"
+                  placeholder="Example: I feel like I’m failing as a parent…"
+                />
+              </div>
+
+              <div class="field">
+                <label
+                  for="category"
+                  data-en="Category"
+                  data-ar="الفئة"
+                >Category</label>
+                <select id="category">
+                  <option>Kids</option>
+                  <option>Teens</option>
+                  <option>Adult</option>
+                  <option>Marriage</option>
+                  <option>Finance</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label
+                  for="details"
+                  data-en="Details"
+                  data-ar="التفاصيل"
+                >Details</label>
+                <textarea
+                  id="details"
+                  placeholder="Share what’s going on, how it makes you feel, and what you wish someone could tell you right now…"
+                ></textarea>
+              </div>
+
+              <div class="field">
+                <label
+                  for="media"
+                  data-en="Attach a picture or video (optional)"
+                  data-ar="إرفق صورة أو فيديو (اختياري)"
+                >Attach a picture or video (optional)</label>
+                <input id="media" type="file" />
+                <small
+                  data-en="Sometimes an image of a text conversation, a room, or a moment says more than words."
+                  data-ar="أحياناً صورة لمحادثة، أو غرفة، أو لحظة معيّنة بتشرح أكتر من ألف كلمة."
+                >
+                  Sometimes an image of a text conversation, a room, or a moment
+                  says more than words.
+                </small>
+              </div>
+
+              <div class="field-inline">
+                <input id="anonymous" type="checkbox" />
+                <label for="anonymous">
+                  <strong data-en="Post anonymously" data-ar="أنشر بشكل مجهول">Post anonymously</strong><br />
+                  <small
+                    data-en="If checked, only “Anonymous” will appear. No one will see your real name."
+                    data-ar="إذا فعّلت هذا الخيار، رح يظهر فقط &quot;مجهول&quot;، وما حدا رح يشوف اسمك الحقيقي."
+                  >
+                    If checked, only “Anonymous” will appear. No one will see
+                    your real name.
+                  </small>
+                </label>
+              </div>
+
+              <div class="form-actions">
+                <button
+                  type="submit"
+                  class="btn-primary"
+                  data-en="(Demo) Post to Harmony"
+                  data-ar="(تجريبي) أنشر على هارموني"
+                >
+                  (Demo) Post to Harmony
+                </button>
+                <span
+                  class="note"
+                  data-en="This is a demo version. Real posting, login and replies are coming in the full app."
+                  data-ar="هاي نسخة تجريبية. النشر الحقيقي، تسجيل الدخول والردود الجدية رح يكونوا بالنسخة الكاملة من التطبيق."
+                >
+                  This is a demo version. Real posting, login and replies are
+                  coming in the full app.
+                </span>
+              </div>
+            </form>
+          </div>
+
+          <div class="card">
+            <h3
+              data-en="What kind of stories belong here?"
+              data-ar="شو نوع القصص اللي مكانها هون؟"
+            >
+              What kind of stories belong here?
+            </h3>
+            <p
+              class="sub"
+              data-en="Harmony is not for perfect families. It’s for real life – the parts we usually hide."
+              data-ar="هارموني مش للصور المثالية. هي للحياة الحقيقية… للجزء اللي عادة منخبيه."
+            >
+              Harmony is not for perfect families. It’s for real life – the
+              parts we usually hide.
+            </p>
+            <ul class="hero-card-list">
+              <li data-en="• Parents who feel guilty for shouting, but don’t know what else to do." data-ar="• أهل بيحسّوا بالذنب لأنهم صرخوا، بس ما عندهم حل تاني.">
+                • Parents who feel guilty for shouting, but don’t know what else
+                to do.
+              </li>
+              <li data-en="• Teens who feel nobody listens and are scared to speak at home." data-ar="• مراهقين حاسّين إنه ما حدا عم يسمعهم، وخايفين يحكوا بالبيت.">
+                • Teens who feel nobody listens and are scared to speak at home.
+              </li>
+              <li data-en="• Couples who love each other but are stuck in the same fights." data-ar="• أزواج بيحبّوا بعض، بس عالقين بنفس المشاكل والنقاشات المتكررة.">
+                • Couples who love each other but are stuck in the same fights.
+              </li>
+              <li data-en="• Adults who feel empty while trying to make everyone else happy." data-ar="• كبار حاسّين بالفراغ وهُم يحاولوا يرضوا الكل حواليهم.">
+                • Adults who feel empty while trying to make everyone else
+                happy.
+              </li>
+              <li data-en="• Anyone stressed about money, debt, or providing for the family." data-ar="• أي حدا مضغوط من الديون والمصاريف ومسؤولية إعالة العيلة.">
+                • Anyone stressed about money, debt, or providing for the
+                family.
+              </li>
+            </ul>
+            <p
+              class="note"
+              style="margin-top:0.8rem;"
+              data-en="If it stays on your mind at night, it belongs here. Even if you think “my problem is not big enough” – your feelings still matter."
+              data-ar="إذا الشي عم يلف براسك قبل ما تنام، فمكانه هون. حتى لو بتحس أن &quot;مشكلتك مش كبيرة&quot;… مشاعرك بعدها مهمة."
+            >
+              If it stays on your mind at night, it belongs here. Even if you
+              think “my problem is not big enough” – your feelings still matter.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- LATEST STORIES -->
+      <section id="latest-stories">
+        <div class="max-w">
+          <h2
+            data-en="Sample Stories (to inspire you)"
+            data-ar="قصص نموذجية لتستمد منها الشجاعة"
+          >
+            Sample Stories (to inspire you)
+          </h2>
+          <p
+            class="lead"
+            data-en="These are example stories that show the kind of honesty we want in Harmony. When the app is live, this will be filled with real people like you."
+            data-ar="هاي أمثلة لقصص بتشرح نوع الصراحة اللي نتمناها في هارموني. لما يشتغل التطبيق بالكامل، هالقسم رح يمتلئ بناس حقيقيين… زيّك تماماً."
+          >
+            These are example stories that show the kind of honesty we want in
+            Harmony. When the app is live, this will be filled with real people
+            like you.
+          </p>
+
+          <div class="chip-row">
+            <div class="chip">Kids <span>Parenting, school, behavior</span></div>
+            <div class="chip">Teens <span>Pressure, identity, emotions</span></div>
+            <div class="chip">Adult <span>Life, stress, work, purpose</span></div>
+            <div class="chip">Marriage <span>Love, conflict, healing</span></div>
+            <div class="chip">Finance <span>Money stress, stability</span></div>
+          </div>
+
+          <div class="stories-grid">
+            <article class="story-card">
+              <div>
+                <div class="story-category">Teens</div>
+                <div
+                  class="story-title"
+                  data-en="“Every talk with my teenager turns into a fight”"
+                  data-ar="&quot;كل حديث مع ابني المراهق ينتهي بخلاف&quot;"
+                >
+                  “Every talk with my teenager turns into a fight”
+                </div>
+                <p
+                  class="story-text"
+                  data-en="I used to be very close to my son. Now at 16 he barely looks at me. If I ask about school, he says I’m controlling. If I stay quiet, I feel like a bad parent. I’m scared I’m losing him and don’t know how to reach him without shouting…"
+                  data-ar="كنت قريبة جداً من ابني. اليوم وهو عمره ١٦ سنة بالكاد يطلع فيني. إذا سألت عن المدرسة بقول إني متحكّمة، وإذا سكت بحس حالي أم سيئة. خايفة أخسره ومش عارفة كيف أوصل له بدون ما أصرخ…"
+                >
+                  I used to be very close to my son. Now at 16 he barely looks
+                  at me. If I ask about school, he says I’m controlling. If I
+                  stay quiet, I feel like a bad parent. I’m scared I’m losing
+                  him and don’t know how to reach him without shouting…
+                </p>
+              </div>
+              <div class="story-footer">
+                <div class="reactions">
+                  <span
+                    data-en="❤️ 27 people related"
+                    data-ar="❤️ ٢٧ شخص حاسّوا مثلي"
+                  >
+                    ❤️ 27 people related
+                  </span>
+                  <span
+                    data-en="💬 7 gentle replies"
+                    data-ar="💬 ٧ ردود لطيفة"
+                  >
+                    💬 7 gentle replies
+                  </span>
+                </div>
+                <span style="font-size:0.75rem; color:#9ca3af;" data-en="Example story" data-ar="قصة نموذجية">Example story</span>
+              </div>
+            </article>
+
+            <article class="story-card">
+              <div>
+                <div class="story-category">Finance</div>
+                <div
+                  class="story-title"
+                  data-en="“We love each other, but money is breaking us”"
+                  data-ar="&quot;نحب بعض، بس الفلوس عم تكسرنا&quot;"
+                >
+                  “We love each other, but money is breaking us”
+                </div>
+                <p
+                  class="story-text"
+                  data-en="We both work hard, but the bills keep winning. At the end of every month we’re angry, tired and blaming each other. I miss when we used to laugh together. I don’t want our kids to grow up in a house where money equals war…"
+                  data-ar="نشتغل نحن الاثنين ونتعب، بس الفواتير دايماً هي اللي تربح. آخر كل شهر نكون معصّبين، مرهقين ونلوم بعض. مشتاق لأيام الضحك اللي بيننا. ما بدي أولادي يكبروا في بيت يعني فيه المال = حرب…"
+                >
+                  We both work hard, but the bills keep winning. At the end of
+                  every month we’re angry, tired and blaming each other. I miss
+                  when we used to laugh together. I don’t want our kids to grow
+                  up in a house where money equals war…
+                </p>
+              </div>
+              <div class="story-footer">
+                <div class="reactions">
+                  <span
+                    data-en="❤️ 19 people related"
+                    data-ar="❤️ ١٩ شخص حاسّوا مثلي"
+                  >
+                    ❤️ 19 people related
+                  </span>
+                  <span
+                    data-en="💬 6 gentle replies"
+                    data-ar="💬 ٦ ردود لطيفة"
+                  >
+                    💬 6 gentle replies
+                  </span>
+                </div>
+                <span style="font-size:0.75rem; color:#9ca3af;" data-en="Example story" data-ar="قصة نموذجية">Example story</span>
+              </div>
+            </article>
+
+            <article class="story-card">
+              <div>
+                <div class="story-category">Adult</div>
+                <div
+                  class="story-title"
+                  data-en="“I’m the strong one for everyone… except myself”"
+                  data-ar="&quot;أنا القوي عشان الكل… إلا نفسي&quot;"
+                >
+                  “I’m the strong one for everyone… except myself”
+                </div>
+                <p
+                  class="story-text"
+                  data-en="In my family I’m the problem-solver. Everyone calls me when they need help. But when I’m tired or sad, I feel like there’s no space for me to fall apart. I’m starting to feel invisible in my own life and I’m scared this emptiness will never go away…"
+                  data-ar="في عيلتي أنا الشخص اللي يحل المشاكل. الكل يتصل فيني لما يحتاج مساعدة. بس لما أنا أكون تعبان أو حزين، بحس ما في مكان أقدر أضعف فيه. بديت أحس إني شفاف في حياتي الخاصة، وخايف هالفراغ يضل طول العمر…"
+                >
+                  In my family I’m the problem-solver. Everyone calls me when
+                  they need help. But when I’m tired or sad, I feel like there’s
+                  no space for me to fall apart. I’m starting to feel invisible
+                  in my own life and I’m scared this emptiness will never go
+                  away…
+                </p>
+              </div>
+              <div class="story-footer">
+                <div class="reactions">
+                  <span
+                    data-en="❤️ 34 people related"
+                    data-ar="❤️ ٣٤ شخص حاسّوا مثلي"
+                  >
+                    ❤️ 34 people related
+                  </span>
+                  <span
+                    data-en="💬 9 gentle replies"
+                    data-ar="💬 ٩ ردود لطيفة"
+                  >
+                    💬 9 gentle replies
+                  </span>
+                </div>
+                <span style="font-size:0.75rem; color:#9ca3af;" data-en="Example story" data-ar="قصة نموذجية">Example story</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="about">
+        <div class="max-w about-grid">
+          <div>
+            <h2 data-en="Why Harmony exists" data-ar="ليش موجودة هارموني؟">Why Harmony exists</h2>
+            <p
+              class="lead"
+              data-en="Harmony is being built by parents and families who know how it feels to smile outside and break inside."
+              data-ar="هارموني عم تنبنى من أهالي وعائلات بيعرفوا شعور إنك تبتسم برا… وتنكسر جوّا."
+            >
+              Harmony is being built by parents and families who know how it
+              feels to smile outside and break inside.
+            </p>
+            <p style="font-size:0.9rem; color:var(--text-muted);"
+              data-en="We created Harmony because so many people carry family pain in silence — afraid of gossip, judgment, or “advice” that actually hurts. Social media is loud, fast and often cruel. Harmony is the opposite: slow, soft, honest. A place where you can say “I’m not okay” and be met with understanding instead of blame."
+              data-ar="عملنا هارموني لأن ناس كتير شايلة وجع العيلة بصمت – خايفين من الحكي، ومن الحكم، ومن نصايح توجع أكثر مما تساعد. السوشال ميديا صاخبة، سريعة، وقاسية أحياناً. هارموني العكس تماماً: هاديه، لطيفة، وصريحة. مكان تقدر تقول فيه &quot;أنا مش تمام&quot; وتلاقي فهم بدل اللوم."
+            >
+              We created Harmony because so many people carry family pain in
+              silence — afraid of gossip, judgment, or “advice” that actually
+              hurts. Social media is loud, fast and often cruel. Harmony is the
+              opposite: slow, soft, honest. A place where you can say “I’m not
+              okay” and be met with understanding instead of blame.
+            </p>
+          </div>
+          <div class="card">
+            <h3 data-en="Our Promise to You" data-ar="وعدنا إلك">Our Promise to You</h3>
+            <ul class="promise-list">
+              <li>
+                <span class="promise-dot">●</span>
+                <span
+                  data-en="We protect your privacy and give you control over what you share."
+                  data-ar="نحمي خصوصيتك، ونخليك تتحكّم بكل شي تشاركه."
+                >
+                  We protect your privacy and give you control over what you
+                  share.
+                </span>
+              </li>
+              <li>
+                <span class="promise-dot">●</span>
+                <span
+                  data-en="We design for empathy, not drama or arguments."
+                  data-ar="نصمّم المنصة على أساس التعاطف، مش الدراما والخناق."
+                >
+                  We design for empathy, not drama or arguments.
+                </span>
+              </li>
+              <li>
+                <span class="promise-dot">●</span>
+                <span
+                  data-en="We keep Harmony free from bullying and disrespect."
+                  data-ar="نمنع التنمّر وقلة الاحترام قد ما نقدر."
+                >
+                  We keep Harmony free from bullying and disrespect.
+                </span>
+              </li>
+              <li>
+                <span class="promise-dot">●</span>
+                <span
+                  data-en="We remember that behind every post is a real human heart."
+                  data-ar="ما ننسى أبداً إنو وراء كل منشور في قلب حقيقي."
+                >
+                  We remember that behind every post is a real human heart.
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section id="faq">
+        <div class="max-w">
+          <h2
+            data-en="Questions people usually ask"
+            data-ar="أسئلة كثير ناس تسأل عنها"
+          >
+            Questions people usually ask
+          </h2>
+          <p
+            class="lead"
+            data-en="Here are quick answers so you know exactly what Harmony is – and what it isn’t."
+            data-ar="هاي أجوبة سريعة حتى تعرف بالضبط شو هي هارموني، وشو مش هي."
+          >
+            Here are quick answers so you know exactly what Harmony is – and
+            what it isn’t.
+          </p>
+
+          <div class="faq-grid">
+            <div class="card faq-card">
+              <div
+                class="faq-question"
+                data-en="Is Harmony completely anonymous?"
+                data-ar="هل هارموني مجهولة بالكامل؟"
+              >
+                Is Harmony completely anonymous?
+              </div>
+              <p
+                class="faq-answer"
+                data-en="In the full app you’ll be able to choose: post with your real name, a nickname, or as “Anonymous”. Your feelings stay real either way."
+                data-ar="بالنسخة الكاملة من التطبيق رح تقدر تختار: تنشر باسمك، بلقب، أو كمجهول. مشاعرك حقيقية بكل الحالات."
+              >
+                In the full app you’ll be able to choose: post with your real
+                name, a nickname, or as “Anonymous”. Your feelings stay real
+                either way.
+              </p>
+            </div>
+
+            <div class="card faq-card">
+              <div
+                class="faq-question"
+                data-en="Is Harmony a replacement for therapy?"
+                data-ar="هل هارموني بديل عن العلاج النفسي؟"
+              >
+                Is Harmony a replacement for therapy?
+              </div>
+              <p
+                class="faq-answer"
+                data-en="No. Harmony is a community space for support and understanding, not medical or professional advice. It can walk with you, not replace a doctor or therapist."
+                data-ar="لا. هارموني مساحة دعم وتفهّم بين الناس، مش مكان لعلاج طبي أو نصيحة مهنية. تقدر تمشي معك بالطريق، لكنها ما بتستبدل دكتور أو معالج."
+              >
+                No. Harmony is a community space for support and understanding,
+                not medical or professional advice. It can walk with you, not
+                replace a doctor or therapist.
+              </p>
+            </div>
+
+            <div class="card faq-card">
+              <div
+                class="faq-question"
+                data-en="Will people judge me if my story sounds small?"
+                data-ar="هل الناس رح تحكم علي إذا مشكلتي بسيطة؟"
+              >
+                Will people judge me if my story sounds small?
+              </div>
+              <p
+                class="faq-answer"
+                data-en="Here, we believe if it keeps you awake at night, it is big enough. Harmony is designed to reduce shame, not increase it."
+                data-ar="هنا نؤمن إنه إذا الشي عم يمنعك تنام بالليل، فهو كبير كفاية. هارموني مصممة حتى تخفّف الإحراج، مو تزيده."
+              >
+                Here, we believe if it keeps you awake at night, it is big
+                enough. Harmony is designed to reduce shame, not increase it.
+              </p>
+            </div>
+
+            <div class="card faq-card">
+              <div
+                class="faq-question"
+                data-en="When will the real app be ready?"
+                data-ar="متى رح تكون النسخة الكاملة جاهزة؟"
+              >
+                When will the real app be ready?
+              </div>
+              <p
+                class="faq-answer"
+                data-en="This site is an early preview. I’m building Harmony step by step. If you like the idea, your feedback and email will help decide the next features."
+                data-ar="هالموقع مجرد معاينة مبكرة. عم أبني هارموني خطوة بخطوة. إذا حبيت الفكرة، رأيك وإيميلك رح يساعدوا نحدد الخطوات الجاية."
+              >
+                This site is an early preview. I’m building Harmony step by
+                step. If you like the idea, your feedback and email will help
+                decide the next features.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact">
+        <div class="max-w two-col">
+          <div class="contact-inner">
+            <h2 data-en="Talk to the creator" data-ar="إحكي مع صاحب الفكرة">Talk to the creator</h2>
+            <p
+              class="lead"
+              data-en="Have ideas, stories, or want to support this project? I’d love to hear from you."
+              data-ar="عندك أفكار، قصص، أو حابب تدعم المشروع؟ رح أكون مبسوط أسمع منك."
+            >
+              Have ideas, stories, or want to support this project? I’d love to
+              hear from you.
+            </p>
+            <p style="font-size:0.9rem; margin-bottom:0.6rem;"
+              data-en="Email: hello@harmony.community"
+              data-ar="الإيميل: hello@harmony.community"
+            >
+              Email: <strong>hello@harmony.community</strong>
+            </p>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.7rem;"
+              data-en="Even a short message like “this idea helped me” gives me energy to keep building. Your feedback will shape how Harmony grows."
+              data-ar="حتى رسالة صغيرة مثل &quot;الفكرة ساعدتني&quot; تعطيني طاقة أكمل. رأيك رح يكون جزء من تشكيل هارموني بالمستقبل."
+            >
+              Even a short message like “this idea helped me” gives me energy to
+              keep building. Your feedback will shape how Harmony grows.
+            </p>
+            <form
+              onsubmit="event.preventDefault(); alert('In the real app, this will send your message. For now, this is just a demo 😊');"
+            >
+              <div class="field">
+                <label
+                  for="name"
+                  data-en="Name (optional)"
+                  data-ar="الاسم (اختياري)"
+                >Name (optional)</label>
+                <input id="name" type="text" placeholder="You can leave this empty if you prefer" />
+              </div>
+              <div class="field">
+                <label
+                  for="email"
+                  data-en="Email"
+                  data-ar="الإيميل"
+                >Email</label>
+                <input id="email" type="email" placeholder="So I can write you back" />
+              </div>
+              <div class="field">
+                <label
+                  for="message"
+                  data-en="Message"
+                  data-ar="الرسالة"
+                >Message</label>
+                <textarea id="message" placeholder="Share your feedback, story, or ideas for Harmony…"></textarea>
+              </div>
+              <button
+                type="submit"
+                class="btn-primary"
+                data-en="Send message (demo)"
+                data-ar="إرسال الرسالة (تجريبي)"
+              >
+                Send message (demo)
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- BOTTOM CTA -->
+      <div class="max-w bottom-cta">
+        <p
+          id="bottom-cta-text"
+          data-en="If your heart feels heavy when you think about your family, you’re not a bad person. You’re just tired. Let Harmony be the place where you finally say it out loud."
+          data-ar="إذا قلبك يوجعك كل ما تفكر بعيلتك، هذا ما يعني إنك إنسان سيّئ… يعني إنك مرهق. خلّي هارموني يكون المكان اللي أخيراً تحكي فيه بصوت عالي."
+        >
+          If your heart feels heavy when you think about your family, you’re not
+          a bad person. You’re just tired. Let Harmony be the place where you
+          finally say it out loud.
+        </p>
+        <button
+          class="btn-primary"
+          id="bottom-cta-button"
+          data-en="Imagine sharing your story here"
+          data-ar="تخيّل تحكي قصتك هون بأمان"
+          onclick="document.querySelector('#quick-post').scrollIntoView({behavior:'smooth'});"
+        >
+          Imagine sharing your story here
+        </button>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      Harmony Community © 2025
+    </footer>
+  </div>
+
+  <!-- Scroll to top button -->
+  <button
+    id="scroll-top"
+    class="scroll-top"
+    type="button"
+    aria-label="Back to top"
+  >
+    ↑
+  </button>
+
+  <script>
+    (function () {
+      const langSelect = document.getElementById('language-select');
+      const scrollTopBtn = document.getElementById('scroll-top');
+
+      function applyLanguage(lang) {
+        const elements = document.querySelectorAll('[data-en]');
+        elements.forEach(el => {
+          const en = el.getAttribute('data-en');
+          const ar = el.getAttribute('data-ar') || en;
+          el.innerHTML = lang === 'ar' ? ar : en;
+        });
+
+        // Update document language + direction
+        document.documentElement.lang = lang === 'ar' ? 'ar' : 'en';
+        document.documentElement.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+      }
+
+      // Always start in English
+      applyLanguage('en');
+      langSelect.value = 'en';
+
+      // Change language only when user selects it
+      langSelect.addEventListener('change', () => {
+        const lang = langSelect.value;
+        applyLanguage(lang);
+      });
+
+      // Scroll-to-top visibility
+      function handleScroll() {
+        if (window.scrollY > 320) {
+          scrollTopBtn.classList.add('visible');
+        } else {
+          scrollTopBtn.classList.remove('visible');
+        }
+      }
+
+      window.addEventListener('scroll', handleScroll);
+
+      // Scroll smoothly to top when clicked
+      scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    })();
+  </script>
+</body>
+</html>
