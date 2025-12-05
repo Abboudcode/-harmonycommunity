@@ -117,6 +117,11 @@
       color: #ffffff;
     }
 
+    .nav-links a.active {
+      background: rgba(129, 140, 248, 0.3);
+      color: #ffffff;
+    }
+
     .nav-right {
       display: flex;
       align-items: center;
@@ -498,277 +503,6 @@
       color: var(--text-muted);
     }
 
-    /* QUICK POST / TWO-COL */
-
-    .two-col {
-      display: grid;
-      grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.5fr);
-      gap: 1.8rem;
-    }
-
-    @media (max-width: 900px) {
-      .two-col {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .card {
-      background: var(--bg-card);
-      border-radius: var(--radius-lg);
-      padding: 1.4rem 1.3rem;
-      border: 1px solid var(--border-soft);
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.03);
-      transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
-    }
-
-    .card:hover {
-      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.07);
-      transform: translateY(-2px);
-      border-color: #e5e7eb;
-    }
-
-    .card h3 {
-      font-size: 1.05rem;
-      margin-bottom: 0.4rem;
-    }
-
-    .card p.sub {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-    }
-
-    .field {
-      margin-bottom: 0.9rem;
-      font-size: 0.9rem;
-    }
-
-    .field label {
-      display: block;
-      margin-bottom: 0.25rem;
-      font-weight: 500;
-    }
-
-    .field input[type="text"],
-    .field input[type="email"],
-    .field input[type="password"],
-    .field select,
-    .field textarea {
-      width: 100%;
-      border-radius: 10px;
-      border: 1px solid #d1d5db;
-      padding: 0.55rem 0.7rem;
-      font-family: inherit;
-      font-size: 0.9rem;
-      transition: border-color 0.12s ease, box-shadow 0.12s ease;
-    }
-
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      outline: none;
-      border-color: #6366f1;
-      box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.25);
-    }
-
-    .field textarea {
-      resize: vertical;
-      min-height: 110px;
-    }
-
-    .field input[type="file"] {
-      font-size: 0.85rem;
-    }
-
-    .field small {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .field-inline {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.45rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 0.8rem;
-    }
-
-    .field-inline input[type="checkbox"] {
-      margin-top: 0.1rem;
-    }
-
-    .form-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .note {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 0.5rem;
-    }
-
-    /* STORIES */
-
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-bottom: 1.2rem;
-      font-size: 0.8rem;
-    }
-
-    .chip {
-      padding: 0.25rem 0.6rem;
-      border-radius: 999px;
-      background: #eef2ff;
-      color: #4f46e5;
-      border: 1px solid #c7d2fe;
-    }
-
-    .chip span {
-      color: #6b7280;
-      margin-left: 0.2rem;
-      font-weight: 400;
-    }
-
-    .stories-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1rem;
-    }
-
-    @media (max-width: 900px) {
-      .stories-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 640px) {
-      .stories-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .story-card {
-      background: var(--bg-card);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-soft);
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 0.5rem;
-      transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
-    }
-
-    .story-card:hover {
-      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.075);
-      transform: translateY(-2px);
-      border-color: #e5e7eb;
-    }
-
-    .story-category {
-      font-size: 0.75rem;
-      padding: 0.15rem 0.55rem;
-      border-radius: 999px;
-      background: #f3f4ff;
-      color: #4f46e5;
-      display: inline-block;
-      margin-bottom: 0.2rem;
-    }
-
-    .story-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 0.1rem;
-    }
-
-    .story-text {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-
-    .story-footer {
-      font-size: 0.8rem;
-      color: #4b5563;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 0.4rem;
-    }
-
-    .reactions span {
-      margin-right: 0.5rem;
-    }
-
-    /* ABOUT / CONTACT / FAQ */
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.5fr);
-      gap: 1.6rem;
-    }
-
-    @media (max-width: 900px) {
-      .about-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .promise-list {
-      list-style: none;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      padding-left: 0;
-    }
-
-    .promise-list li {
-      display: flex;
-      gap: 0.4rem;
-      margin-bottom: 0.4rem;
-    }
-
-    .promise-dot {
-      color: #22c55e;
-      font-size: 0.9rem;
-      margin-top: 0.05rem;
-    }
-
-    .contact-inner {
-      max-width: 480px;
-    }
-
-    .faq-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1rem;
-    }
-
-    @media (max-width: 720px) {
-      .faq-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .faq-card {
-      padding: 1rem 1rem;
-    }
-
-    .faq-question {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-    }
-
-    .faq-answer {
-      font-size: 0.86rem;
-      color: var(--text-muted);
-    }
-
     /* BOTTOM CTA & FOOTER */
 
     .bottom-cta {
@@ -844,11 +578,6 @@
         font-size: 0.98rem;
       }
 
-      .card,
-      .hero-card {
-        padding: 1.1rem 1rem;
-      }
-
       .nav {
         padding: 0.6rem 0;
       }
@@ -909,13 +638,13 @@
         </div>
 
         <nav class="nav-links">
-          <a href="#hero">Home</a>
-          <a href="#latest-stories">Stories</a>
-          <a href="#quick-post">Share a Story</a>
-          <a href="#signin">Sign In</a>
-          <a href="#about">About</a>
-          <a href="#faq">FAQ</a>
-          <a href="#contact">Contact</a>
+          <a href="index.html" class="active">Home</a>
+          <a href="stories.html">Stories</a>
+          <a href="share.html">Share a Story</a>
+          <a href="sign-in.html">Sign In</a>
+          <a href="about.html">About</a>
+          <a href="faq.html">FAQ</a>
+          <a href="contact.html">Contact</a>
         </nav>
 
         <div class="nav-right">
@@ -983,7 +712,7 @@
                 id="hero-primary-btn"
                 data-en="Share what’s on your heart"
                 data-ar="إحكي اللي بقلبك"
-                onclick="document.querySelector('#quick-post').scrollIntoView({behavior:'smooth'});"
+                onclick="window.location.href='share.html';"
               >
                 Share what’s on your heart
               </button>
@@ -992,7 +721,7 @@
                 id="hero-secondary-btn"
                 data-en="Read stories like yours"
                 data-ar="إقرأ قصص تشبه قصتك"
-                onclick="document.querySelector('#latest-stories').scrollIntoView({behavior:'smooth'});"
+                onclick="window.location.href='stories.html';"
               >
                 Read stories like yours
               </button>
@@ -1255,644 +984,6 @@
         </div>
       </section>
 
-      <!-- QUICK POST (still demo) -->
-      <section id="quick-post">
-        <div class="max-w two-col">
-          <div class="card">
-            <h3
-              data-en="Share a story (demo)"
-              data-ar="إحكي قصة (نسخة تجريبية)"
-            >
-              Share a story (demo)
-            </h3>
-            <p
-              class="sub"
-              data-en="This is a preview of how posting will feel when Harmony is fully live. Take a moment and imagine your own words here."
-              data-ar="هاي مجرد معاينة بسيطة كيف رح يكون شكل النشر لما التطبيق يشتغل بالكامل. تخيّل كلماتك أنت مكتوبة هون."
-            >
-              This is a preview of how posting will feel when Harmony is fully
-              live. Take a moment and imagine your own words here.
-            </p>
-
-            <form onsubmit="event.preventDefault(); alert('In the full app this will save your story. For now, it is just a visual demo 😊');">
-              <div class="field">
-                <label
-                  for="title"
-                  data-en="Title"
-                  data-ar="العنوان"
-                >Title</label>
-                <input
-                  id="title"
-                  type="text"
-                  placeholder="Example: I feel like I’m failing as a parent…"
-                />
-              </div>
-
-              <div class="field">
-                <label
-                  for="category"
-                  data-en="Category"
-                  data-ar="الفئة"
-                >Category</label>
-                <select id="category">
-                  <option>Kids</option>
-                  <option>Teens</option>
-                  <option>Adult</option>
-                  <option>Marriage</option>
-                  <option>Finance</option>
-                </select>
-              </div>
-
-              <div class="field">
-                <label
-                  for="details"
-                  data-en="Details"
-                  data-ar="التفاصيل"
-                >Details</label>
-                <textarea
-                  id="details"
-                  placeholder="Share what’s going on, how it makes you feel, and what you wish someone could tell you right now…"
-                ></textarea>
-              </div>
-
-              <div class="field">
-                <label
-                  for="media"
-                  data-en="Attach a picture or video (optional)"
-                  data-ar="إرفق صورة أو فيديو (اختياري)"
-                >Attach a picture or video (optional)</label>
-                <input id="media" type="file" />
-                <small
-                  data-en="Sometimes an image of a text conversation, a room, or a moment says more than words."
-                  data-ar="أحياناً صورة لمحادثة، أو غرفة، أو لحظة معيّنة بتشرح أكتر من ألف كلمة."
-                >
-                  Sometimes an image of a text conversation, a room, or a moment
-                  says more than words.
-                </small>
-              </div>
-
-              <div class="field-inline">
-                <input id="anonymous" type="checkbox" />
-                <label for="anonymous">
-                  <strong data-en="Post anonymously" data-ar="أنشر بشكل مجهول">Post anonymously</strong><br />
-                  <small
-                    data-en="If checked, only “Anonymous” will appear. No one will see your real name."
-                    data-ar="إذا فعّلت هذا الخيار، رح يظهر فقط &quot;مجهول&quot;، وما حدا رح يشوف اسمك الحقيقي."
-                  >
-                    If checked, only “Anonymous” will appear. No one will see
-                    your real name.
-                  </small>
-                </label>
-              </div>
-
-              <div class="form-actions">
-                <button
-                  type="submit"
-                  class="btn-primary"
-                  data-en="(Demo) Post to Harmony"
-                  data-ar="(تجريبي) أنشر على هارموني"
-                >
-                  (Demo) Post to Harmony
-                </button>
-                <span
-                  class="note"
-                  data-en="This is still a demo. Soon, stories will be saved to Harmony using your account settings."
-                  data-ar="لساها نسخة تجريبية. قريباً جداً القصص رح تنحفظ بهارموني حسب إعدادات حسابك."
-                >
-                  This is still a demo. Soon, stories will be saved to Harmony
-                  using your account settings.
-                </span>
-              </div>
-            </form>
-          </div>
-
-          <div class="card">
-            <h3
-              data-en="What kind of stories belong here?"
-              data-ar="شو نوع القصص اللي مكانها هون؟"
-            >
-              What kind of stories belong here?
-            </h3>
-            <p
-              class="sub"
-              data-en="Harmony is not for perfect families. It’s for real life – the parts we usually hide."
-              data-ar="هارموني مش للصور المثالية. هي للحياة الحقيقية… للجزء اللي عادة منخبيه."
-            >
-              Harmony is not for perfect families. It’s for real life – the
-              parts we usually hide.
-            </p>
-            <ul class="hero-card-list">
-              <li data-en="• Parents who feel guilty for shouting, but don’t know what else to do." data-ar="• أهل بيحسّوا بالذنب لأنهم صرخوا، بس ما عندهم حل تاني.">
-                • Parents who feel guilty for shouting, but don’t know what else
-                to do.
-              </li>
-              <li data-en="• Teens who feel nobody listens and are scared to speak at home." data-ar="• مراهقين حاسّين إنه ما حدا عم يسمعهم، وخايفين يحكوا بالبيت.">
-                • Teens who feel nobody listens and are scared to speak at home.
-              </li>
-              <li data-en="• Couples who love each other but are stuck in the same fights." data-ar="• أزواج بيحبّوا بعض، بس عالقين بنفس المشاكل والنقاشات المتكررة.">
-                • Couples who love each other but are stuck in the same fights.
-              </li>
-              <li data-en="• Adults who feel empty while trying to make everyone else happy." data-ar="• كبار حاسّين بالفراغ وهُم يحاولوا يرضوا الكل حواليهم.">
-                • Adults who feel empty while trying to make everyone else
-                happy.
-              </li>
-              <li data-en="• Anyone stressed about money, debt, or providing for the family." data-ar="• أي حدا مضغوط من الديون والمصاريف ومسؤولية إعالة العيلة.">
-                • Anyone stressed about money, debt, or providing for the
-                family.
-              </li>
-            </ul>
-            <p
-              class="note"
-              style="margin-top:0.8rem;"
-              data-en="If it stays on your mind at night, it belongs here. Even if you think “my problem is not big enough” – your feelings still matter."
-              data-ar="إذا الشي عم يلف براسك قبل ما تنام، فمكانه هون. حتى لو بتحس أن &quot;مشكلتك مش كبيرة&quot;… مشاعرك بعدها مهمة."
-            >
-              If it stays on your mind at night, it belongs here. Even if you
-              think “my problem is not big enough” – your feelings still matter.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- LATEST STORIES (example content) -->
-      <section id="latest-stories">
-        <div class="max-w">
-          <h2
-            data-en="Sample Stories (to inspire you)"
-            data-ar="قصص نموذجية لتستمد منها الشجاعة"
-          >
-            Sample Stories (to inspire you)
-          </h2>
-          <p
-            class="lead"
-            data-en="These are example stories that show the kind of honesty we want in Harmony. When the app is live, this will be filled with real people like you."
-            data-ar="هاي أمثلة لقصص بتشرح نوع الصراحة اللي نتمناها في هارموني. لما يشتغل التطبيق بالكامل، هالقسم رح يمتلئ بناس حقيقيين… زيّك تماماً."
-          >
-            These are example stories that show the kind of honesty we want in
-            Harmony. When the app is live, this will be filled with real people
-            like you.
-          </p>
-
-          <div class="chip-row">
-            <div class="chip">Kids <span>Parenting, school, behavior</span></div>
-            <div class="chip">Teens <span>Pressure, identity, emotions</span></div>
-            <div class="chip">Adult <span>Life, stress, work, purpose</span></div>
-            <div class="chip">Marriage <span>Love, conflict, healing</span></div>
-            <div class="chip">Finance <span>Money stress, stability</span></div>
-          </div>
-
-          <div class="stories-grid">
-            <article class="story-card">
-              <div>
-                <div class="story-category">Teens</div>
-                <div
-                  class="story-title"
-                  data-en="“Every talk with my teenager turns into a fight”"
-                  data-ar="&quot;كل حديث مع ابني المراهق ينتهي بخلاف&quot;"
-                >
-                  “Every talk with my teenager turns into a fight”
-                </div>
-                <p
-                  class="story-text"
-                  data-en="I used to be very close to my son. Now at 16 he barely looks at me. If I ask about school, he says I’m controlling. If I stay quiet, I feel like a bad parent. I’m scared I’m losing him and don’t know how to reach him without shouting…"
-                  data-ar="كنت قريبة جداً من ابني. اليوم وهو عمره ١٦ سنة بالكاد يطلع فيني. إذا سألت عن المدرسة بقول إني متحكّمة، وإذا سكت بحس حالي أم سيئة. خايفة أخسره ومش عارفة كيف أوصل له بدون ما أصرخ…"
-                >
-                  I used to be very close to my son. Now at 16 he barely looks
-                  at me. If I ask about school, he says I’m controlling. If I
-                  stay quiet, I feel like a bad parent. I’m scared I’m losing
-                  him and don’t know how to reach him without shouting…
-                </p>
-              </div>
-              <div class="story-footer">
-                <div class="reactions">
-                  <span
-                    data-en="❤️ 27 people related"
-                    data-ar="❤️ ٢٧ شخص حاسّوا مثلي"
-                  >
-                    ❤️ 27 people related
-                  </span>
-                  <span
-                    data-en="💬 7 gentle replies"
-                    data-ar="💬 ٧ ردود لطيفة"
-                  >
-                    💬 7 gentle replies
-                  </span>
-                </div>
-                <span style="font-size:0.75rem; color:#9ca3af;" data-en="Example story" data-ar="قصة نموذجية">Example story</span>
-              </div>
-            </article>
-
-            <article class="story-card">
-              <div>
-                <div class="story-category">Finance</div>
-                <div
-                  class="story-title"
-                  data-en="“We love each other, but money is breaking us”"
-                  data-ar="&quot;نحب بعض، بس الفلوس عم تكسرنا&quot;"
-                >
-                  “We love each other, but money is breaking us”
-                </div>
-                <p
-                  class="story-text"
-                  data-en="We both work hard, but the bills keep winning. At the end of every month we’re angry, tired and blaming each other. I miss when we used to laugh together. I don’t want our kids to grow up in a house where money equals war…"
-                  data-ar="نشتغل نحن الاثنين ونتعب، بس الفواتير دايماً هي اللي تربح. آخر كل شهر نكون معصّبين، مرهقين ونلوم بعض. مشتاق لأيام الضحك اللي بيننا. ما بدي أولادي يكبروا في بيت يعني فيه المال = حرب…"
-                >
-                  We both work hard, but the bills keep winning. At the end of
-                  every month we’re angry, tired and blaming each other. I miss
-                  when we used to laugh together. I don’t want our kids to grow
-                  up in a house where money equals war…
-                </p>
-              </div>
-              <div class="story-footer">
-                <div class="reactions">
-                  <span
-                    data-en="❤️ 19 people related"
-                    data-ar="❤️ ١٩ شخص حاسّوا مثلي"
-                  >
-                    ❤️ 19 people related
-                  </span>
-                  <span
-                    data-en="💬 6 gentle replies"
-                    data-ar="💬 ٦ ردود لطيفة"
-                  >
-                    💬 6 gentle replies
-                  </span>
-                </div>
-                <span style="font-size:0.75rem; color:#9ca3af;" data-en="Example story" data-ar="قصة نموذجية">Example story</span>
-              </div>
-            </article>
-
-            <article class="story-card">
-              <div>
-                <div class="story-category">Adult</div>
-                <div
-                  class="story-title"
-                  data-en="“I’m the strong one for everyone… except myself”"
-                  data-ar="&quot;أنا القوي عشان الكل… إلا نفسي&quot;"
-                >
-                  “I’m the strong one for everyone… except myself”
-                </div>
-                <p
-                  class="story-text"
-                  data-en="In my family I’m the problem-solver. Everyone calls me when they need help. But when I’m tired or sad, I feel like there’s no space for me to fall apart. I’m starting to feel invisible in my own life and I’m scared this emptiness will never go away…"
-                  data-ar="في عيلتي أنا الشخص اللي يحل المشاكل. الكل يتصل فيني لما يحتاج مساعدة. بس لما أنا أكون تعبان أو حزين، بحس ما في مكان أقدر أضعف فيه. بديت أحس إني شفاف في حياتي الخاصة، وخايف هالفراغ يضل طول العمر…"
-                >
-                  In my family I’m the problem-solver. Everyone calls me when
-                  they need help. But when I’m tired or sad, I feel like there’s
-                  no space for me to fall apart. I’m starting to feel invisible
-                  in my own life and I’m scared this emptiness will never go
-                  away…
-                </p>
-              </div>
-              <div class="story-footer">
-                <div class="reactions">
-                  <span
-                    data-en="❤️ 34 people related"
-                    data-ar="❤️ ٣٤ شخص حاسّوا مثلي"
-                  >
-                    ❤️ 34 people related
-                  </span>
-                  <span
-                    data-en="💬 9 gentle replies"
-                    data-ar="💬 ٩ ردود لطيفة"
-                  >
-                    💬 9 gentle replies
-                  </span>
-                </div>
-                <span style="font-size:0.75rem; color:#9ca3af;" data-en="Example story" data-ar="قصة نموذجية">Example story</span>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- SIGN IN / SIGN UP (REAL SUPABASE AUTH) -->
-      <section id="signin">
-        <div class="max-w two-col">
-          <div class="card">
-            <h3 data-en="Create your Harmony account" data-ar="أنشئ حسابك في هارموني">
-              Create your Harmony account
-            </h3>
-            <p class="sub"
-               data-en="Use this form to create a real Harmony account. We only ask for email, password and an optional name."
-               data-ar="استخدم هذا النموذج لإنشاء حساب حقيقي في هارموني. نحتاج فقط الإيميل وكلمة السر، والاسم اختياري.">
-              Use this form to create a real Harmony account. We only ask for email,
-              password and an optional name.
-            </p>
-
-            <form id="signup-form">
-              <div class="field">
-                <label for="signup-email" data-en="Email" data-ar="الإيميل">Email</label>
-                <input id="signup-email" type="email" required placeholder="you@example.com" />
-              </div>
-
-              <div class="field">
-                <label for="signup-password" data-en="Password" data-ar="كلمة السر">Password</label>
-                <input id="signup-password" type="password" required minlength="6" placeholder="At least 6 characters" />
-              </div>
-
-              <div class="field">
-                <label for="signup-name" data-en="Name or nickname (optional)" data-ar="الاسم أو لقب (اختياري)">
-                  Name or nickname (optional)
-                </label>
-                <input id="signup-name" type="text" placeholder="Mohamad, Anonymous Dad, Tired Mama…" />
-              </div>
-
-              <div class="field-inline">
-                <input id="signup-anon" type="checkbox" />
-                <label for="signup-anon">
-                  <strong data-en="Always show me as Anonymous" data-ar="دائماً إظهرني كمجهول">Always show me as Anonymous</strong><br />
-                  <small
-                    data-en="If checked, Harmony will hide your name and only show “Anonymous” when you post."
-                    data-ar="إذا فعّلت هذا الخيار، هارموني رح تخفي اسمك وتعرض فقط &quot;مجهول&quot; عند النشر."
-                  >
-                    If checked, Harmony will hide your name and only show “Anonymous”
-                    when you post.
-                  </small>
-                </label>
-              </div>
-
-              <button type="submit" class="btn-primary"
-                      data-en="Create account"
-                      data-ar="إنشاء حساب">
-                Create account
-              </button>
-            </form>
-          </div>
-
-          <div class="card">
-            <h3 data-en="Sign in to your account" data-ar="سجّل الدخول إلى حسابك">
-              Sign in to your account
-            </h3>
-            <p class="sub"
-               data-en="Already created an account before? Use the same email and password to sign in."
-               data-ar="عندك حساب من قبل؟ استخدم نفس الإيميل وكلمة السر لتسجّل الدخول.">
-              Already created an account before? Use the same email and password to sign in.
-            </p>
-
-            <form id="signin-form">
-              <div class="field">
-                <label for="signin-email" data-en="Email" data-ar="الإيميل">Email</label>
-                <input id="signin-email" type="email" required placeholder="you@example.com" />
-              </div>
-
-              <div class="field">
-                <label for="signin-password" data-en="Password" data-ar="كلمة السر">Password</label>
-                <input id="signin-password" type="password" required minlength="6" />
-              </div>
-
-              <button type="submit" class="btn-secondary"
-                      data-en="Sign in"
-                      data-ar="تسجيل الدخول">
-                Sign in
-              </button>
-            </form>
-
-            <p id="current-user-label"
-               class="note"
-               style="margin-top:1rem;"
-               data-en="Status: not signed in."
-               data-ar="الحالة: غير مسجّل الدخول.">
-              Status: not signed in.
-            </p>
-
-            <p id="auth-status" class="note" style="margin-top:0.4rem;"></p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ABOUT -->
-      <section id="about">
-        <div class="max-w about-grid">
-          <div>
-            <h2 data-en="Why Harmony exists" data-ar="ليش موجودة هارموني؟">Why Harmony exists</h2>
-            <p
-              class="lead"
-              data-en="Harmony is being built by parents and families who know how it feels to smile outside and break inside."
-              data-ar="هارموني عم تنبنى من أهالي وعائلات بيعرفوا شعور إنك تبتسم برا… وتنكسر جوّا."
-            >
-              Harmony is being built by parents and families who know how it
-              feels to smile outside and break inside.
-            </p>
-            <p style="font-size:0.9rem; color:var(--text-muted);"
-              data-en="We created Harmony because so many people carry family pain in silence — afraid of gossip, judgment, or “advice” that actually hurts. Social media is loud, fast and often cruel. Harmony is the opposite: slow, soft, honest. A place where you can say “I’m not okay” and be met with understanding instead of blame."
-              data-ar="عملنا هارموني لأن ناس كتير شايلة وجع العيلة بصمت – خايفين من الحكي، ومن الحكم، ومن نصايح توجع أكثر مما تساعد. السوشال ميديا صاخبة، سريعة، وقاسية أحياناً. هارموني العكس تماماً: هاديه، لطيفة، وصريحة. مكان تقدر تقول فيه &quot;أنا مش تمام&quot; وتلاقي فهم بدل اللوم."
-            >
-              We created Harmony because so many people carry family pain in
-              silence — afraid of gossip, judgment, or “advice” that actually
-              hurts. Social media is loud, fast and often cruel. Harmony is the
-              opposite: slow, soft, honest. A place where you can say “I’m not
-              okay” and be met with understanding instead of blame.
-            </p>
-          </div>
-          <div class="card">
-            <h3 data-en="Our Promise to You" data-ar="وعدنا إلك">Our Promise to You</h3>
-            <ul class="promise-list">
-              <li>
-                <span class="promise-dot">●</span>
-                <span
-                  data-en="We protect your privacy and give you control over what you share."
-                  data-ar="نحمي خصوصيتك، ونخليك تتحكّم بكل شي تشاركه."
-                >
-                  We protect your privacy and give you control over what you
-                  share.
-                </span>
-              </li>
-              <li>
-                <span class="promise-dot">●</span>
-                <span
-                  data-en="We design for empathy, not drama or arguments."
-                  data-ar="نصمّم المنصة على أساس التعاطف، مش الدراما والخناق."
-                >
-                  We design for empathy, not drama or arguments.
-                </span>
-              </li>
-              <li>
-                <span class="promise-dot">●</span>
-                <span
-                  data-en="We keep Harmony free from bullying and disrespect."
-                  data-ar="نمنع التنمّر وقلة الاحترام قد ما نقدر."
-                >
-                  We keep Harmony free from bullying and disrespect.
-                </span>
-              </li>
-              <li>
-                <span class="promise-dot">●</span>
-                <span
-                  data-en="We remember that behind every post is a real human heart."
-                  data-ar="ما ننسى أبداً إنو وراء كل منشور في قلب حقيقي."
-                >
-                  We remember that behind every post is a real human heart.
-                </span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <!-- FAQ -->
-      <section id="faq">
-        <div class="max-w">
-          <h2
-            data-en="Questions people usually ask"
-            data-ar="أسئلة كثير ناس تسأل عنها"
-          >
-            Questions people usually ask
-          </h2>
-          <p
-            class="lead"
-            data-en="Here are quick answers so you know exactly what Harmony is – and what it isn’t."
-            data-ar="هاي أجوبة سريعة حتى تعرف بالضبط شو هي هارموني، وشو مش هي."
-          >
-            Here are quick answers so you know exactly what Harmony is – and
-            what it isn’t.
-          </p>
-
-          <div class="faq-grid">
-            <div class="card faq-card">
-              <div
-                class="faq-question"
-                data-en="Is Harmony completely anonymous?"
-                data-ar="هل هارموني مجهولة بالكامل؟"
-              >
-                Is Harmony completely anonymous?
-              </div>
-              <p
-                class="faq-answer"
-                data-en="In the full app you’ll be able to choose: post with your real name, a nickname, or as “Anonymous”. Your feelings stay real either way."
-                data-ar="بالنسخة الكاملة من التطبيق رح تقدر تختار: تنشر باسمك، بلقب، أو كمجهول. مشاعرك حقيقية بكل الحالات."
-              >
-                In the full app you’ll be able to choose: post with your real
-                name, a nickname, or as “Anonymous”. Your feelings stay real
-                either way.
-              </p>
-            </div>
-
-            <div class="card faq-card">
-              <div
-                class="faq-question"
-                data-en="Is Harmony a replacement for therapy?"
-                data-ar="هل هارموني بديل عن العلاج النفسي؟"
-              >
-                Is Harmony a replacement for therapy?
-              </div>
-              <p
-                class="faq-answer"
-                data-en="No. Harmony is a community space for support and understanding, not medical or professional advice. It can walk with you, not replace a doctor or therapist."
-                data-ar="لا. هارموني مساحة دعم وتفهّم بين الناس، مش مكان لعلاج طبي أو نصيحة مهنية. تقدر تمشي معك بالطريق، لكنها ما بتستبدل دكتور أو معالج."
-              >
-                No. Harmony is a community space for support and understanding,
-                not medical or professional advice. It can walk with you, not
-                replace a doctor or therapist.
-              </p>
-            </div>
-
-            <div class="card faq-card">
-              <div
-                class="faq-question"
-                data-en="Will people judge me if my story sounds small?"
-                data-ar="هل الناس رح تحكم علي إذا مشكلتي بسيطة؟"
-              >
-                Will people judge me if my story sounds small?
-              </div>
-              <p
-                class="faq-answer"
-                data-en="Here, we believe if it keeps you awake at night, it is big enough. Harmony is designed to reduce shame, not increase it."
-                data-ar="هنا نؤمن إنه إذا الشي عم يمنعك تنام بالليل، فهو كبير كفاية. هارموني مصممة حتى تخفّف الإحراج، مو تزيده."
-              >
-                Here, we believe if it keeps you awake at night, it is big
-                enough. Harmony is designed to reduce shame, not increase it.
-              </p>
-            </div>
-
-            <div class="card faq-card">
-              <div
-                class="faq-question"
-                data-en="When will the real app be ready?"
-                data-ar="متى رح تكون النسخة الكاملة جاهزة؟"
-              >
-                When will the real app be ready?
-              </div>
-              <p
-                class="faq-answer"
-                data-en="This site is an early preview. I’m building Harmony step by step. If you like the idea, your feedback and email will help decide the next features."
-                data-ar="هالموقع مجرد معاينة مبكرة. عم أبني هارموني خطوة بخطوة. إذا حبيت الفكرة، رأيك وإيميلك رح يساعدوا نحدد الخطوات الجاية."
-              >
-                This site is an early preview. I’m building Harmony step by
-                step. If you like the idea, your feedback and email will help
-                decide the next features.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- CONTACT -->
-      <section id="contact">
-        <div class="max-w two-col">
-          <div class="contact-inner">
-            <h2 data-en="Talk to the creator" data-ar="إحكي مع صاحب الفكرة">Talk to the creator</h2>
-            <p
-              class="lead"
-              data-en="Have ideas, stories, or want to support this project? I’d love to hear from you."
-              data-ar="عندك أفكار، قصص، أو حابب تدعم المشروع؟ رح أكون مبسوط أسمع منك."
-            >
-              Have ideas, stories, or want to support this project? I’d love to
-              hear from you.
-            </p>
-            <p style="font-size:0.9rem; margin-bottom:0.6rem;"
-              data-en="Email: hello@harmony.community"
-              data-ar="الإيميل: hello@harmony.community"
-            >
-              Email: <strong>hello@harmony.community</strong>
-            </p>
-            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.7rem;"
-              data-en="Even a short message like “this idea helped me” gives me energy to keep building. Your feedback will shape how Harmony grows."
-              data-ar="حتى رسالة صغيرة مثل &quot;الفكرة ساعدتني&quot; تعطيني طاقة أكمل. رأيك رح يكون جزء من تشكيل هارموني بالمستقبل."
-            >
-              Even a short message like “this idea helped me” gives me energy to
-              keep building. Your feedback will shape how Harmony grows.
-            </p>
-            <form
-              onsubmit="event.preventDefault(); alert('In the real app, this will send your message. For now, this is just a demo 😊');"
-            >
-              <div class="field">
-                <label
-                  for="name"
-                  data-en="Name (optional)"
-                  data-ar="الاسم (اختياري)"
-                >Name (optional)</label>
-                <input id="name" type="text" placeholder="You can leave this empty if you prefer" />
-              </div>
-              <div class="field">
-                <label
-                  for="email"
-                  data-en="Email"
-                  data-ar="الإيميل"
-                >Email</label>
-                <input id="email" type="email" placeholder="So I can write you back" />
-              </div>
-              <div class="field">
-                <label
-                  for="message"
-                  data-en="Message"
-                  data-ar="الرسالة"
-                >Message</label>
-                <textarea id="message" placeholder="Share your feedback, story, or ideas for Harmony…"></textarea>
-              </div>
-              <button
-                type="submit"
-                class="btn-primary"
-                data-en="Send message (demo)"
-                data-ar="إرسال الرسالة (تجريبي)"
-              >
-                Send message (demo)
-              </button>
-            </form>
-          </div>
-        </div>
-      </section>
-
       <!-- BOTTOM CTA -->
       <div class="max-w bottom-cta">
         <p
@@ -1909,7 +1000,7 @@
           id="bottom-cta-button"
           data-en="Imagine sharing your story here"
           data-ar="تخيّل تحكي قصتك هون بأمان"
-          onclick="document.querySelector('#quick-post').scrollIntoView({behavior:'smooth'});"
+          onclick="window.location.href='share.html';"
         >
           Imagine sharing your story here
         </button>
@@ -1932,12 +1023,11 @@
     ↑
   </button>
 
-  <!-- Supabase client -->
+  <!-- Supabase client (for nav status + future features) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
     (function () {
-      // Language + scroll top
       const langSelect = document.getElementById('language-select');
       const scrollTopBtn = document.getElementById('scroll-top');
       const navAuthLabel = document.getElementById('nav-auth-label');
@@ -1956,12 +1046,14 @@
 
       // Always start in English
       applyLanguage('en');
-      langSelect.value = 'en';
+      if (langSelect) langSelect.value = 'en';
 
-      langSelect.addEventListener('change', () => {
-        const lang = langSelect.value;
-        applyLanguage(lang);
-      });
+      if (langSelect) {
+        langSelect.addEventListener('change', () => {
+          const lang = langSelect.value;
+          applyLanguage(lang);
+        });
+      }
 
       function handleScroll() {
         if (window.scrollY > 320) {
@@ -1977,22 +1069,11 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
 
-      // === Supabase auth ===
+      // === Supabase auth (nav label only on this page) ===
       const SUPABASE_URL = 'https://tnohzvrpqiaiupwyaxcp.supabase.co';
       const SUPABASE_ANON_KEY = 'sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K';
 
       const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-      const signupForm = document.getElementById('signup-form');
-      const signinForm = document.getElementById('signin-form');
-      const authStatus = document.getElementById('auth-status');
-      const currentUserLabel = document.getElementById('current-user-label');
-
-      function setStatus(message) {
-        if (authStatus) {
-          authStatus.textContent = message || '';
-        }
-      }
 
       function updateNavLabel(text) {
         if (navAuthLabel) {
@@ -2003,9 +1084,6 @@
       async function refreshUserLabel() {
         const { data, error } = await supabase.auth.getUser();
         if (error || !data.user) {
-          if (currentUserLabel) {
-            currentUserLabel.textContent = 'Status: not signed in.';
-          }
           updateNavLabel('Not signed in');
           return;
         }
@@ -2021,68 +1099,9 @@
         } else {
           label = 'Signed in: ' + displayName;
         }
-
-        if (currentUserLabel) {
-          currentUserLabel.textContent = label;
-        }
         updateNavLabel(label);
       }
 
-      if (signupForm) {
-        signupForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          setStatus('Creating your account…');
-
-          const email = document.getElementById('signup-email').value.trim();
-          const password = document.getElementById('signup-password').value;
-          const name = document.getElementById('signup-name').value.trim();
-          const alwaysAnon = document.getElementById('signup-anon').checked;
-
-          const { error } = await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-              data: {
-                display_name: name,
-                always_anonymous: alwaysAnon
-              }
-            }
-          });
-
-          if (error) {
-            setStatus('Error: ' + error.message);
-          } else {
-            setStatus('Account created! If email confirmation is enabled, please check your inbox. Then sign in below.');
-            signupForm.reset();
-            refreshUserLabel();
-          }
-        });
-      }
-
-      if (signinForm) {
-        signinForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          setStatus('Signing you in…');
-
-          const email = document.getElementById('signin-email').value.trim();
-          const password = document.getElementById('signin-password').value;
-
-          const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password
-          });
-
-          if (error) {
-            setStatus('Error: ' + error.message);
-          } else {
-            setStatus('Signed in successfully.');
-            signinForm.reset();
-            refreshUserLabel();
-          }
-        });
-      }
-
-      // On first load, check if already signed in
       refreshUserLabel();
     })();
   </script>
