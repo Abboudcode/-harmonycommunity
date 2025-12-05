@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <title>About – Harmony Community</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Learn why Harmony exists and the promise behind this gentle family-support community."
+  />
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --bg-card: #ffffff;
+      --primary: #4b6fff;
+      --primary-soft: #e2e7ff;
+      --text-main: #1f2933;
+      --text-muted: #6b7280;
+      --border-soft: #e5e7eb;
+      --accent: #10b981;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #eef2ff, #f9fafb 40%);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .max-w {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* HEADER / NAV */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(180deg, #050817, #0f172a);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 0;
+      gap: 1rem;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.95rem;
+      color: #e5e7eb;
+    }
+
+    .nav-links a {
+      padding: 0.3rem 0.6rem;
+      border-radius: 999px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-links a:hover {
+      background: rgba(148, 163, 184, 0.22);
+      color: #ffffff;
+    }
+
+    .nav-links a.active {
+      background: rgba(129, 140, 248, 0.35);
+      color: #ffffff;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-ghost {
+      font-size: 0.9rem;
+      color: #cbd5f5;
+      white-space: nowrap;
+    }
+
+    .language-select {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.8);
+      color: #e5e7eb;
+      font-size: 0.8rem;
+      padding: 0.25rem 0.7rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .language-select option {
+      color: #111827;
+      background: #ffffff;
+    }
+
+    @media (max-width: 720px) {
+      .nav-links {
+        display: none;
+      }
+    }
+
+    main {
+      padding: 2.8rem 0 2.2rem;
+    }
+
+    .page-title-block {
+      max-width: 720px;
+      margin: 0 auto 2rem;
+      text-align: center;
+    }
+
+    .page-title-block h1 {
+      font-size: 1.6rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .page-title-block p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.5fr);
+      gap: 1.6rem;
+    }
+
+    @media (max-width: 900px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 1.4rem 1.3rem;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.03);
+      transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.07);
+      transform: translateY(-2px);
+      border-color: #e5e7eb;
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .lead {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 0.9rem;
+    }
+
+    .body-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.65rem;
+    }
+
+    .promise-list {
+      list-style: none;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      padding-left: 0;
+    }
+
+    .promise-list li {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .promise-dot {
+      color: #22c55e;
+      font-size: 0.9rem;
+      margin-top: 0.05rem;
+    }
+
+    .note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.8rem;
+    }
+
+    footer {
+      padding: 1rem 0 1.5rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: auto;
+    }
+
+    @media (max-width: 640px) {
+      main {
+        padding-top: 2.2rem;
+      }
+
+      .nav {
+        padding: 0.6rem 0;
+      }
+
+      .card {
+        padding: 1.2rem 1.05rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <!-- HEADER -->
+  <header>
+    <div class="max-w nav">
+      <div class="nav-left">
+        <div class="logo-wrapper">
+          <!-- Arc + heartbeat + Harmony text logo -->
+          <svg
+            width="180"
+            height="40"
+            viewBox="0 0 180 40"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-label="Harmony logo"
+            role="img"
+          >
+            <!-- Arc -->
+            <path
+              d="M10 22 C25 5, 55 5, 70 22"
+              fill="none"
+              stroke="#40cbb4"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+            <!-- Heartbeat / wave -->
+            <path
+              d="M12 22 L22 22 L27 15 L33 30 L38 22 L68 22"
+              fill="none"
+              stroke="#f5c451"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <!-- Text -->
+            <text
+              x="78"
+              y="27"
+              font-family="Inter, system-ui, sans-serif"
+              font-size="18"
+              font-weight="600"
+              fill="#ffffff"
+            >
+              Harmony
+            </text>
+          </svg>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="stories.html">Stories</a>
+        <a href="share.html">Share a Story</a>
+        <a href="signin.html">Sign In</a>
+        <a href="about.html" class="active">About</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="nav-right">
+        <select id="language-select" class="language-select" aria-label="Choose language">
+          <option value="en">English</option>
+          <option value="ar">العربية</option>
+        </select>
+        <div class="nav-ghost" id="nav-auth-label">
+          Not signed in
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <div class="max-w page-title-block">
+      <h1
+        data-en="Why Harmony exists"
+        data-ar="ليش موجودة هارموني؟"
+      >
+        Why Harmony exists
+      </h1>
+      <p
+        data-en="Harmony is being built by parents and families who know how it feels to smile outside and break inside."
+        data-ar="هارموني عم تنبنى من أهالي وعائلات بيعرفوا شعور إنك تبتسم برا… وتنكسر جوّا."
+      >
+        Harmony is being built by parents and families who know how it feels
+        to smile outside and break inside.
+      </p>
+    </div>
+
+    <section>
+      <div class="max-w about-grid">
+        <div>
+          <p
+            class="lead"
+            data-en="We created Harmony because so many people carry family pain in silence — afraid of gossip, judgment, or “advice” that actually hurts."
+            data-ar="عملنا هارموني لأن ناس كتير شايلة وجع العيلة بصمت – خايفين من الحكي، ومن الحكم، ومن نصايح توجع أكثر مما تساعد."
+          >
+            We created Harmony because so many people carry family pain in
+            silence — afraid of gossip, judgment, or “advice” that actually
+            hurts.
+          </p>
+          <p
+            class="body-text"
+            data-en="Social media is loud, fast and often cruel. Harmony is the opposite: slow, soft, honest. A place where you can say “I’m not okay” and be met with understanding instead of blame."
+            data-ar="السوشال ميديا صاخبة، سريعة، وقاسية أحياناً. هارموني العكس تماماً: هادئة، لطيفة، وصريحة. مكان تقدر تقول فيه &quot;أنا مش تمام&quot; وتلاقي فهم بدل اللوم."
+          >
+            Social media is loud, fast and often cruel. Harmony is the
+            opposite: slow, soft, honest. A place where you can say “I’m not
+            okay” and be met with understanding instead of blame.
+          </p>
+          <p
+            class="body-text"
+            data-en="Behind every story on Harmony is a real human heart. Behind the platform itself are people who have also cried in cars, stayed awake at night worrying about their kids or their marriage, and wished they had somewhere safe to talk."
+            data-ar="وراء كل قصة في هارموني في قلب حقيقي. ورا المنصة نفسها في ناس بكوا بالسيارة، وسهروا الليل يفكروا بأولادهم أو زواجهم، وتمنّوا يكون عندهم مكان آمن يحكوا فيه."
+          >
+            Behind every story on Harmony is a real human heart. Behind the
+            platform itself are people who have also cried in cars, stayed
+            awake at night worrying about their kids or their marriage, and
+            wished they had somewhere safe to talk.
+          </p>
+          <p
+            class="body-text"
+            data-en="Harmony is growing slowly and carefully. Your feedback, your ideas, and one day your stories will shape how this community looks and feels."
+            data-ar="هارموني عم تكبر بهدوء وبطء. رأيك، وأفكارك، وقصصك بالمستقبل هي اللي رح ترسم شكل هذا المجتمع وإحساسه."
+          >
+            Harmony is growing slowly and carefully. Your feedback, your
+            ideas, and one day your stories will shape how this community
+            looks and feels.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3
+            data-en="Our Promise to You"
+            data-ar="وعدنا إلك"
+          >
+            Our Promise to You
+          </h3>
+          <ul class="promise-list">
+            <li>
+              <span class="promise-dot">●</span>
+              <span
+                data-en="We protect your privacy and give you control over what you share."
+                data-ar="نحمي خصوصيتك، ونخليك تتحكّم بكل شي تشاركه."
+              >
+                We protect your privacy and give you control over what you share.
+              </span>
+            </li>
+            <li>
+              <span class="promise-dot">●</span>
+              <span
+                data-en="We design for empathy, not drama or arguments."
+                data-ar="نصمّم المنصة على أساس التعاطف، مش الدراما والخناق."
+              >
+                We design for empathy, not drama or arguments.
+              </span>
+            </li>
+            <li>
+              <span class="promise-dot">●</span>
+              <span
+                data-en="We keep Harmony free from bullying and disrespect."
+                data-ar="نمنع التنمّر وقلة الاحترام قد ما نقدر."
+              >
+                We keep Harmony free from bullying and disrespect.
+              </span>
+            </li>
+            <li>
+              <span class="promise-dot">●</span>
+              <span
+                data-en="We remember that behind every post is a real human heart."
+                data-ar="ما ننسى أبداً إنو وراء كل منشور في قلب حقيقي."
+              >
+                We remember that behind every post is a real human heart.
+              </span>
+            </li>
+          </ul>
+
+          <p
+            class="note"
+            data-en="If you ever feel this space isn’t living up to these promises, your message is welcome. Harmony should grow with you, not away from you."
+            data-ar="إذا في يوم حسّيت إن هارموني ما عم توفي بهالوعود، رسالتك مرحّب فيها. هارموني لازم تكبر معك، مش بعيد عنك."
+          >
+            If you ever feel this space isn’t living up to these promises,
+            your message is welcome. Harmony should grow with you, not away
+            from you.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    Harmony Community © 2025
+  </footer>
+</div>
+
+<!-- Supabase client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  (function () {
+    const langSelect = document.getElementById('language-select');
+    const navAuthLabel = document.getElementById('nav-auth-label');
+
+    function applyLanguage(lang) {
+      const elements = document.querySelectorAll('[data-en]');
+      elements.forEach(el => {
+        const en = el.getAttribute('data-en');
+        const ar = el.getAttribute('data-ar') || en;
+        el.innerHTML = lang === 'ar' ? ar : en;
+      });
+
+      document.documentElement.lang = lang === 'ar' ? 'ar' : 'en';
+      document.documentElement.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+    }
+
+    // Start in English
+    applyLanguage('en');
+    if (langSelect) {
+      langSelect.value = 'en';
+      langSelect.addEventListener('change', () => {
+        applyLanguage(langSelect.value);
+      });
+    }
+
+    // Supabase auth label
+    const SUPABASE_URL = 'https://tnohzvrpqiaiupwyaxcp.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    async function refreshUserLabel() {
+      const { data, error } = await supabase.auth.getUser();
+      if (error || !data.user) {
+        if (navAuthLabel) navAuthLabel.textContent = 'Not signed in';
+        return;
+      }
+
+      const user = data.user;
+      const meta = user.user_metadata || {};
+      const displayName = meta.display_name || user.email;
+      const alwaysAnon = !!meta.always_anonymous;
+
+      let label;
+      if (alwaysAnon) {
+        label = 'Signed in: Anonymous (name hidden)';
+      } else {
+        label = 'Signed in: ' + displayName;
+      }
+
+      if (navAuthLabel) navAuthLabel.textContent = label;
+    }
+
+    refreshUserLabel();
+  })();
+</script>
+</body>
+</html>
