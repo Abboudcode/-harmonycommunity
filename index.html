@@ -110,7 +110,6 @@
       padding: 0.3rem 0.6rem;
       border-radius: 999px;
       transition: background 0.2s, color 0.2s;
-      white-space: nowrap;
     }
 
     .nav-links a:hover {
@@ -128,10 +127,6 @@
       font-size: 0.9rem;
       color: #cbd5f5;
       white-space: nowrap;
-    }
-
-    .nav-ghost span {
-      opacity: 0.7;
     }
 
     .language-select {
@@ -197,8 +192,14 @@
     .hero-subtitle {
       font-size: 1.05rem;
       color: var(--text-muted);
-      margin-bottom: 0.7rem;
+      margin-bottom: 0.35rem;
       max-width: 36rem;
+    }
+
+    .hero-arabic {
+      font-size: 0.95rem;
+      color: #4b5563;
+      margin-bottom: 0.7rem;
     }
 
     .hero-tagline {
@@ -230,6 +231,10 @@
       cursor: pointer;
       box-shadow: 0 12px 30px rgba(79, 70, 229, 0.35);
       transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
     }
 
     .btn-primary:hover {
@@ -503,7 +508,7 @@
       color: var(--text-muted);
     }
 
-    /* TWO-COL / CARDS */
+    /* QUICK POST */
 
     .two-col {
       display: grid;
@@ -556,6 +561,7 @@
 
     .field input[type="text"],
     .field input[type="email"],
+    .field input[type="password"],
     .field select,
     .field textarea {
       width: 100%;
@@ -709,7 +715,7 @@
       margin-right: 0.5rem;
     }
 
-    /* ABOUT / CONTACT / FAQ / PRIVACY */
+    /* ABOUT / CONTACT / FAQ */
 
     .about-grid {
       display: grid;
@@ -833,7 +839,46 @@
       outline-offset: 2px;
     }
 
-    /* MOBILE TWEAKS */
+    /* AUTH SECTION */
+
+    .auth-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+    }
+
+    .auth-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: #ecfdf5;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+      font-size: 0.78rem;
+      margin-top: 0.4rem;
+    }
+
+    .auth-error {
+      font-size: 0.8rem;
+      color: var(--danger);
+      margin-top: 0.4rem;
+      display: none;
+    }
+
+    .auth-success {
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin-top: 0.4rem;
+      display: none;
+    }
+
+    .auth-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.4rem;
+    }
 
     @media (max-width: 640px) {
       #hero {
@@ -917,8 +962,7 @@
           <a href="#latest-stories">Stories</a>
           <a href="#quick-post">Share a Story</a>
           <a href="#about">About</a>
-          <a href="#privacy">Privacy &amp; Safety</a>
-          <a href="#signin">Sign In</a>
+          <a href="#sign-in">Sign In</a>
           <a href="#faq">FAQ</a>
           <a href="#contact">Contact</a>
         </nav>
@@ -929,9 +973,7 @@
             <option value="ar">العربية</option>
           </select>
           <div class="nav-ghost">
-            <span data-en="Demo version – not a real login yet" data-ar="نسخة تجريبية – تسجيل الدخول الحقيقي لاحقاً">
-              Demo version – not a real login yet
-            </span>
+            <span id="auth-status">Not signed in</span>
           </div>
         </div>
       </div>
@@ -963,6 +1005,15 @@
               Everyone has a story behind closed doors. Harmony is for the
               parents, teens, partners and adults who feel tired, worried or
               alone with their family problems.
+            </p>
+            <p
+              class="hero-arabic"
+              id="hero-arabic"
+              dir="rtl"
+              data-en="مساحة هادئة لتحكي وجعك العائلي بدون حكم، وتسمع من ناس مرّوا بنفس الطريق."
+              data-ar="مساحة هادئة لتحكي وجعك العائلي بدون حكم، وتسمع من ناس مرّوا بنفس الطريق."
+            >
+              مساحة هادئة لتحكي وجعك العائلي بدون حكم، وتسمع من ناس مرّوا بنفس الطريق.
             </p>
             <p
               class="hero-tagline"
@@ -1633,206 +1684,80 @@
         </div>
       </section>
 
-      <!-- PRIVACY & SAFETY -->
-      <section id="privacy">
+      <!-- SIGN IN (REAL AUTH) -->
+      <section id="sign-in">
         <div class="max-w two-col">
-          <div>
-            <h2
-              data-en="Privacy & Safety on Harmony"
-              data-ar="الخصوصية والأمان في هارموني"
-            >
-              Privacy & Safety on Harmony
-            </h2>
-            <p
-              class="lead"
-              data-en="Harmony is built for vulnerable stories. That means your safety, your privacy, and your sense of control always come before the platform."
-              data-ar="هارموني مبنية لقصص حسّاسة. هذا يعني إن أمانك، وخصوصيتك، وشعورك بالسيطرة أهم من أي شي تاني."
-            >
-              Harmony is built for vulnerable stories. That means your safety,
-              your privacy, and your sense of control always come before the
-              platform.
-            </p>
-
-            <ul class="promise-list">
-              <li>
-                <span class="promise-dot">●</span>
-                <span
-                  data-en="You can choose to post with your real name, a nickname, or as “Anonymous”."
-                  data-ar="تقدر تنشر باسمك الحقيقي، أو بلقب، أو كلياً باسم &quot;مجهول&quot;."
-                >
-                  You can choose to post with your real name, a nickname, or as
-                  “Anonymous”.
-                </span>
-              </li>
-              <li>
-                <span class="promise-dot">●</span>
-                <span
-                  data-en="Your email is for your account only – it’s never shown on your stories."
-                  data-ar="إيميلك فقط لحسابك – ما رح يظهر أبداً على القصص."
-                >
-                  Your email is for your account only – it’s never shown on your
-                  stories.
-                </span>
-              </li>
-              <li>
-                <span class="promise-dot">●</span>
-                <span
-                  data-en="You stay in control: you can delete your stories and change how your name appears."
-                  data-ar="إنت المتحكّم: فيك تحذف قصصك وتغيّر كيف يظهر اسمك بأي وقت."
-                >
-                  You stay in control: you can delete your stories and change
-                  how your name appears.
-                </span>
-              </li>
-              <li>
-                <span class="promise-dot">●</span>
-                <span
-                  data-en="We don’t allow bullying, insults, or using someone’s pain for gossip or drama."
-                  data-ar="ما نسمح بالتنمّر، أو الإهانات، أو استخدام وجع الناس للثرثرة والدراما."
-                >
-                  We don’t allow bullying, insults, or using someone’s pain for
-                  gossip or drama.
-                </span>
-              </li>
-            </ul>
-          </div>
-
           <div class="card">
-            <h3
-              data-en="Moderation & reporting"
-              data-ar="الإشراف والإبلاغ"
-            >
-              Moderation &amp; reporting
-            </h3>
-            <p
-              class="sub"
-              data-en="Harmony will include tools to keep the space kind and safe."
-              data-ar="هارموني رح تحتوي على أدوات تخلي المساحة لطيفة وآمنة."
-            >
-              Harmony will include tools to keep the space kind and safe.
-            </p>
-            <ul class="hero-card-list">
-              <li
-                data-en="• You’ll be able to report hurtful comments or unsafe behavior."
-                data-ar="• تقدر تبلغ عن التعليقات الجارحة أو السلوك غير الآمن."
-              >
-                • You’ll be able to report hurtful comments or unsafe behavior.
-              </li>
-              <li
-                data-en="• Repeated bullying or disrespect can lead to warnings or removal."
-                data-ar="• التكرار في التنمّر أو قلة الاحترام ممكن يسبب إنذارات أو حظر."
-              >
-                • Repeated bullying or disrespect can lead to warnings or removal.
-              </li>
-              <li
-                data-en="• We will always prioritize the person who is hurting over the person causing harm."
-                data-ar="• دائماً نعطي الأولوية للشخص المتألم على حساب الشخص الذي يسبب الأذى."
-              >
-                • We will always prioritize the person who is hurting over the
-                person causing harm.
-              </li>
-            </ul>
-
-            <div
-              class="reassure"
-              style="margin-top:1rem;"
-              data-en="Emergency help: Harmony is not a crisis or medical service. If you or someone in your home is in immediate danger, please contact local emergency services or a trusted doctor right away."
-              data-ar="مساعدة طارئة: هارموني ليست خدمة طوارئ أو علاج طبي. إذا كنت أنت أو أي شخص في بيتك في خطر مباشر، الرجاء الاتصال فوراً بخدمات الطوارئ في بلدك أو بطبيب موثوق."
-            >
-              Emergency help: Harmony is not a crisis or medical service. If you
-              or someone in your home is in immediate danger, please contact
-              local emergency services or a trusted doctor right away.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SIGN IN SECTION -->
-      <section id="signin">
-        <div class="max-w two-col">
-          <div>
-            <h2 data-en="Sign in (preview) & choose how your name appears" data-ar="تسجيل الدخول (تجريبي) وإختيار كيف يظهر اسمك">
-              Sign in (preview) & choose how your name appears
-            </h2>
-            <p
-              class="lead"
-              data-en="In the real Harmony app you’ll have a private account. Here you can preview how your display name and Anonymous mode will work."
-              data-ar="في تطبيق هارموني الحقيقي رح يكون عندك حساب خاص. هون تقدر تشوف مسبقاً كيف رح يشتغل اسم العرض ووضع مجهول الهوية."
-            >
-              In the real Harmony app you’ll have a private account. Here you
-              can preview how your display name and Anonymous mode will work.
-            </p>
-            <p style="font-size:0.9rem; color:var(--text-muted);"
-               data-en="Your email will stay private. You can always choose to appear as “Anonymous” when you share a story."
-               data-ar="إيميلك يبقى خاص. وتقدر دائماً تختار تظهر كـ &quot;مجهول&quot; لما تنشر قصة."
-            >
-              Your email will stay private. You can always choose to appear as
-              “Anonymous” when you share a story.
-            </p>
-          </div>
-
-          <div class="card">
-            <h3 data-en="Sign in (demo only)" data-ar="تسجيل دخول (تجريبي فقط)">Sign in (demo only)</h3>
-            <p class="sub"
-               data-en="This doesn’t create a real account yet. It just helps you see how your name or Anonymous will look inside Harmony."
-               data-ar="هذا لا ينشئ حساب حقيقي حالياً. فقط يساعدك تشوف كيف رح يظهر اسمك أو وضع &quot;مجهول&quot; داخل هارموني."
-            >
-              This doesn’t create a real account yet. It just helps you see how
-              your name or Anonymous will look inside Harmony.
+            <h3>Sign in to Harmony (early access)</h3>
+            <p class="sub">
+              Create a simple account so Harmony can remember your stories and how you prefer to appear
+              — with your real name or always as <strong>Anonymous</strong>.
             </p>
 
-            <form onsubmit="event.preventDefault(); alert('In the real app, this would sign you in. For now it’s just a visual demo 😊');">
+            <form id="auth-form" onsubmit="event.preventDefault();">
               <div class="field">
-                <label for="signin-email"
-                       data-en="Email"
-                       data-ar="الإيميل"
-                >Email</label>
-                <input id="signin-email" type="email" placeholder="you@example.com" />
+                <label for="auth-email">Email</label>
+                <input id="auth-email" type="email" placeholder="you@example.com" />
               </div>
 
               <div class="field">
-                <label for="display-name"
-                       data-en="Name or nickname"
-                       data-ar="الاسم أو اللقب"
-                >Name or nickname</label>
-                <input id="display-name" type="text" placeholder="For example: Mohamad, Baba, SuperMama…" />
-                <small
-                  data-en="This is how your name can appear on your stories if you don’t choose Anonymous."
-                  data-ar="هذا هو الاسم الذي يمكن أن يظهر على قصصك إذا لم تختَر وضع مجهول."
-                >
-                  This is how your name can appear on your stories if you don’t
-                  choose Anonymous.
-                </small>
+                <label for="auth-password">Password</label>
+                <input id="auth-password" type="password" placeholder="At least 6 characters" />
+              </div>
+
+              <div class="field">
+                <label for="auth-name">Name or nickname</label>
+                <input id="auth-name" type="text" placeholder="Example: Mohamad, Umm Fatima, StrongDad…" />
               </div>
 
               <div class="field-inline">
-                <input id="signin-anonymous" type="checkbox" />
-                <label for="signin-anonymous">
-                  <strong
-                    data-en="Always show me as Anonymous"
-                    data-ar="إعرضني دائماً كمجهول"
-                  >Always show me as Anonymous</strong><br />
-                  <small
-                    data-en="If this is on, your stories will only show “Anonymous”. Your name and email stay private."
-                    data-ar="إذا كان هذا الخيار مفعّل، قصصك تظهر فقط باسم &quot;مجهول&quot;، واسمك وإيميلك يبقون مخفيين."
-                  >
-                    If this is on, your stories will only show “Anonymous”. Your
-                    name and email stay private.
+                <input id="auth-anon" type="checkbox" />
+                <label for="auth-anon">
+                  <strong>Always show me as Anonymous</strong><br />
+                  <small>
+                    If checked, your posts and replies will show as “Anonymous”. Harmony still
+                    remembers you in the background so you can come back later.
                   </small>
                 </label>
               </div>
 
-              <p id="signin-preview" class="note">
-                Preview: you will appear as “Anonymous” on your stories.
-              </p>
+              <div class="auth-actions">
+                <button type="button" class="btn-primary" id="btn-signup">
+                  Create account
+                </button>
+                <button type="button" class="btn-secondary" id="btn-signin">
+                  I already have an account
+                </button>
+                <button type="button" class="btn-secondary" id="btn-signout" style="display:none;">
+                  Sign out
+                </button>
+              </div>
 
-              <button type="submit" class="btn-primary"
-                      data-en="Save preview (demo)"
-                      data-ar="حفظ الإعدادات (تجريبي)"
-              >
-                Save preview (demo)
-              </button>
+              <div class="auth-meta">
+                <div id="signed-in-chip" class="auth-chip" style="display:none;">
+                  You are signed in.
+                </div>
+                <div id="auth-error" class="auth-error"></div>
+                <div id="auth-success" class="auth-success"></div>
+              </div>
             </form>
+          </div>
+
+          <div class="card">
+            <h3>How your identity works here</h3>
+            <p class="sub">
+              Harmony separates your <strong>account</strong> from how your stories appear in public.
+            </p>
+            <ul class="hero-card-list">
+              <li>• Your email is kept private and used only so you can sign in again.</li>
+              <li>• Your name or nickname is saved as your friendly identity inside Harmony.</li>
+              <li>• You can choose to publish each story with your name or as “Anonymous”.</li>
+              <li>• The toggle above lets you always appear as Anonymous even when signed in.</li>
+            </ul>
+            <p class="note" style="margin-top:0.8rem;">
+              In the future, this same account will also remember your saved stories, reactions and
+              favorite categories.
+            </p>
           </div>
         </div>
       </section>
@@ -2039,38 +1964,15 @@
     ↑
   </button>
 
+  <!-- Supabase SDK -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
   <script>
     (function () {
       const langSelect = document.getElementById('language-select');
       const scrollTopBtn = document.getElementById('scroll-top');
-      const displayNameInput = document.getElementById('display-name');
-      const signinAnonCheckbox = document.getElementById('signin-anonymous');
-      const signinPreview = document.getElementById('signin-preview');
-
-      let currentLang = 'en';
-
-      function updatePreview() {
-        if (!signinPreview) return;
-        const name = (displayNameInput && displayNameInput.value.trim()) || '';
-        if (currentLang === 'ar') {
-          if (signinAnonCheckbox && signinAnonCheckbox.checked) {
-            signinPreview.textContent = 'معاينة: رح تظهر باسم "مجهول" على قصصك.';
-          } else {
-            const shownName = name || 'اسمك';
-            signinPreview.textContent = 'معاينة: رح تظهر باسم "' + shownName + '" على قصصك.';
-          }
-        } else {
-          if (signinAnonCheckbox && signinAnonCheckbox.checked) {
-            signinPreview.textContent = 'Preview: you will appear as “Anonymous” on your stories.';
-          } else {
-            const shownName = name || 'your name';
-            signinPreview.textContent = 'Preview: you will appear as “' + shownName + '” on your stories.';
-          }
-        }
-      }
 
       function applyLanguage(lang) {
-        currentLang = lang;
         const elements = document.querySelectorAll('[data-en]');
         elements.forEach(el => {
           const en = el.getAttribute('data-en');
@@ -2078,25 +1980,19 @@
           el.innerHTML = lang === 'ar' ? ar : en;
         });
 
-        // Update document language + direction
         document.documentElement.lang = lang === 'ar' ? 'ar' : 'en';
         document.documentElement.dir  = lang === 'ar' ? 'rtl' : 'ltr';
-
-        // Refresh preview text
-        updatePreview();
       }
 
       // Always start in English
       applyLanguage('en');
       langSelect.value = 'en';
 
-      // Change language only when user selects it
       langSelect.addEventListener('change', () => {
         const lang = langSelect.value;
         applyLanguage(lang);
       });
 
-      // Scroll-to-top visibility
       function handleScroll() {
         if (window.scrollY > 320) {
           scrollTopBtn.classList.add('visible');
@@ -2107,21 +2003,175 @@
 
       window.addEventListener('scroll', handleScroll);
 
-      // Scroll smoothly to top when clicked
       scrollTopBtn.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
 
-      // Sign-in preview listeners
-      if (displayNameInput) {
-        displayNameInput.addEventListener('input', updatePreview);
-      }
-      if (signinAnonCheckbox) {
-        signinAnonCheckbox.addEventListener('change', updatePreview);
+      // ---- Supabase auth logic ----
+      const SUPABASE_URL = 'https://tnohzvrpqiaiupwyaxcp.supabase.co';
+      const SUPABASE_ANON_KEY = 'sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K';
+
+      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      const authEmail    = document.getElementById('auth-email');
+      const authPassword = document.getElementById('auth-password');
+      const authName     = document.getElementById('auth-name');
+      const authAnon     = document.getElementById('auth-anon');
+
+      const btnSignup  = document.getElementById('btn-signup');
+      const btnSignin  = document.getElementById('btn-signin');
+      const btnSignout = document.getElementById('btn-signout');
+
+      const authStatus  = document.getElementById('auth-status');
+      const authError   = document.getElementById('auth-error');
+      const authSuccess = document.getElementById('auth-success');
+      const signedInChip = document.getElementById('signed-in-chip');
+
+      function showError(message) {
+        if (!authError) return;
+        authError.textContent = message;
+        authError.style.display = 'block';
+        authSuccess.style.display = 'none';
       }
 
-      // Initial preview
-      updatePreview();
+      function showSuccess(message) {
+        if (!authSuccess) return;
+        authSuccess.textContent = message;
+        authSuccess.style.display = 'block';
+        authError.style.display = 'none';
+      }
+
+      async function refreshAuthUI() {
+        const { data, error } = await supabaseClient.auth.getUser();
+        if (error) {
+          console.error(error);
+          return;
+        }
+
+        const user = data.user;
+
+        if (!user) {
+          authStatus.textContent = 'Not signed in';
+          if (signedInChip) signedInChip.style.display = 'none';
+          if (btnSignout) btnSignout.style.display = 'none';
+          return;
+        }
+
+        const meta = user.user_metadata || {};
+        const name = meta.display_name || 'Friend';
+        const alwaysAnon = !!meta.always_anonymous;
+
+        if (alwaysAnon) {
+          authStatus.textContent = 'Signed in: Anonymous (name hidden)';
+          if (signedInChip) {
+            signedInChip.textContent = 'You are signed in. Your posts will appear as “Anonymous”.';
+            signedInChip.style.display = 'inline-flex';
+          }
+        } else {
+          authStatus.textContent = 'Signed in: ' + name;
+          if (signedInChip) {
+            signedInChip.textContent = 'You are signed in as “' + name + '”. You can still choose anonymous per story.';
+            signedInChip.style.display = 'inline-flex';
+          }
+        }
+
+        if (btnSignout) btnSignout.style.display = 'inline-flex';
+      }
+
+      async function handleSignUp() {
+        if (!authEmail || !authPassword) return;
+
+        const email = authEmail.value.trim();
+        const password = authPassword.value;
+        const name = (authName.value || '').trim() || 'Friend';
+        const alwaysAnon = authAnon.checked;
+
+        if (!email || !password) {
+          showError('Please enter an email and password.');
+          return;
+        }
+
+        try {
+          const { data, error } = await supabaseClient.auth.signUp({
+            email,
+            password,
+            options: {
+              data: {
+                display_name: name,
+                always_anonymous: alwaysAnon
+              }
+            }
+          });
+
+          if (error) {
+            console.error(error);
+            showError(error.message || 'Could not create account.');
+            return;
+          }
+
+          showSuccess('Account created. You are now signed in.');
+          await refreshAuthUI();
+        } catch (err) {
+          console.error(err);
+          showError('Unexpected error creating account.');
+        }
+      }
+
+      async function handleSignIn() {
+        if (!authEmail || !authPassword) return;
+
+        const email = authEmail.value.trim();
+        const password = authPassword.value;
+
+        if (!email || !password) {
+          showError('Please enter your email and password.');
+          return;
+        }
+
+        try {
+          const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email,
+            password
+          });
+
+          if (error) {
+            console.error(error);
+            showError(error.message || 'Could not sign in.');
+            return;
+          }
+
+          showSuccess('Signed in successfully.');
+          await refreshAuthUI();
+        } catch (err) {
+          console.error(err);
+          showError('Unexpected error signing in.');
+        }
+      }
+
+      async function handleSignOut() {
+        try {
+          const { error } = await supabaseClient.auth.signOut();
+          if (error) {
+            console.error(error);
+            showError(error.message || 'Could not sign out.');
+            return;
+          }
+          showSuccess('Signed out.');
+          if (signedInChip) signedInChip.style.display = 'none';
+          if (btnSignout) btnSignout.style.display = 'none';
+          authStatus.textContent = 'Not signed in';
+        } catch (err) {
+          console.error(err);
+          showError('Unexpected error signing out.');
+        }
+      }
+
+      if (btnSignup)  btnSignup.addEventListener('click', handleSignUp);
+      if (btnSignin)  btnSignin.addEventListener('click', handleSignIn);
+      if (btnSignout) btnSignout.addEventListener('click', handleSignOut);
+
+      // Initialize UI on load
+      refreshAuthUI();
     })();
   </script>
 </body>
