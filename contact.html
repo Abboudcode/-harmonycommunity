@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact – Harmony Community</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Contact the creator of Harmony to share feedback, ideas, or support."
+  />
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --bg-card: #ffffff;
+      --primary: #4b6fff;
+      --text-main: #1f2933;
+      --text-muted: #6b7280;
+      --border-soft: #e5e7eb;
+      --radius-lg: 16px;
+      --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #eef2ff, #f9fafb 40%);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .max-w {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* HEADER / NAV */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(180deg, #050817, #0f172a);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 0;
+      gap: 1rem;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.95rem;
+      color: #e5e7eb;
+    }
+
+    .nav-links a {
+      padding: 0.3rem 0.6rem;
+      border-radius: 999px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-links a:hover {
+      background: rgba(148, 163, 184, 0.22);
+      color: #ffffff;
+    }
+
+    .nav-links a.active {
+      background: rgba(129, 140, 248, 0.35);
+      color: #ffffff;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-ghost {
+      font-size: 0.9rem;
+      color: #cbd5f5;
+      white-space: nowrap;
+    }
+
+    .language-select {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.8);
+      color: #e5e7eb;
+      font-size: 0.8rem;
+      padding: 0.25rem 0.7rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .language-select option {
+      color: #111827;
+      background: #ffffff;
+    }
+
+    @media (max-width: 720px) {
+      .nav-links {
+        display: none;
+      }
+    }
+
+    main {
+      padding: 2.8rem 0 2.2rem;
+    }
+
+    .page-title-block {
+      max-width: 720px;
+      margin: 0 auto 2rem;
+      text-align: center;
+    }
+
+    .page-title-block h1 {
+      font-size: 1.6rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .page-title-block p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.2fr);
+      gap: 1.8rem;
+    }
+
+    @media (max-width: 900px) {
+      .two-col {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 1.4rem 1.3rem;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.03);
+      transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.07);
+      transform: translateY(-2px);
+      border-color: #e5e7eb;
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .lead {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 0.9rem;
+    }
+
+    .body-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .field {
+      margin-bottom: 0.9rem;
+      font-size: 0.9rem;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+
+    .field input[type="text"],
+    .field input[type="email"],
+    .field textarea {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      padding: 0.55rem 0.7rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: border-color 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.25);
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: #fff;
+      border-radius: 999px;
+      padding: 0.6rem 1.3rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.35);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 35px rgba(79, 70, 229, 0.45);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+      opacity: 0.9;
+    }
+
+    .note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.6rem;
+    }
+
+    .success-message {
+      margin-top: 0.75rem;
+      padding: 0.6rem 0.8rem;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      background: #ecfdf5;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+    }
+
+    footer {
+      padding: 1rem 0 1.5rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: auto;
+    }
+
+    @media (max-width: 640px) {
+      main {
+        padding-top: 2.2rem;
+      }
+
+      .nav {
+        padding: 0.6rem 0;
+      }
+
+      .card {
+        padding: 1.2rem 1.05rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <!-- HEADER -->
+  <header>
+    <div class="max-w nav">
+      <div class="nav-left">
+        <div class="logo-wrapper">
+          <!-- Arc + heartbeat + Harmony text logo -->
+          <svg
+            width="180"
+            height="40"
+            viewBox="0 0 180 40"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-label="Harmony logo"
+            role="img"
+          >
+            <!-- Arc -->
+            <path
+              d="M10 22 C25 5, 55 5, 70 22"
+              fill="none"
+              stroke="#40cbb4"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+            <!-- Heartbeat / wave -->
+            <path
+              d="M12 22 L22 22 L27 15 L33 30 L38 22 L68 22"
+              fill="none"
+              stroke="#f5c451"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <!-- Text -->
+            <text
+              x="78"
+              y="27"
+              font-family="Inter, system-ui, sans-serif"
+              font-size="18"
+              font-weight="600"
+              fill="#ffffff"
+            >
+              Harmony
+            </text>
+          </svg>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="stories.html">Stories</a>
+        <a href="share.html">Share a Story</a>
+        <a href="signin.html">Sign In</a>
+        <a href="about.html">About</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html" class="active">Contact</a>
+      </nav>
+
+      <div class="nav-right">
+        <select id="language-select" class="language-select" aria-label="Choose language">
+          <option value="en">English</option>
+          <option value="ar">العربية</option>
+        </select>
+        <div class="nav-ghost" id="nav-auth-label">
+          Not signed in
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <div class="max-w page-title-block">
+      <h1
+        data-en="Talk to the creator"
+        data-ar="إحكي مع صاحب الفكرة"
+      >
+        Talk to the creator
+      </h1>
+      <p
+        data-en="Have ideas, stories, or want to support this project? I’d love to hear from you."
+        data-ar="عندك أفكار، قصص، أو حابب تدعم المشروع؟ رح أكون مبسوط أسمع منك."
+      >
+        Have ideas, stories, or want to support this project? I’d love to hear from you.
+      </p>
+    </div>
+
+    <section>
+      <div class="max-w two-col">
+        <div class="card">
+          <h3
+            data-en="Send a message"
+            data-ar="إرسل رسالة"
+          >
+            Send a message
+          </h3>
+          <p
+            class="lead"
+            data-en="Even a short note like “this idea helped me” gives me energy to keep building Harmony."
+            data-ar="حتى رسالة صغيرة مثل &quot;الفكرة ساعدتني&quot; تعطيني طاقة أكمل في بناء هارموني."
+          >
+            Even a short note like “this idea helped me” gives me energy to keep building Harmony.
+          </p>
+
+          <form id="contact-form">
+            <div class="field">
+              <label
+                for="name"
+                data-en="Name (optional)"
+                data-ar="الاسم (اختياري)"
+              >Name (optional)</label>
+              <input id="name" type="text" placeholder="You can leave this empty if you prefer" />
+            </div>
+            <div class="field">
+              <label
+                for="email"
+                data-en="Email"
+                data-ar="الإيميل"
+              >Email</label>
+              <input id="email" type="email" placeholder="So I can write you back" />
+            </div>
+            <div class="field">
+              <label
+                for="message"
+                data-en="Message"
+                data-ar="الرسالة"
+              >Message</label>
+              <textarea id="message" placeholder="Share your feedback, story, or ideas for Harmony…"></textarea>
+            </div>
+            <button
+              type="submit"
+              class="btn-primary"
+              data-en="Send message (demo)"
+              data-ar="إرسال الرسالة (تجريبي)"
+            >
+              Send message (demo)
+            </button>
+
+            <div id="contact-status"></div>
+
+            <p
+              class="note"
+              data-en="Right now this form is a demo. In the future, your message will be sent directly so we can stay in touch."
+              data-ar="حالياً هذا النموذج تجريبي. في المستقبل، رسالتك رح توصل مباشرة حتى نقدر نظل على تواصل."
+            >
+              Right now this form is a demo. In the future, your message will be sent directly so we can stay in touch.
+            </p>
+          </form>
+        </div>
+
+        <div class="card">
+          <h3
+            data-en="Other ways to reach out"
+            data-ar="طرق تواصل أخرى"
+          >
+            Other ways to reach out
+          </h3>
+          <p
+            class="body-text"
+            data-en="If you prefer, you can also write directly by email. This is especially helpful if you want to share a longer story, suggestions, or talk about collaboration."
+            data-ar="إذا بتحب، تقدر كمان تبعت مباشرة على الإيميل. هذا مفيد خصوصاً إذا حابب تشارك قصة أطول، اقتراحات، أو تحكي عن تعاون."
+          >
+            If you prefer, you can also write directly by email. This is
+            especially helpful if you want to share a longer story,
+            suggestions, or talk about collaboration.
+          </p>
+          <p
+            class="body-text"
+            data-en="Email: hello@harmony.community"
+            data-ar="الإيميل: hello@harmony.community"
+          >
+            Email: <strong>hello@harmony.community</strong>
+          </p>
+          <p
+            class="body-text"
+            data-en="Your feedback helps decide what should be built next: better privacy tools, new categories, language options, or more ways to react with kindness."
+            data-ar="رأيك يساعدنا نقرر شو نبني بعدين: أدوات خصوصية أفضل، فئات جديدة، خيارات لغة، أو طرق أكثر للتفاعل بلطف."
+          >
+            Your feedback helps decide what should be built next: better
+            privacy tools, new categories, language options, or more ways to
+            react with kindness.
+          </p>
+          <p
+            class="note"
+            data-en="Harmony is still small and growing. Every honest message you send is part of shaping this space for families around the world."
+            data-ar="هارموني لسا صغيرة وعم تكبر. كل رسالة صادقة تبعتها هي جزء من تشكيل هذا المكان لعائلات حول العالم."
+          >
+            Harmony is still small and growing. Every honest message you send
+            is part of shaping this space for families around the world.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    Harmony Community © 2025
+  </footer>
+</div>
+
+<!-- Supabase client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  (function () {
+    const langSelect = document.getElementById('language-select');
+    const navAuthLabel = document.getElementById('nav-auth-label');
+    const contactForm = document.getElementById('contact-form');
+    const contactStatus = document.getElementById('contact-status');
+
+    function applyLanguage(lang) {
+      const elements = document.querySelectorAll('[data-en]');
+      elements.forEach(el => {
+        const en = el.getAttribute('data-en');
+        const ar = el.getAttribute('data-ar') || en;
+        el.innerHTML = lang === 'ar' ? ar : en;
+      });
+
+      document.documentElement.lang = lang === 'ar' ? 'ar' : 'en';
+      document.documentElement.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+    }
+
+    // Start in English
+    applyLanguage('en');
+    if (langSelect) {
+      langSelect.value = 'en';
+      langSelect.addEventListener('change', () => {
+        applyLanguage(langSelect.value);
+      });
+    }
+
+    function setContactStatus(msg) {
+      if (!contactStatus) return;
+      if (!msg) {
+        contactStatus.innerHTML = '';
+        return;
+      }
+      contactStatus.innerHTML = '<div class="success-message">' + msg + '</div>';
+    }
+
+    if (contactForm) {
+      contactForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        setContactStatus(
+          'Thank you for reaching out. In this demo version, your message is not actually sent yet – but this is how it will feel when real messages are enabled. 💛'
+        );
+        setTimeout(() => {
+          contactForm.reset();
+        }, 1000);
+      });
+    }
+
+    // Supabase auth label
+    const SUPABASE_URL = 'https://tnohzvrpqiaiupwyaxcp.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    async function refreshUserLabel() {
+      const { data, error } = await supabase.auth.getUser();
+      if (error || !data.user) {
+        if (navAuthLabel) navAuthLabel.textContent = 'Not signed in';
+        return;
+      }
+
+      const user = data.user;
+      const meta = user.user_metadata || {};
+      const displayName = meta.display_name || user.email;
+      const alwaysAnon = !!meta.always_anonymous;
+
+      let label;
+      if (alwaysAnon) {
+        label = 'Signed in: Anonymous (name hidden)';
+      } else {
+        label = 'Signed in: ' + displayName;
+      }
+
+      if (navAuthLabel) navAuthLabel.textContent = label;
+    }
+
+    refreshUserLabel();
+  })();
+</script>
+</body>
+</html>
