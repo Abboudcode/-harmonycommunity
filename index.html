@@ -117,11 +117,6 @@
       color: #ffffff;
     }
 
-    .nav-links a.active {
-      background: rgba(129, 140, 248, 0.3);
-      color: #ffffff;
-    }
-
     .nav-right {
       display: flex;
       align-items: center;
@@ -578,6 +573,11 @@
         font-size: 0.98rem;
       }
 
+      .card,
+      .hero-card {
+        padding: 1.1rem 1rem;
+      }
+
       .nav {
         padding: 0.6rem 0;
       }
@@ -638,10 +638,10 @@
         </div>
 
         <nav class="nav-links">
-          <a href="index.html" class="active">Home</a>
+          <a href="index.html">Home</a>
           <a href="stories.html">Stories</a>
           <a href="share.html">Share a Story</a>
-          <a href="sign-in.html">Sign In</a>
+          <a href="signin.html">Sign In</a>
           <a href="about.html">About</a>
           <a href="faq.html">FAQ</a>
           <a href="contact.html">Contact</a>
@@ -1023,11 +1023,12 @@
     ↑
   </button>
 
-  <!-- Supabase client (for nav status + future features) -->
+  <!-- Supabase client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
     (function () {
+      // Language + scroll top
       const langSelect = document.getElementById('language-select');
       const scrollTopBtn = document.getElementById('scroll-top');
       const navAuthLabel = document.getElementById('nav-auth-label');
@@ -1046,14 +1047,12 @@
 
       // Always start in English
       applyLanguage('en');
-      if (langSelect) langSelect.value = 'en';
+      langSelect.value = 'en';
 
-      if (langSelect) {
-        langSelect.addEventListener('change', () => {
-          const lang = langSelect.value;
-          applyLanguage(lang);
-        });
-      }
+      langSelect.addEventListener('change', () => {
+        const lang = langSelect.value;
+        applyLanguage(lang);
+      });
 
       function handleScroll() {
         if (window.scrollY > 320) {
@@ -1069,11 +1068,18 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
 
-      // === Supabase auth (nav label only on this page) ===
+      // === Supabase auth ===
       const SUPABASE_URL = 'https://tnohzvrpqiaiupwyaxcp.supabase.co';
       const SUPABASE_ANON_KEY = 'sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K';
 
       const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      const authStatus = null; // no auth status area on home page
+      function setStatus(message) {
+        if (authStatus) {
+          authStatus.textContent = message || '';
+        }
+      }
 
       function updateNavLabel(text) {
         if (navAuthLabel) {
@@ -1099,9 +1105,11 @@
         } else {
           label = 'Signed in: ' + displayName;
         }
+
         updateNavLabel(label);
       }
 
+      // On first load, check if already signed in
       refreshUserLabel();
     })();
   </script>
