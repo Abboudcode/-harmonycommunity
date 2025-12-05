@@ -231,10 +231,6 @@
       cursor: pointer;
       box-shadow: 0 12px 30px rgba(79, 70, 229, 0.35);
       transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
     }
 
     .btn-primary:hover {
@@ -420,12 +416,6 @@
       margin-bottom: 2.2rem;
     }
 
-    @media (max-width: 900px) {
-      .stats-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-    }
-
     @media (max-width: 720px) {
       .stats-grid {
         grid-template-columns: 1fr;
@@ -508,7 +498,7 @@
       color: var(--text-muted);
     }
 
-    /* QUICK POST */
+    /* QUICK POST / TWO-COL */
 
     .two-col {
       display: grid;
@@ -839,46 +829,7 @@
       outline-offset: 2px;
     }
 
-    /* AUTH SECTION */
-
-    .auth-meta {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 0.4rem;
-    }
-
-    .auth-chip {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.2rem 0.6rem;
-      border-radius: 999px;
-      background: #ecfdf5;
-      border: 1px solid #bbf7d0;
-      color: #166534;
-      font-size: 0.78rem;
-      margin-top: 0.4rem;
-    }
-
-    .auth-error {
-      font-size: 0.8rem;
-      color: var(--danger);
-      margin-top: 0.4rem;
-      display: none;
-    }
-
-    .auth-success {
-      font-size: 0.8rem;
-      color: var(--accent);
-      margin-top: 0.4rem;
-      display: none;
-    }
-
-    .auth-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 0.4rem;
-    }
+    /* MOBILE TWEAKS */
 
     @media (max-width: 640px) {
       #hero {
@@ -961,8 +912,8 @@
           <a href="#hero">Home</a>
           <a href="#latest-stories">Stories</a>
           <a href="#quick-post">Share a Story</a>
+          <a href="#signin">Sign In</a>
           <a href="#about">About</a>
-          <a href="#sign-in">Sign In</a>
           <a href="#faq">FAQ</a>
           <a href="#contact">Contact</a>
         </nav>
@@ -972,8 +923,8 @@
             <option value="en">English</option>
             <option value="ar">العربية</option>
           </select>
-          <div class="nav-ghost">
-            <span id="auth-status">Not signed in</span>
+          <div class="nav-ghost" id="nav-auth-label">
+            Not signed in
           </div>
         </div>
       </div>
@@ -1304,7 +1255,7 @@
         </div>
       </section>
 
-      <!-- QUICK POST -->
+      <!-- QUICK POST (still demo) -->
       <section id="quick-post">
         <div class="max-w two-col">
           <div class="card">
@@ -1323,7 +1274,7 @@
               live. Take a moment and imagine your own words here.
             </p>
 
-            <form onsubmit="event.preventDefault(); alert('In the real app, this will send your story. For now, this is just a demo 😊');">
+            <form onsubmit="event.preventDefault(); alert('In the full app this will save your story. For now, it is just a visual demo 😊');">
               <div class="field">
                 <label
                   for="title"
@@ -1405,11 +1356,11 @@
                 </button>
                 <span
                   class="note"
-                  data-en="This is a demo version. Real posting, login and replies are coming in the full app."
-                  data-ar="هاي نسخة تجريبية. النشر الحقيقي، تسجيل الدخول والردود الجدية رح يكونوا بالنسخة الكاملة من التطبيق."
+                  data-en="This is still a demo. Soon, stories will be saved to Harmony using your account settings."
+                  data-ar="لساها نسخة تجريبية. قريباً جداً القصص رح تنحفظ بهارموني حسب إعدادات حسابك."
                 >
-                  This is a demo version. Real posting, login and replies are
-                  coming in the full app.
+                  This is still a demo. Soon, stories will be saved to Harmony
+                  using your account settings.
                 </span>
               </div>
             </form>
@@ -1463,7 +1414,7 @@
         </div>
       </section>
 
-      <!-- LATEST STORIES -->
+      <!-- LATEST STORIES (example content) -->
       <section id="latest-stories">
         <div class="max-w">
           <h2
@@ -1615,6 +1566,101 @@
         </div>
       </section>
 
+      <!-- SIGN IN / SIGN UP (REAL SUPABASE AUTH) -->
+      <section id="signin">
+        <div class="max-w two-col">
+          <div class="card">
+            <h3 data-en="Create your Harmony account" data-ar="أنشئ حسابك في هارموني">
+              Create your Harmony account
+            </h3>
+            <p class="sub"
+               data-en="Use this form to create a real Harmony account. We only ask for email, password and an optional name."
+               data-ar="استخدم هذا النموذج لإنشاء حساب حقيقي في هارموني. نحتاج فقط الإيميل وكلمة السر، والاسم اختياري.">
+              Use this form to create a real Harmony account. We only ask for email,
+              password and an optional name.
+            </p>
+
+            <form id="signup-form">
+              <div class="field">
+                <label for="signup-email" data-en="Email" data-ar="الإيميل">Email</label>
+                <input id="signup-email" type="email" required placeholder="you@example.com" />
+              </div>
+
+              <div class="field">
+                <label for="signup-password" data-en="Password" data-ar="كلمة السر">Password</label>
+                <input id="signup-password" type="password" required minlength="6" placeholder="At least 6 characters" />
+              </div>
+
+              <div class="field">
+                <label for="signup-name" data-en="Name or nickname (optional)" data-ar="الاسم أو لقب (اختياري)">
+                  Name or nickname (optional)
+                </label>
+                <input id="signup-name" type="text" placeholder="Mohamad, Anonymous Dad, Tired Mama…" />
+              </div>
+
+              <div class="field-inline">
+                <input id="signup-anon" type="checkbox" />
+                <label for="signup-anon">
+                  <strong data-en="Always show me as Anonymous" data-ar="دائماً إظهرني كمجهول">Always show me as Anonymous</strong><br />
+                  <small
+                    data-en="If checked, Harmony will hide your name and only show “Anonymous” when you post."
+                    data-ar="إذا فعّلت هذا الخيار، هارموني رح تخفي اسمك وتعرض فقط &quot;مجهول&quot; عند النشر."
+                  >
+                    If checked, Harmony will hide your name and only show “Anonymous”
+                    when you post.
+                  </small>
+                </label>
+              </div>
+
+              <button type="submit" class="btn-primary"
+                      data-en="Create account"
+                      data-ar="إنشاء حساب">
+                Create account
+              </button>
+            </form>
+          </div>
+
+          <div class="card">
+            <h3 data-en="Sign in to your account" data-ar="سجّل الدخول إلى حسابك">
+              Sign in to your account
+            </h3>
+            <p class="sub"
+               data-en="Already created an account before? Use the same email and password to sign in."
+               data-ar="عندك حساب من قبل؟ استخدم نفس الإيميل وكلمة السر لتسجّل الدخول.">
+              Already created an account before? Use the same email and password to sign in.
+            </p>
+
+            <form id="signin-form">
+              <div class="field">
+                <label for="signin-email" data-en="Email" data-ar="الإيميل">Email</label>
+                <input id="signin-email" type="email" required placeholder="you@example.com" />
+              </div>
+
+              <div class="field">
+                <label for="signin-password" data-en="Password" data-ar="كلمة السر">Password</label>
+                <input id="signin-password" type="password" required minlength="6" />
+              </div>
+
+              <button type="submit" class="btn-secondary"
+                      data-en="Sign in"
+                      data-ar="تسجيل الدخول">
+                Sign in
+              </button>
+            </form>
+
+            <p id="current-user-label"
+               class="note"
+               style="margin-top:1rem;"
+               data-en="Status: not signed in."
+               data-ar="الحالة: غير مسجّل الدخول.">
+              Status: not signed in.
+            </p>
+
+            <p id="auth-status" class="note" style="margin-top:0.4rem;"></p>
+          </div>
+        </div>
+      </section>
+
       <!-- ABOUT -->
       <section id="about">
         <div class="max-w about-grid">
@@ -1680,84 +1726,6 @@
                 </span>
               </li>
             </ul>
-          </div>
-        </div>
-      </section>
-
-      <!-- SIGN IN (REAL AUTH) -->
-      <section id="sign-in">
-        <div class="max-w two-col">
-          <div class="card">
-            <h3>Sign in to Harmony (early access)</h3>
-            <p class="sub">
-              Create a simple account so Harmony can remember your stories and how you prefer to appear
-              — with your real name or always as <strong>Anonymous</strong>.
-            </p>
-
-            <form id="auth-form" onsubmit="event.preventDefault();">
-              <div class="field">
-                <label for="auth-email">Email</label>
-                <input id="auth-email" type="email" placeholder="you@example.com" />
-              </div>
-
-              <div class="field">
-                <label for="auth-password">Password</label>
-                <input id="auth-password" type="password" placeholder="At least 6 characters" />
-              </div>
-
-              <div class="field">
-                <label for="auth-name">Name or nickname</label>
-                <input id="auth-name" type="text" placeholder="Example: Mohamad, Umm Fatima, StrongDad…" />
-              </div>
-
-              <div class="field-inline">
-                <input id="auth-anon" type="checkbox" />
-                <label for="auth-anon">
-                  <strong>Always show me as Anonymous</strong><br />
-                  <small>
-                    If checked, your posts and replies will show as “Anonymous”. Harmony still
-                    remembers you in the background so you can come back later.
-                  </small>
-                </label>
-              </div>
-
-              <div class="auth-actions">
-                <button type="button" class="btn-primary" id="btn-signup">
-                  Create account
-                </button>
-                <button type="button" class="btn-secondary" id="btn-signin">
-                  I already have an account
-                </button>
-                <button type="button" class="btn-secondary" id="btn-signout" style="display:none;">
-                  Sign out
-                </button>
-              </div>
-
-              <div class="auth-meta">
-                <div id="signed-in-chip" class="auth-chip" style="display:none;">
-                  You are signed in.
-                </div>
-                <div id="auth-error" class="auth-error"></div>
-                <div id="auth-success" class="auth-success"></div>
-              </div>
-            </form>
-          </div>
-
-          <div class="card">
-            <h3>How your identity works here</h3>
-            <p class="sub">
-              Harmony separates your <strong>account</strong> from how your stories appear in public.
-            </p>
-            <ul class="hero-card-list">
-              <li>• Your email is kept private and used only so you can sign in again.</li>
-              <li>• Your name or nickname is saved as your friendly identity inside Harmony.</li>
-              <li>• You can choose to publish each story with your name or as “Anonymous”.</li>
-              <li>• The toggle above lets you always appear as Anonymous even when signed in.</li>
-            </ul>
-            <p class="note" style="margin-top:0.8rem;">
-              In the future, this same account will also remember your saved stories, reactions and
-              favorite categories.
-            </p>
           </div>
         </div>
       </section>
@@ -1964,13 +1932,15 @@
     ↑
   </button>
 
-  <!-- Supabase SDK -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <!-- Supabase client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
     (function () {
+      // Language + scroll top
       const langSelect = document.getElementById('language-select');
       const scrollTopBtn = document.getElementById('scroll-top');
+      const navAuthLabel = document.getElementById('nav-auth-label');
 
       function applyLanguage(lang) {
         const elements = document.querySelectorAll('[data-en]');
@@ -2007,92 +1977,68 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
 
-      // ---- Supabase auth logic ----
+      // === Supabase auth ===
       const SUPABASE_URL = 'https://tnohzvrpqiaiupwyaxcp.supabase.co';
       const SUPABASE_ANON_KEY = 'sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K';
 
-      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-      const authEmail    = document.getElementById('auth-email');
-      const authPassword = document.getElementById('auth-password');
-      const authName     = document.getElementById('auth-name');
-      const authAnon     = document.getElementById('auth-anon');
+      const signupForm = document.getElementById('signup-form');
+      const signinForm = document.getElementById('signin-form');
+      const authStatus = document.getElementById('auth-status');
+      const currentUserLabel = document.getElementById('current-user-label');
 
-      const btnSignup  = document.getElementById('btn-signup');
-      const btnSignin  = document.getElementById('btn-signin');
-      const btnSignout = document.getElementById('btn-signout');
-
-      const authStatus  = document.getElementById('auth-status');
-      const authError   = document.getElementById('auth-error');
-      const authSuccess = document.getElementById('auth-success');
-      const signedInChip = document.getElementById('signed-in-chip');
-
-      function showError(message) {
-        if (!authError) return;
-        authError.textContent = message;
-        authError.style.display = 'block';
-        authSuccess.style.display = 'none';
+      function setStatus(message) {
+        if (authStatus) {
+          authStatus.textContent = message || '';
+        }
       }
 
-      function showSuccess(message) {
-        if (!authSuccess) return;
-        authSuccess.textContent = message;
-        authSuccess.style.display = 'block';
-        authError.style.display = 'none';
+      function updateNavLabel(text) {
+        if (navAuthLabel) {
+          navAuthLabel.textContent = text;
+        }
       }
 
-      async function refreshAuthUI() {
-        const { data, error } = await supabaseClient.auth.getUser();
-        if (error) {
-          console.error(error);
+      async function refreshUserLabel() {
+        const { data, error } = await supabase.auth.getUser();
+        if (error || !data.user) {
+          if (currentUserLabel) {
+            currentUserLabel.textContent = 'Status: not signed in.';
+          }
+          updateNavLabel('Not signed in');
           return;
         }
 
         const user = data.user;
-
-        if (!user) {
-          authStatus.textContent = 'Not signed in';
-          if (signedInChip) signedInChip.style.display = 'none';
-          if (btnSignout) btnSignout.style.display = 'none';
-          return;
-        }
-
         const meta = user.user_metadata || {};
-        const name = meta.display_name || 'Friend';
+        const displayName = meta.display_name || user.email;
         const alwaysAnon = !!meta.always_anonymous;
 
+        let label;
         if (alwaysAnon) {
-          authStatus.textContent = 'Signed in: Anonymous (name hidden)';
-          if (signedInChip) {
-            signedInChip.textContent = 'You are signed in. Your posts will appear as “Anonymous”.';
-            signedInChip.style.display = 'inline-flex';
-          }
+          label = 'Signed in: Anonymous (name hidden)';
         } else {
-          authStatus.textContent = 'Signed in: ' + name;
-          if (signedInChip) {
-            signedInChip.textContent = 'You are signed in as “' + name + '”. You can still choose anonymous per story.';
-            signedInChip.style.display = 'inline-flex';
-          }
+          label = 'Signed in: ' + displayName;
         }
 
-        if (btnSignout) btnSignout.style.display = 'inline-flex';
+        if (currentUserLabel) {
+          currentUserLabel.textContent = label;
+        }
+        updateNavLabel(label);
       }
 
-      async function handleSignUp() {
-        if (!authEmail || !authPassword) return;
+      if (signupForm) {
+        signupForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          setStatus('Creating your account…');
 
-        const email = authEmail.value.trim();
-        const password = authPassword.value;
-        const name = (authName.value || '').trim() || 'Friend';
-        const alwaysAnon = authAnon.checked;
+          const email = document.getElementById('signup-email').value.trim();
+          const password = document.getElementById('signup-password').value;
+          const name = document.getElementById('signup-name').value.trim();
+          const alwaysAnon = document.getElementById('signup-anon').checked;
 
-        if (!email || !password) {
-          showError('Please enter an email and password.');
-          return;
-        }
-
-        try {
-          const { data, error } = await supabaseClient.auth.signUp({
+          const { error } = await supabase.auth.signUp({
             email,
             password,
             options: {
@@ -2104,74 +2050,40 @@
           });
 
           if (error) {
-            console.error(error);
-            showError(error.message || 'Could not create account.');
-            return;
+            setStatus('Error: ' + error.message);
+          } else {
+            setStatus('Account created! If email confirmation is enabled, please check your inbox. Then sign in below.');
+            signupForm.reset();
+            refreshUserLabel();
           }
-
-          showSuccess('Account created. You are now signed in.');
-          await refreshAuthUI();
-        } catch (err) {
-          console.error(err);
-          showError('Unexpected error creating account.');
-        }
+        });
       }
 
-      async function handleSignIn() {
-        if (!authEmail || !authPassword) return;
+      if (signinForm) {
+        signinForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          setStatus('Signing you in…');
 
-        const email = authEmail.value.trim();
-        const password = authPassword.value;
+          const email = document.getElementById('signin-email').value.trim();
+          const password = document.getElementById('signin-password').value;
 
-        if (!email || !password) {
-          showError('Please enter your email and password.');
-          return;
-        }
-
-        try {
-          const { data, error } = await supabaseClient.auth.signInWithPassword({
+          const { data, error } = await supabase.auth.signInWithPassword({
             email,
             password
           });
 
           if (error) {
-            console.error(error);
-            showError(error.message || 'Could not sign in.');
-            return;
+            setStatus('Error: ' + error.message);
+          } else {
+            setStatus('Signed in successfully.');
+            signinForm.reset();
+            refreshUserLabel();
           }
-
-          showSuccess('Signed in successfully.');
-          await refreshAuthUI();
-        } catch (err) {
-          console.error(err);
-          showError('Unexpected error signing in.');
-        }
+        });
       }
 
-      async function handleSignOut() {
-        try {
-          const { error } = await supabaseClient.auth.signOut();
-          if (error) {
-            console.error(error);
-            showError(error.message || 'Could not sign out.');
-            return;
-          }
-          showSuccess('Signed out.');
-          if (signedInChip) signedInChip.style.display = 'none';
-          if (btnSignout) btnSignout.style.display = 'none';
-          authStatus.textContent = 'Not signed in';
-        } catch (err) {
-          console.error(err);
-          showError('Unexpected error signing out.');
-        }
-      }
-
-      if (btnSignup)  btnSignup.addEventListener('click', handleSignUp);
-      if (btnSignin)  btnSignin.addEventListener('click', handleSignIn);
-      if (btnSignout) btnSignout.addEventListener('click', handleSignOut);
-
-      // Initialize UI on load
-      refreshAuthUI();
+      // On first load, check if already signed in
+      refreshUserLabel();
     })();
   </script>
 </body>
