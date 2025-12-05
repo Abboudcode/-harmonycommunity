@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
@@ -153,6 +153,20 @@
       .nav-links {
         display: none;
       }
+    }
+
+    /* PREVIEW BANNER */
+
+    .preview-banner {
+      border-top: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 0.35rem 0 0.6rem;
+      font-size: 0.75rem;
+      color: #cbd5f5;
+      text-align: center;
+    }
+
+    .preview-banner span {
+      opacity: 0.9;
     }
 
     /* HERO */
@@ -644,6 +658,22 @@
       font-weight: 400;
     }
 
+    .chip-filter {
+      cursor: pointer;
+      border-color: #4f46e5;
+      user-select: none;
+    }
+
+    .chip-active {
+      background: #4f46e5;
+      color: #ffffff;
+      border-color: #4f46e5;
+    }
+
+    .chip-active span {
+      color: #e5e7eb;
+    }
+
     .stories-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -778,6 +808,29 @@
       color: var(--text-muted);
     }
 
+    /* EARLY ACCESS */
+
+    .early-access-inner {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .early-access-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .early-access-form input[type="email"] {
+      flex: 1 1 240px;
+    }
+
+    .early-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
     /* BOTTOM CTA & FOOTER */
 
     .bottom-cta {
@@ -866,6 +919,11 @@
         right: 1rem;
         bottom: 1.25rem;
       }
+
+      .early-access-form {
+        flex-direction: column;
+        align-items: stretch;
+      }
     }
   </style>
 </head>
@@ -922,6 +980,8 @@
           <a href="#latest-stories">Stories</a>
           <a href="#quick-post">Share a Story</a>
           <a href="#about">About</a>
+          <a href="#safety">Privacy &amp; Safety</a>
+          <a href="#early-access">Early Access</a>
           <a href="#faq">FAQ</a>
           <a href="#contact">Contact</a>
         </nav>
@@ -936,6 +996,16 @@
             <span>&nbsp;</span>
             <span data-en="(coming soon)" data-ar="(قريباً)"> (coming soon)</span>
           </div>
+        </div>
+      </div>
+      <div class="preview-banner">
+        <div class="max-w">
+          <span
+            data-en="Early preview – The real Harmony app is still being built step by step."
+            data-ar="نسخة تجريبية مبكرة – تطبيق هارموني الحقيقي ما زال قيد التطوير خطوة خطوة."
+          >
+            Early preview – The real Harmony app is still being built step by step.
+          </span>
         </div>
       </div>
     </header>
@@ -1444,15 +1514,28 @@
           </p>
 
           <div class="chip-row">
-            <div class="chip">Kids <span>Parenting, school, behavior</span></div>
-            <div class="chip">Teens <span>Pressure, identity, emotions</span></div>
-            <div class="chip">Adult <span>Life, stress, work, purpose</span></div>
-            <div class="chip">Marriage <span>Love, conflict, healing</span></div>
-            <div class="chip">Finance <span>Money stress, stability</span></div>
+            <button class="chip chip-filter chip-active" type="button" data-filter="all">
+              All <span>Show everything</span>
+            </button>
+            <button class="chip chip-filter" type="button" data-filter="Kids">
+              Kids <span>Parenting, school, behavior</span>
+            </button>
+            <button class="chip chip-filter" type="button" data-filter="Teens">
+              Teens <span>Pressure, identity, emotions</span>
+            </button>
+            <button class="chip chip-filter" type="button" data-filter="Adult">
+              Adult <span>Life, stress, work, purpose</span>
+            </button>
+            <button class="chip chip-filter" type="button" data-filter="Marriage">
+              Marriage <span>Love, conflict, healing</span>
+            </button>
+            <button class="chip chip-filter" type="button" data-filter="Finance">
+              Finance <span>Money stress, stability</span>
+            </button>
           </div>
 
           <div class="stories-grid">
-            <article class="story-card">
+            <article class="story-card" data-category="Teens">
               <div>
                 <div class="story-category">Teens</div>
                 <div
@@ -1492,7 +1575,7 @@
               </div>
             </article>
 
-            <article class="story-card">
+            <article class="story-card" data-category="Finance">
               <div>
                 <div class="story-category">Finance</div>
                 <div
@@ -1532,7 +1615,7 @@
               </div>
             </article>
 
-            <article class="story-card">
+            <article class="story-card" data-category="Adult">
               <div>
                 <div class="story-category">Adult</div>
                 <div
@@ -1641,6 +1724,154 @@
                 </span>
               </li>
             </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRIVACY & SAFETY -->
+      <section id="safety">
+        <div class="max-w">
+          <h2
+            data-en="Your privacy & safety"
+            data-ar="خصوصيتك وأمانك"
+          >
+            Your privacy &amp; safety
+          </h2>
+          <p
+            class="lead"
+            data-en="Harmony is being built with privacy first. You choose what to share, how to show your name, and how visible your story will be."
+            data-ar="هارموني عم تنبنى مع خصوصيتك أولاً. إنت بتقرر شو تشارك، وكيف يظهر اسمك، وقدّيش تكون قصتك ظاهرة للناس."
+          >
+            Harmony is being built with privacy first. You choose what to share,
+            how to show your name, and how visible your story will be.
+          </p>
+
+          <div class="comfort-grid">
+            <div class="comfort-card">
+              <div
+                class="comfort-title"
+                data-en="You stay in control"
+                data-ar="إنت صاحب القرار"
+              >
+                You stay in control
+              </div>
+              <p
+                class="comfort-text"
+                data-en="In the full app, you’ll decide if you want to show your real name, a nickname, or “Anonymous” — and you can change that anytime."
+                data-ar="بالنسخة الكاملة من التطبيق، إنت اللي بتقرر إذا بدك يظهر اسمك الحقيقي، لقب، أو &quot;مجهول&quot; – وتقدر تغيّر رأيك بأي وقت."
+              >
+                In the full app, you’ll decide if you want to show your real
+                name, a nickname, or “Anonymous” — and you can change that
+                anytime.
+              </p>
+            </div>
+
+            <div class="comfort-card">
+              <div
+                class="comfort-title"
+                data-en="Your data is not for gossip"
+                data-ar="بياناتك مش للحكي"
+              >
+                Your data is not for gossip
+              </div>
+              <p
+                class="comfort-text"
+                data-en="Harmony is not built to expose you or entertain others. The goal is support, not drama, not screenshots and not gossip."
+                data-ar="هارموني مش معمولة حتى تفضحك أو تسلّي الناس. الهدف دعم حقيقي، مش دراما، ولا سكرينشوتات، ولا حكي بين العالم."
+              >
+                Harmony is not built to expose you or entertain others. The goal
+                is support, not drama, not screenshots and not gossip.
+              </p>
+            </div>
+
+            <div class="comfort-card">
+              <div
+                class="comfort-title"
+                data-en="Anonymous option always there"
+                data-ar="خيار المجهول دايماً موجود"
+              >
+                Anonymous option always there
+              </div>
+              <p
+                class="comfort-text"
+                data-en="If all you can share for now is a hidden version of your story, that’s okay. Anonymous posts are still respected and welcomed."
+                data-ar="إذا كل اللي تقدر تشاركه حالياً هو نسخة مخفية من قصتك، هذا عادي. المنشورات المجهولة محترمة ومُرحّب فيها."
+              >
+                If all you can share for now is a hidden version of your story,
+                that’s okay. Anonymous posts are still respected and welcomed.
+              </p>
+            </div>
+
+            <div class="comfort-card">
+              <div
+                class="comfort-title"
+                data-en="Clear rules against harm"
+                data-ar="قوانين واضحة ضد الأذى"
+              >
+                Clear rules against harm
+              </div>
+              <p
+                class="comfort-text"
+                data-en="The community will have guidelines to reduce bullying, shaming and disrespect. If you show up, you should feel emotionally safe."
+                data-ar="المجتمع رح يكون له قوانين تقلّل التنمّر، واللوم، وقلة الاحترام. لما تدخل، المفروض تحس بأمان نفسي قدر الإمكان."
+              >
+                The community will have guidelines to reduce bullying, shaming
+                and disrespect. If you show up, you should feel emotionally
+                safe.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EARLY ACCESS -->
+      <section id="early-access">
+        <div class="max-w">
+          <div class="card early-access-inner">
+            <h2
+              data-en="Join the early access list"
+              data-ar="إنضم لقائمة الوصول المبكر"
+            >
+              Join the early access list
+            </h2>
+            <p
+              class="lead"
+              data-en="If you want to be one of the first people to try the real Harmony app, leave your email below. I’ll only write when there is something useful – no spam."
+              data-ar="إذا حابب تكون من أوّل الناس اللي يجربوا تطبيق هارموني الحقيقي، اترك إيميلك هون. رح أرسل بس لما يكون في شي مفيد – بدون إزعاج."
+            >
+              If you want to be one of the first people to try the real Harmony
+              app, leave your email below. I’ll only write when there is
+              something useful – no spam.
+            </p>
+
+            <form
+              id="early-access-form"
+              class="early-access-form"
+              onsubmit="event.preventDefault(); alert('In the real app, this will save your email for early access. For now, this is just a demo 😊');"
+            >
+              <input
+                id="early-email"
+                type="email"
+                placeholder="you@example.com"
+                required
+              />
+              <button
+                type="submit"
+                class="btn-primary"
+                data-en="Add me to the list (demo)"
+                data-ar="أضفني للقائمة (تجريبي)"
+              >
+                Add me to the list (demo)
+              </button>
+            </form>
+            <p
+              class="early-note"
+              data-en="Your email will only be used for Harmony updates. You can ask to be removed at any time."
+              data-ar="إيميلك رح يُستخدم فقط لتحديثات هارموني. تقدر تطلب حذفه بأي وقت."
+            >
+              Your email will only be used for Harmony updates. You can ask to
+              be removed at any time.
+            </p>
           </div>
         </div>
       </section>
@@ -1867,13 +2098,15 @@
 
       // Always start in English
       applyLanguage('en');
-      langSelect.value = 'en';
+      if (langSelect) {
+        langSelect.value = 'en';
 
-      // Change language only when user selects it
-      langSelect.addEventListener('change', () => {
-        const lang = langSelect.value;
-        applyLanguage(lang);
-      });
+        // Change language only when user selects it
+        langSelect.addEventListener('change', () => {
+          const lang = langSelect.value;
+          applyLanguage(lang);
+        });
+      }
 
       // Scroll-to-top visibility
       function handleScroll() {
@@ -1889,6 +2122,30 @@
       // Scroll smoothly to top when clicked
       scrollTopBtn.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // Story filters
+      const filterChips = document.querySelectorAll('.chip-filter');
+      const storyCards = document.querySelectorAll('.story-card');
+
+      function applyFilter(filter) {
+        storyCards.forEach(card => {
+          const cat = card.getAttribute('data-category');
+          if (filter === 'all' || cat === filter) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }
+
+      filterChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          const filter = chip.getAttribute('data-filter');
+          filterChips.forEach(c => c.classList.remove('chip-active'));
+          chip.classList.add('chip-active');
+          applyFilter(filter);
+        });
       });
     })();
   </script>
