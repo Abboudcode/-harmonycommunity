@@ -23,11 +23,14 @@
       --bg-card: #ffffff;
       --primary: #4b6fff;
       --primary-soft: #e2e7ff;
-      --text-main: #111827;
+      --text-main: #1f2933;
       --text-muted: #6b7280;
-      --border-soft: rgba(148, 163, 184, 0.4);
-      --radius-lg: 1.25rem;
-      --radius-pill: 999px;
+      --border-soft: #e5e7eb;
+      --accent: #10b981;
+      --danger: #ef4444;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
     }
 
     * {
@@ -37,36 +40,37 @@
     }
 
     body {
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top left, #0f172a 0, #020617 40%, #020617 100%);
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #eef2ff, #f9fafb 40%);
       color: var(--text-main);
-      -webkit-font-smoothing: antialiased;
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
     a {
-      text-decoration: none;
       color: inherit;
+      text-decoration: none;
     }
 
-    .page-shell {
+    .page {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      color: #0f172a;
     }
 
-    main {
-      flex: 1;
+    .max-w {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
     }
 
-    /* HEADER / NAV */
+    /* HEADER / NAV – DARK */
 
     header {
       position: sticky;
       top: 0;
       z-index: 50;
-      backdrop-filter: blur(18px);
+      backdrop-filter: blur(16px);
       background: linear-gradient(180deg, #050817, #0f172a);
       border-bottom: 1px solid rgba(148, 163, 184, 0.35);
     }
@@ -79,63 +83,15 @@
       gap: 1rem;
     }
 
-    .nav-inner {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 0 1.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
     .nav-left {
       display: flex;
       align-items: center;
-      gap: 0.55rem;
+      gap: 0.5rem;
     }
 
     .logo-wrapper {
       display: flex;
       align-items: center;
-      gap: 0.45rem;
-    }
-
-    .logo-circle {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, #facc15, #f97316 45%, #dc2626 75%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow:
-        0 0 0 2px rgba(15, 23, 42, 0.7),
-        0 10px 25px rgba(15, 23, 42, 0.6);
-    }
-
-    .logo-heart {
-      width: 18px;
-      height: 18px;
-      fill: #fefce8;
-    }
-
-    .logo-text {
-      display: flex;
-      flex-direction: column;
-      gap: 0.05rem;
-    }
-
-    .logo-title {
-      font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      color: #e5e7eb;
-    }
-
-    .logo-subtitle {
-      font-size: 0.72rem;
-      color: #9ca3af;
     }
 
     .nav-links {
@@ -170,446 +126,339 @@
 
     .nav-ghost {
       font-size: 0.9rem;
-      color: #e5e7eb;
-      opacity: 0.9;
+      color: #cbd5f5;
+      white-space: nowrap;
     }
 
-    .nav-ghost span {
-      font-weight: 500;
-      color: #facc15;
-    }
-
-    .lang-select {
-      padding: 0.25rem 0.75rem;
+    .language-select {
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.65);
-      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.8);
       color: #e5e7eb;
       font-size: 0.8rem;
+      padding: 0.25rem 0.7rem;
       outline: none;
       cursor: pointer;
     }
 
-    .btn-nav {
+    .language-select option {
+      color: #111827;
+      background: #ffffff;
+    }
+
+    @media (max-width: 720px) {
+      .nav-links {
+        display: none;
+      }
+    }
+
+    /* BUTTONS */
+
+    .btn-primary {
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: #fff;
       border-radius: 999px;
+      padding: 0.6rem 1.3rem;
+      font-size: 0.95rem;
+      font-weight: 600;
       border: none;
-      background: linear-gradient(135deg, #4f46e5, #8b5cf6);
-      color: white;
-      padding: 0.4rem 0.9rem;
-      font-size: 0.82rem;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      box-shadow:
-        0 0 0 1px rgba(129, 140, 248, 0.4),
-        0 10px 20px rgba(30, 64, 175, 0.6);
       cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.35);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
     }
 
-    .btn-nav:hover {
+    .btn-primary:hover {
       transform: translateY(-1px);
-      box-shadow:
-        0 14px 30px rgba(30, 64, 175, 0.8);
+      box-shadow: 0 16px 35px rgba(79, 70, 229, 0.45);
     }
 
-    .btn-nav svg {
-      width: 14px;
-      height: 14px;
-    }
-
-    /* HERO / LAYOUT */
-
-    .hero {
-      max-width: 1120px;
-      margin: 1.8rem auto 2.4rem;
-      padding: 0 1.25rem;
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-      gap: 1.8rem;
-      align-items: flex-start;
-    }
-
-    .hero-main-card,
-    .hero-side-card {
-      background: var(--bg-card);
-      border-radius: 1.5rem;
-      padding: 1.8rem 1.6rem;
-      box-shadow:
-        0 18px 45px rgba(15, 23, 42, 0.15),
-        0 0 0 1px rgba(148, 163, 184, 0.2);
-    }
-
-    .hero-main-card {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-main-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at top left, rgba(59, 130, 246, 0.12), transparent 55%),
-        radial-gradient(circle at bottom right, rgba(244, 114, 182, 0.16), transparent 55%);
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
       opacity: 0.9;
-      pointer-events: none;
     }
 
-    .hero-main-card-inner {
-      position: relative;
-      z-index: 1;
+    /* LAYOUT */
+
+    main {
+      padding: 2.8rem 0 2.2rem;
     }
 
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.8rem;
-      color: #4b5563;
-      padding: 0.16rem 0.55rem;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      background: linear-gradient(120deg, rgba(248, 250, 252, 0.9), rgba(239, 246, 255, 0.95));
-      margin-bottom: 0.9rem;
+    .page-title-block {
+      max-width: 720px;
+      margin: 0 auto 1.8rem;
+      text-align: center;
     }
 
-    .eyebrow-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 16px;
-      height: 16px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, #facc15, #f97316 60%, #dc2626 100%);
-      color: #111827;
-      font-size: 0.68rem;
-      font-weight: 700;
+    .page-title-block h1 {
+      font-size: 1.6rem;
+      margin-bottom: 0.4rem;
     }
 
-    .eyebrow-dot {
-      width: 4px;
-      height: 4px;
-      border-radius: 999px;
-      background: #22c55e;
-    }
-
-    .hero h1 {
-      font-size: 1.7rem;
-      line-height: 1.25;
-      margin-bottom: 0.55rem;
-      color: #111827;
-      letter-spacing: -0.01em;
-    }
-
-    .hero-sub {
+    .page-title-block p {
       font-size: 0.95rem;
       color: var(--text-muted);
-      margin-bottom: 1.05rem;
     }
 
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1.25rem;
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.5fr);
+      gap: 1.8rem;
     }
 
-    .badge {
-      font-size: 0.78rem;
-      padding: 0.25rem 0.7rem;
-      border-radius: 999px;
-      background: rgba(129, 140, 248, 0.07);
-      color: #4338ca;
-      border: 1px solid rgba(129, 140, 248, 0.4);
+    @media (max-width: 900px) {
+      .two-col {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
 
-    .pill-soft {
-      background: rgba(34, 197, 94, 0.08);
-      color: #15803d;
-      border-color: rgba(34, 197, 94, 0.5);
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 1.4rem 1.3rem;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.03);
+      transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
     }
 
-    .hero-main-card form {
-      margin-top: 0.4rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.9rem;
+    .card:hover {
+      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.07);
+      transform: translateY(-2px);
+      border-color: #e5e7eb;
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .card p.sub {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
     }
 
     .field {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
+      margin-bottom: 0.9rem;
+      font-size: 0.9rem;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+
+    .field input[type="text"],
+    .field select,
+    .field textarea {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      padding: 0.55rem 0.7rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: border-color 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.25);
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 140px;
+    }
+
+    .field input[type="file"] {
+      font-size: 0.85rem;
+    }
+
+    .field small {
+      font-size: 0.78rem;
+      color: var(--text-muted);
     }
 
     .field-inline {
       display: flex;
       align-items: flex-start;
-      gap: 0.5rem;
-      margin-top: 0.2rem;
-    }
-
-    label {
-      font-size: 0.86rem;
-      font-weight: 500;
-      color: #374151;
-    }
-
-    input[type="text"],
-    textarea,
-    select,
-    input[type="file"] {
-      border-radius: 0.9rem;
-      border: 1px solid var(--border-soft);
-      padding: 0.6rem 0.75rem;
-      font-size: 0.9rem;
-      outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-      font-family: inherit;
-      background: rgba(249, 250, 251, 0.95);
-    }
-
-    input[type="text"]:focus,
-    textarea:focus,
-    select:focus,
-    input[type="file"]:focus {
-      border-color: #4f46e5;
-      box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.4);
-      background: #ffffff;
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 130px;
-      max-height: 260px;
-    }
-
-    select {
-      cursor: pointer;
-    }
-
-    input[type="checkbox"] {
-      margin-top: 0.2rem;
-    }
-
-    small {
-      font-size: 0.78rem;
+      gap: 0.45rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
+      margin-bottom: 0.8rem;
     }
 
-    .btn-primary {
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(135deg, #4f46e5, #8b5cf6);
-      color: white;
-      padding: 0.7rem 1.4rem;
-      font-size: 0.9rem;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      cursor: pointer;
-      box-shadow:
-        0 0 0 1px rgba(129, 140, 248, 0.5),
-        0 16px 35px rgba(79, 70, 229, 0.45);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-      margin-top: 0.4rem;
+    .field-inline input[type="checkbox"] {
+      margin-top: 0.1rem;
     }
 
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow:
-        0 20px 45px rgba(79, 70, 229, 0.6);
-    }
-
-    .btn-primary span {
-      font-size: 1rem;
-    }
-
-    .status-box {
-      margin-top: 0.6rem;
-      min-height: 1.1rem;
-      font-size: 0.86rem;
-    }
-
-    .success-message {
-      padding: 0.5rem 0.75rem;
-      border-radius: 0.75rem;
-      background: #ecfdf5;
-      color: #166534;
-      border: 1px solid #bbf7d0;
-    }
-
-    .error-message {
-      padding: 0.5rem 0.75rem;
-      border-radius: 0.75rem;
-      background: #fef2f2;
-      color: #b91c1c;
-      border: 1px solid #fecaca;
-    }
-
-    .side-title {
-      font-size: 1.05rem;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      color: #111827;
-    }
-
-    .side-sub {
-      font-size: 0.9rem;
+    .note {
+      font-size: 0.8rem;
       color: var(--text-muted);
-      margin-bottom: 0.9rem;
+      margin-top: 0.5rem;
     }
 
     .pill-row {
       display: flex;
       flex-wrap: wrap;
       gap: 0.4rem;
-      margin-bottom: 0.9rem;
+      margin-top: 0.6rem;
+      font-size: 0.8rem;
     }
 
     .pill {
-      font-size: 0.78rem;
-      padding: 0.22rem 0.7rem;
+      padding: 0.2rem 0.6rem;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      background: #f9fafb;
-      color: #374151;
+      background: #eef2ff;
+      color: #4f46e5;
+      border: 1px solid #c7d2fe;
     }
 
     .example-block {
-      background: #f9fafb;
-      border-radius: 1rem;
-      padding: 0.9rem 0.85rem;
-      border: 1px dashed rgba(148, 163, 184, 0.8);
-      margin-bottom: 0.9rem;
-      font-size: 0.85rem;
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      line-height: 1.7;
     }
 
     .example-label {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
-      margin-bottom: 0.35rem;
-      color: #4b5563;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #9ca3af;
+      margin-bottom: 0.25rem;
     }
 
-    .divider {
-      height: 1px;
-      background: rgba(209, 213, 219, 0.9);
-      margin: 0.9rem 0;
+    .success-message,
+    .error-message {
+      margin-top: 0.75rem;
+      padding: 0.6rem 0.8rem;
+      border-radius: 10px;
+      font-size: 0.82rem;
+    }
+
+    .success-message {
+      background: #ecfdf5;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+    }
+
+    .error-message {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #b91c1c;
     }
 
     footer {
-      border-top: 1px solid rgba(148, 163, 184, 0.35);
-      background: #020617;
-      color: #6b7280;
-      padding: 0.9rem 1.25rem;
+      padding: 1rem 0 1.5rem;
       font-size: 0.8rem;
+      color: var(--text-muted);
       text-align: center;
-    }
-
-    footer span {
-      color: #e5e7eb;
-    }
-
-    /* Responsive */
-
-    @media (max-width: 880px) {
-      .hero {
-        grid-template-columns: minmax(0, 1fr);
-        margin-top: 1.2rem;
-      }
-
-      .hero-main-card,
-      .hero-side-card {
-        padding: 1.5rem 1.25rem;
-      }
-
-      .nav-inner {
-        padding-inline: 1rem;
-      }
+      margin-top: auto;
     }
 
     @media (max-width: 640px) {
+      main {
+        padding-top: 2.2rem;
+      }
+
       .nav {
-        padding: 0.7rem 0;
+        padding: 0.6rem 0;
       }
 
-      .logo-subtitle {
-        display: none;
-      }
-
-      .badge-row {
-        gap: 0.35rem;
+      .card {
+        padding: 1.2rem 1.05rem;
       }
     }
   </style>
 </head>
 <body>
-<div class="page-shell">
+<div class="page">
   <!-- HEADER -->
   <header>
-    <div class="nav">
-      <div class="nav-inner">
-        <div class="nav-left">
-          <a href="index.html" class="logo-wrapper">
-            <div class="logo-circle" aria-hidden="true">
-              <svg class="logo-heart" viewBox="0 0 24 24">
-                <path d="M12 21s-5.3-3.2-8.1-6C2.4 13.5 2 12.4 2 11.2 2 8.9 3.9 7 6.2 7c1.3 0 2.5.6 3.3 1.7C10.3 7.6 11.5 7 12.8 7 15.1 7 17 8.9 17 11.2c0 1.2-.4 2.3-1.9 3.8-2.8 2.8-8.1 6-8.1 6z"></path>
-              </svg>
-            </div>
-            <div class="logo-text">
-              <div class="logo-title">Harmony</div>
-              <div class="logo-subtitle" data-en="Family stories, without shame" data-ar="قصص عائلية… بدون خجل">
-                Family stories, without shame
-              </div>
-            </div>
-          </a>
-
-          <nav class="nav-links">
-            <a href="index.html"
-               data-en="Home"
-               data-ar="الرئيسية">Home</a>
-            <a href="stories.html"
-               data-en="Stories"
-               data-ar="القصص">Stories</a>
-            <a href="share.html" class="active"
-               data-en="Share a Story"
-               data-ar="شارك قصة">Share a Story</a>
-            <a href="signin.html"
-               data-en="Sign In"
-               data-ar="تسجيل الدخول">Sign In</a>
-            <a href="about.html"
-               data-en="About"
-               data-ar="عن هارموني">About</a>
-          </nav>
+    <div class="max-w nav">
+      <div class="nav-left">
+        <div class="logo-wrapper">
+          <!-- Arc + heartbeat + Harmony text logo -->
+          <svg
+            width="180"
+            height="40"
+            viewBox="0 0 180 40"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-label="Harmony logo"
+            role="img"
+          >
+            <!-- Arc -->
+            <path
+              d="M10 22 C25 5, 55 5, 70 22"
+              fill="none"
+              stroke="#40cbb4"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+            <!-- Heartbeat / wave -->
+            <path
+              d="M12 22 L22 22 L27 15 L33 30 L38 22 L68 22"
+              fill="none"
+              stroke="#f5c451"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <!-- Text -->
+            <text
+              x="78"
+              y="27"
+              font-family="Inter, system-ui, sans-serif"
+              font-size="18"
+              font-weight="600"
+              fill="#ffffff"
+            >
+              Harmony
+            </text>
+          </svg>
         </div>
+      </div>
 
-        <div class="nav-right">
-          <div class="nav-ghost" id="nav-auth-label"
-               data-en="Not signed in"
-               data-ar="لست مسجّل دخول">
-            Not signed in
-          </div>
+      <nav class="nav-links">
+        <a href="index.html"
+           data-en="Home"
+           data-ar="الرئيسية">Home</a>
+        <a href="stories.html"
+           data-en="Stories"
+           data-ar="القصص">Stories</a>
+        <a href="share.html" class="active"
+           data-en="Share a Story"
+           data-ar="شارك قصة">Share a Story</a>
+        <a href="signin.html"
+           data-en="Sign In"
+           data-ar="تسجيل الدخول">Sign In</a>
+        <a href="about.html"
+           data-en="About"
+           data-ar="عن هارموني">About</a>
+        <a href="faq.html"
+           data-en="FAQ"
+           data-ar="الأسئلة الشائعة">FAQ</a>
+        <a href="contact.html"
+           data-en="Contact"
+           data-ar="تواصل معنا">Contact</a>
+      </nav>
 
-          <select id="language-select" class="lang-select" aria-label="Language">
-            <option value="en">English</option>
-            <option value="ar">العربية</option>
-          </select>
-
-          <a href="signin.html">
-            <button class="btn-nav" type="button">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  d="M12 3a4 4 0 0 1 4 4v1a4 4 0 0 1-8 0V7a4 4 0 0 1 4-4zm0 10c-4.4 0-8 2-8 4.5V19a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-1.5C20 15 16.4 13 12 13z"
-                  fill="currentColor"></path>
-              </svg>
-              <span data-en="Sign in" data-ar="تسجيل الدخول">Sign in</span>
-            </button>
-          </a>
+      <div class="nav-right">
+        <select id="language-select" class="language-select" aria-label="Choose language">
+          <option value="en">English</option>
+          <option value="ar">العربية</option>
+        </select>
+        <div class="nav-ghost"
+             id="nav-auth-label"
+             data-en="Not signed in"
+             data-ar="لست مسجّل دخول">
+          Not signed in
         </div>
       </div>
     </div>
@@ -617,25 +466,423 @@
 
   <!-- MAIN -->
   <main>
-    <section class="hero">
-      <!-- LEFT: FORM -->
-      <div class="hero-main-card">
-        <div class="hero-main-card-inner">
-          <div class="eyebrow">
-            <span class="eyebrow-pill">💛</span>
-            <span
-              data-en="You’re not weak for asking help"
-              data-ar="مش ضعف إنك تطلب مساعدة">
-              You’re not weak for asking help
+    <div class="max-w page-title-block">
+      <h1
+        data-en="Share what’s really happening at home"
+        data-ar="إحكي شو فعلاً عم يصير ببيتك"
+      >
+        Share what’s really happening at home
+      </h1>
+      <p
+        data-en="Write your story in a calm, private space. You can show your name or choose to stay completely anonymous."
+        data-ar="إكتب قصتك بمكان هادي وسري. تقدر تظهر اسمك أو تختار تكون مجهول بالكامل."
+      >
+        Write your story in a calm, private space. You can show your name or choose to stay completely anonymous.
+      </p>
+    </div>
+
+    <section>
+      <div class="max-w two-col">
+        <!-- FORM SIDE -->
+        <div class="card">
+          <h3
+            data-en="Your story"
+            data-ar="قصتك"
+          >
+            Your story
+          </h3>
+          <p
+            class="sub"
+            data-en="Take your time. You don’t have to be perfect or polite here. Just be honest."
+            data-ar="خد وقتك. مش لازم تكون منمّق أو مثالي هون. بس كن صادق."
+          >
+            Take your time. You don’t have to be perfect or polite here. Just be honest.
+          </p>
+
+          <form id="share-form">
+            <div class="field">
+              <label
+                for="story-title"
+                data-en="Title"
+                data-ar="العنوان"
+              >Title</label>
+              <input
+                id="story-title"
+                type="text"
+                required
+                data-en-placeholder="Example: I feel like I’m failing as a parent…"
+                data-ar-placeholder="مثال: حاسس/ة إني عم أفشل كأب أو أم…"
+                placeholder="Example: I feel like I’m failing as a parent…"
+              />
+            </div>
+
+            <div class="field">
+              <label
+                for="story-category"
+                data-en="Category"
+                data-ar="الفئة"
+              >Category</label>
+              <select id="story-category" required>
+                <option value="Kids">Kids</option>
+                <option value="Teens">Teens</option>
+                <option value="Adult">Adult</option>
+                <option value="Marriage">Marriage</option>
+                <option value="Finance">Finance</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label
+                for="story-details"
+                data-en="Details"
+                data-ar="التفاصيل"
+              >Details</label>
+              <textarea
+                id="story-details"
+                required
+                data-en-placeholder="Share what’s going on, how it makes you feel, and what you wish someone could tell you right now…"
+                data-ar-placeholder="إحكي شو عم يصير، شو إحساسك، وشو الكلمة اللي بتتمنى حدا يقولّك ياها هلّق…"
+                placeholder="Share what’s going on, how it makes you feel, and what you wish someone could tell you right now…"
+              ></textarea>
+            </div>
+
+            <div class="field">
+              <label
+                for="story-media"
+                data-en="Attach a picture or video (optional)"
+                data-ar="إرفق صورة أو فيديو (اختياري)"
+              >Attach a picture or video (optional)</label>
+              <input id="story-media" type="file" />
+              <small
+                data-en="In the full app, screenshots or photos can help others understand your situation better."
+                data-ar="في النسخة الكاملة، لقطات الشاشة أو الصور تساعد الناس يفهموا وضعك أكثر."
+              >
+                In the full app, screenshots or photos can help others understand your situation better.
+              </small>
+            </div>
+
+            <div class="field-inline">
+              <input id="story-anon" type="checkbox" />
+              <label for="story-anon">
+                <strong
+                  data-en="Post this story as Anonymous"
+                  data-ar="أنشر هذه القصة كمجهول"
+                >
+                  Post this story as Anonymous
+                </strong><br />
+                <small
+                  data-en="If checked, people will see “Anonymous” instead of your name for this story."
+                  data-ar="إذا فعّلت هذا الخيار، الناس رح تشوف &quot;مجهول&quot; بدل اسمك في هذه القصة."
+                >
+                  If checked, people will see “Anonymous” instead of your name for this story.
+                </small>
+              </label>
+            </div>
+
+            <p
+              class="note"
+              id="share-note"
+              data-en="Your story will be saved privately in our database and soon will appear on the Stories page."
+              data-ar="قصتك رح تنحفظ بشكل آمن في قاعدة البيانات، وقريباً رح تظهر في صفحة القصص."
+            >
+              Your story will be saved privately in our database and soon will appear on the Stories page.
+            </p>
+
+            <button
+              type="submit"
+              class="btn-primary"
+              data-en="Share my story"
+              data-ar="أنشر قصتي"
+            >
+              Share my story
+            </button>
+
+            <div id="share-status"></div>
+          </form>
+        </div>
+
+        <!-- INFO SIDE -->
+        <div class="card">
+          <h3
+            data-en="Before you share"
+            data-ar="قبل ما تحكي"
+          >
+            Before you share
+          </h3>
+          <p
+            class="sub"
+            data-en="Some gentle reminders to help you feel safe and supported while writing."
+            data-ar="شوية تذكيرات لطيفة حتى تحس بالأمان والدعم وأنت تكتب."
+          >
+            Some gentle reminders to help you feel safe and supported while writing.
+          </p>
+
+          <div class="pill-row">
+            <span class="pill"
+                  data-en="No judgment zone"
+                  data-ar="بدون حكم أو لوم">
+              No judgment zone
             </span>
-            <span class="eyebrow-dot"></span>
-            <span
-              data-en="Your story might be someone’s strength"
-              data-ar="قصتك ممكن تعطي قوة لحدا غيرك">
-              Your story might be someone’s strength
+            <span class="pill"
+                  data-en="Real feelings welcome"
+                  data-ar="المشاعر الحقيقية مرحّب فيها">
+              Real feelings welcome
+            </span>
+            <span class="pill"
+                  data-en="You control your privacy"
+                  data-ar="إنت المتحكّم بخصوصيتك">
+              You control your privacy
             </span>
           </div>
 
-          <h1
-            data-en="Share what’s really happening at home, with your name or as Anonymous"
-            data-ar="إحكي شو فعلاً عم بصير ببيتك، باسمك أو كمجهول">
+          <div class="example-block">
+            <div
+              class="example-label"
+              data-en="Example way to start"
+              data-ar="طريقة مثال لبدء القصة"
+            >
+              Example way to start
+            </div>
+            <p
+              data-en="“I’m a parent of two kids, and lately I feel like I’m failing them. I shout more than I want to, and when the house is finally quiet I feel so guilty. I love my kids deeply, but I’m so tired and I don’t know how to break this cycle…”"
+              data-ar="«أنا أم/أب لطفلين، وبالفترة الأخيرة حاسس/ة إني عم أفشلهم. أصرخ أكثر مما بدي، ولما البيت يهدأ بالآخر بحس بذنب كبير. بحب أولادي من قلبي، بس أنا مرهق/ة ومش عارف/ة كيف أطلع من هالدائرة…»"
+            >
+              “I’m a parent of two kids, and lately I feel like I’m failing them. I shout more than I want to, and when the house is finally quiet I feel so guilty. I love my kids deeply, but I’m so tired and I don’t know how to break this cycle…”
+            </p>
+          </div>
+
+          <div class="example-block" style="margin-top:1.1rem;">
+            <div
+              class="example-label"
+              data-en="What Harmony is – and isn’t"
+              data-ar="شو هي هارموني… وشو مش هي"
+            >
+              What Harmony is – and isn’t
+            </div>
+            <p
+              data-en="Harmony is a community space for empathy, not a place for medical, legal or professional treatment. If you ever feel in danger or at risk of harming yourself or others, please contact local emergency services or a trusted professional immediately."
+              data-ar="هارموني مساحة للتعاطف والدعم بين الناس، مش مكان لعلاج طبي أو استشارة قانونية أو علاج مهني. إذا شعرت بأي خطر على نفسك أو على غيرك، تواصل فوراً مع خدمات الطوارئ في بلدك أو مع شخص مهني موثوق."
+            >
+              Harmony is a community space for empathy, not a place for medical, legal or professional treatment. If you ever feel in danger or at risk of harming yourself or others, please contact local emergency services or a trusted professional immediately.
+            </p>
+          </div>
+
+          <div class="example-block" style="margin-top:1.1rem;">
+            <div
+              class="example-label"
+              data-en="Next steps"
+              data-ar="الخطوات الجاية"
+            >
+              Next steps
+            </div>
+            <p
+              data-en="Soon, when the database is fully ready, your stories here will appear on the Stories page so others can react with kindness and share what helped them in similar situations."
+              data-ar="قريباً، لما تجهز قاعدة البيانات بالكامل، القصص اللي تكتبها هون رح تظهر في صفحة القصص، حتى الناس تقدر تتفاعل معها بلطف وتشارك شو ساعدهم في نفس الظروف."
+            >
+              Soon, when the database is fully ready, your stories here will appear on the Stories page so others can react with kindness and share what helped them in similar situations.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    Harmony Community © 2025
+  </footer>
+</div>
+
+<!-- Supabase client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  (function () {
+    const langSelect = document.getElementById('language-select');
+    const navAuthLabel = document.getElementById('nav-auth-label');
+    const shareForm = document.getElementById('share-form');
+    const shareStatus = document.getElementById('share-status');
+
+    const LANG_KEY = 'harmony_lang';
+
+    const SUPABASE_URL = 'https://tnohzvrpqiaiupwyaxcp.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ---- Language ----
+    function applyLanguage(lang) {
+      const elements = document.querySelectorAll('[data-en]');
+      elements.forEach(el => {
+        const en = el.getAttribute('data-en');
+        const ar = el.getAttribute('data-ar') || en;
+        el.innerHTML = (lang === 'ar') ? ar : en;
+      });
+
+      const placeholderEls = document.querySelectorAll('[data-en-placeholder]');
+      placeholderEls.forEach(el => {
+        const enPh = el.getAttribute('data-en-placeholder');
+        const arPh = el.getAttribute('data-ar-placeholder') || enPh;
+        el.placeholder = (lang === 'ar') ? arPh : enPh;
+      });
+
+      document.documentElement.lang = (lang === 'ar') ? 'ar' : 'en';
+      document.documentElement.dir  = (lang === 'ar') ? 'rtl' : 'ltr';
+    }
+
+    function getInitialLang() {
+      try {
+        const saved = localStorage.getItem(LANG_KEY);
+        if (saved === 'ar' || saved === 'en') return saved;
+      } catch (e) {}
+      return 'en';
+    }
+
+    const initialLang = getInitialLang();
+    applyLanguage(initialLang);
+
+    if (langSelect) {
+      langSelect.value = initialLang;
+      langSelect.addEventListener('change', () => {
+        const lang = langSelect.value;
+        try {
+          localStorage.setItem(LANG_KEY, lang);
+        } catch (e) {}
+        applyLanguage(lang);
+      });
+    }
+
+    function setStatus(message, type) {
+      if (!shareStatus) return;
+      if (!message) {
+        shareStatus.innerHTML = '';
+        return;
+      }
+      const cls = type === 'error' ? 'error-message' : 'success-message';
+      shareStatus.innerHTML = '<div class="' + cls + '">' + message + '</div>';
+    }
+
+    // ---- Save story to Supabase ----
+    if (shareForm) {
+      shareForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const title   = document.getElementById('story-title').value.trim();
+        const details = document.getElementById('story-details').value.trim();
+        const anonCheckbox = document.getElementById('story-anon');
+        const isAnonFromCheckbox = anonCheckbox ? anonCheckbox.checked : false;
+
+        const lang = (langSelect && langSelect.value) ? langSelect.value : initialLang;
+
+        if (!title || !details) {
+          setStatus(
+            lang === 'ar'
+              ? 'رجاءً اكتب عنواناً ونصاً قبل إرسال قصتك.'
+              : 'Please fill the title and details before you share.',
+            'error'
+          );
+          return;
+        }
+
+        setStatus(
+          lang === 'ar'
+            ? 'جاري إرسال قصتك إلى هارموني…'
+            : 'Sending your story to Harmony…',
+          'success'
+        );
+
+        // check user
+        let userId = null;
+        let finalIsAnon = isAnonFromCheckbox;
+        try {
+          const { data, error } = await supabase.auth.getUser();
+          if (!error && data && data.user) {
+            userId = data.user.id;
+            const meta = data.user.user_metadata || {};
+            if (meta.always_anonymous) {
+              finalIsAnon = true;
+            }
+          }
+        } catch (err) {
+          console.error('Error checking auth user:', err);
+        }
+
+        try {
+          const { error: insertError } = await supabase
+            .from('stories')
+            .insert({
+              title,
+              content: details,
+              user_id: userId
+              // later: category, is_anonymous: finalIsAnon
+            });
+
+          if (insertError) {
+            console.error('Error inserting story:', insertError);
+            setStatus(
+              lang === 'ar'
+                ? 'صار خطأ بسيط أثناء حفظ القصة. جرّب مرة ثانية من فضلك.'
+                : 'Something went wrong while saving your story. Please try again.',
+              'error'
+            );
+            return;
+          }
+
+          setStatus(
+            lang === 'ar'
+              ? 'شكراً لأنك وثقت بهارموني. تم حفظ قصتك! قريباً ستظهر في صفحة القصص. 💛'
+              : 'Thank you for trusting Harmony with your story. Your story has been saved! Soon it will appear on the Stories page. 💛',
+            'success'
+          );
+
+          shareForm.reset();
+
+          setTimeout(() => {
+            window.location.href = 'stories.html';
+          }, 1500);
+        } catch (err) {
+          console.error('Unexpected error saving story:', err);
+          setStatus(
+            lang === 'ar'
+              ? 'صار خطأ غير متوقّع. جرّب مرة ثانية لو سمحت.'
+              : 'Unexpected error while saving your story. Please try again.',
+            'error'
+          );
+        }
+      });
+    }
+
+    // === Supabase auth label ===
+    async function refreshUserLabel() {
+      const { data, error } = await supabase.auth.getUser();
+      if (error || !data.user) {
+        // keep default data-en/data-ar; language switcher will handle text
+        return;
+      }
+      const user = data.user;
+      const meta = user.user_metadata || {};
+      const displayName = meta.display_name || user.email;
+      const alwaysAnon = !!meta.always_anonymous;
+
+      let labelEn, labelAr;
+      if (alwaysAnon) {
+        labelEn = 'Signed in: Anonymous (name hidden)';
+        labelAr = 'مسجّل دخول: مجهول (الاسم مخفي)';
+      } else {
+        labelEn = 'Signed in: ' + displayName;
+        labelAr = 'مسجّل دخول: ' + (displayName || 'مستخدم');
+      }
+
+      if (navAuthLabel) {
+        navAuthLabel.setAttribute('data-en', labelEn);
+        navAuthLabel.setAttribute('data-ar', labelAr);
+
+        const lang = (langSelect && langSelect.value) ? langSelect.value : initialLang;
+        navAuthLabel.innerHTML = (lang === 'ar') ? labelAr : labelEn;
+      }
+    }
+
+    refreshUserLabel();
+  })();
+</script>
+</body>
+</html>
