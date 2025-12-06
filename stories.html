@@ -410,13 +410,27 @@
       </div>
 
       <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="stories.html" class="active">Stories</a>
-        <a href="share.html">Share a Story</a>
-        <a href="signin.html">Sign In</a>
-        <a href="about.html">About</a>
-        <a href="faq.html">FAQ</a>
-        <a href="contact.html">Contact</a>
+        <a href="index.html"
+           data-en="Home"
+           data-ar="الرئيسية">Home</a>
+        <a href="stories.html" class="active"
+           data-en="Stories"
+           data-ar="القصص">Stories</a>
+        <a href="share.html"
+           data-en="Share a Story"
+           data-ar="شارك قصة">Share a Story</a>
+        <a href="signin.html"
+           data-en="Sign In"
+           data-ar="تسجيل الدخول">Sign In</a>
+        <a href="about.html"
+           data-en="About"
+           data-ar="عن هارموني">About</a>
+        <a href="faq.html"
+           data-en="FAQ"
+           data-ar="الأسئلة الشائعة">FAQ</a>
+        <a href="contact.html"
+           data-en="Contact"
+           data-ar="اتصال">Contact</a>
       </nav>
 
       <div class="nav-right">
@@ -424,7 +438,9 @@
           <option value="en">English</option>
           <option value="ar">العربية</option>
         </select>
-        <div class="nav-ghost" id="nav-auth-label">
+        <div class="nav-ghost" id="nav-auth-label"
+             data-en="Not signed in"
+             data-ar="غير مسجّل الدخول">
           Not signed in
         </div>
       </div>
@@ -501,6 +517,8 @@
 
 <script>
   (function () {
+    const LANG_KEY = 'harmony_lang';
+
     const langSelect = document.getElementById('language-select');
     const navAuthLabel = document.getElementById('nav-auth-label');
     const storiesList = document.getElementById('stories-list');
@@ -511,36 +529,42 @@
     let allStories = [];
     let currentFilter = 'All';
 
+    function getInitialLang() {
+      try {
+        const saved = localStorage.getItem(LANG_KEY);
+        if (saved === 'ar' || saved === 'en') return saved;
+      } catch (e) {
+        // ignore
+      }
+      return 'en';
+    }
+
     function applyLanguage(lang) {
       currentLang = lang;
+
       const elements = document.querySelectorAll('[data-en]');
       elements.forEach(el => {
         const en = el.getAttribute('data-en');
         const ar = el.getAttribute('data-ar') || en;
-        el.textContent = lang === 'ar' ? ar : en;
+        el.innerHTML = (lang === 'ar') ? ar : en;
       });
 
-      document.documentElement.lang = lang === 'ar' ? 'ar' : 'en';
-      document.documentElement.dir  = lang === 'ar' ? 'rtl' : 'ltr';
-    }
-
-    // Start in English always
-    applyLanguage('en');
-    if (langSelect) {
-      langSelect.value = 'en';
-      langSelect.addEventListener('change', () => {
-        applyLanguage(langSelect.value);
-        renderStories(); // re-render labels like "Anonymous" in correct language
-      });
+      document.documentElement.lang = (lang === 'ar') ? 'ar' : 'en';
+      document.documentElement.dir  = (lang === 'ar') ? 'rtl' : 'ltr';
     }
 
     function formatDate(dateStr) {
       if (!dateStr) return '';
       const d = new Date(dateStr);
-      return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+      return d.toLocaleDateString(undefined, {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      });
     }
 
     function escapeHTML(str) {
+      if (!str) return '';
       return str
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -570,9 +594,9 @@
             ? (currentLang === 'ar' ? 'مجهول' : 'Anonymous')
             : (currentLang === 'ar' ? 'عضو من المجتمع' : 'Community member');
 
-        const shortContent = story.content.length > 260
+        const shortContent = story.content && story.content.length > 260
           ? story.content.slice(0, 260) + '…'
-          : story.content;
+          : (story.content || '');
 
         const card = document.createElement('article');
         card.className = 'story-card';
@@ -583,7 +607,7 @@
             ${escapeHTML(who)} • ${formatDate(story.created_at)}
           </div>
           <div class="story-content">
-            ${escapeHTML(shortContent || '')}
+            ${escapeHTML(shortContent)}
           </div>
           <div class="story-footer">
             <span>
@@ -617,11 +641,15 @@
 
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    async function refreshUserLabel() {
+    async function refreshUserLabel(langOverride) {
+      const lang = langOverride || currentLang;
+
       const { data, error } = await supabase.auth.getUser();
-      if (error || !data.user) {
+      if (error || !data || !data.user) {
         if (navAuthLabel) {
-          navAuthLabel.textContent = 'Not signed in';
+          const en = navAuthLabel.getAttribute('data-en') || 'Not signed in';
+          const ar = navAuthLabel.getAttribute('data-ar') || en;
+          navAuthLabel.textContent = (lang === 'ar') ? ar : en;
         }
         return;
       }
@@ -633,9 +661,13 @@
 
       let label;
       if (alwaysAnon) {
-        label = 'Signed in: Anonymous (name hidden)';
+        label = (lang === 'ar')
+          ? 'مسجّل: مجهول (الاسم مخفي)'
+          : 'Signed in: Anonymous (name hidden)';
       } else {
-        label = 'Signed in: ' + displayName;
+        label = (lang === 'ar')
+          ? 'مسجّل: ' + displayName
+          : 'Signed in: ' + displayName;
       }
 
       if (navAuthLabel) {
@@ -670,7 +702,25 @@
       }
     }
 
-    refreshUserLabel();
+    // === Init language from localStorage ===
+    const initialLang = getInitialLang();
+    applyLanguage(initialLang);
+
+    if (langSelect) {
+      langSelect.value = initialLang;
+      langSelect.addEventListener('change', () => {
+        const lang = langSelect.value;
+        try {
+          localStorage.setItem(LANG_KEY, lang);
+        } catch (e) {}
+        applyLanguage(lang);
+        refreshUserLabel(lang);
+        renderStories();
+      });
+    }
+
+    // Initial data + auth label
+    refreshUserLabel(initialLang);
     loadStories();
   })();
 </script>
