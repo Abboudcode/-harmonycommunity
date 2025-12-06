@@ -383,13 +383,27 @@
         </div>
 
         <nav class="nav-links">
-          <a href="index.html">Home</a>
-          <a href="stories.html">Stories</a>
-          <a href="share.html">Share a Story</a>
-          <a href="signin.html" class="active">Sign In</a>
-          <a href="about.html">About</a>
-          <a href="faq.html">FAQ</a>
-          <a href="contact.html">Contact</a>
+          <a href="index.html"
+             data-en="Home"
+             data-ar="الرئيسية">Home</a>
+          <a href="stories.html"
+             data-en="Stories"
+             data-ar="القصص">Stories</a>
+          <a href="share.html"
+             data-en="Share a Story"
+             data-ar="شارك قصة">Share a Story</a>
+          <a href="signin.html" class="active"
+             data-en="Sign In"
+             data-ar="تسجيل الدخول">Sign In</a>
+          <a href="about.html"
+             data-en="About"
+             data-ar="عن هارموني">About</a>
+          <a href="faq.html"
+             data-en="FAQ"
+             data-ar="الأسئلة الشائعة">FAQ</a>
+          <a href="contact.html"
+             data-en="Contact"
+             data-ar="اتصال">Contact</a>
         </nav>
 
         <div class="nav-right">
@@ -397,7 +411,9 @@
             <option value="en">English</option>
             <option value="ar">العربية</option>
           </select>
-          <div class="nav-ghost" id="nav-auth-label">
+          <div class="nav-ghost" id="nav-auth-label"
+               data-en="Not signed in"
+               data-ar="غير مسجّل الدخول">
             Not signed in
           </div>
         </div>
@@ -532,40 +548,40 @@
 
   <script>
     (function () {
+      const LANG_KEY = 'harmony_lang';
+
       const langSelect = document.getElementById('language-select');
       const navAuthLabel = document.getElementById('nav-auth-label');
-
-      function applyLanguage(lang) {
-        const elements = document.querySelectorAll('[data-en]');
-        elements.forEach(el => {
-          const en = el.getAttribute('data-en');
-          const ar = el.getAttribute('data-ar') || en;
-          el.innerHTML = lang === 'ar' ? ar : en;
-        });
-
-        document.documentElement.lang = lang === 'ar' ? 'ar' : 'en';
-        document.documentElement.dir  = lang === 'ar' ? 'rtl' : 'ltr';
-      }
-
-      // Always start in English
-      applyLanguage('en');
-      langSelect.value = 'en';
-
-      langSelect.addEventListener('change', () => {
-        const lang = langSelect.value;
-        applyLanguage(lang);
-      });
-
-      // === Supabase auth ===
-      const SUPABASE_URL = 'https://tnohzvrpqiaiupwyaxcp.supabase.co';
-      const SUPABASE_ANON_KEY = 'sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K';
-
-      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
       const signupForm = document.getElementById('signup-form');
       const signinForm = document.getElementById('signin-form');
       const authStatus = document.getElementById('auth-status');
       const currentUserLabel = document.getElementById('current-user-label');
+
+      let currentLang = 'en';
+
+      function getInitialLang() {
+        try {
+          const saved = localStorage.getItem(LANG_KEY);
+          if (saved === 'ar' || saved === 'en') return saved;
+        } catch (e) {
+          // ignore
+        }
+        return 'en';
+      }
+
+      function applyLanguage(lang) {
+        currentLang = lang;
+
+        const elements = document.querySelectorAll('[data-en]');
+        elements.forEach(el => {
+          const en = el.getAttribute('data-en');
+          const ar = el.getAttribute('data-ar') || en;
+          el.innerHTML = (lang === 'ar') ? ar : en;
+        });
+
+        document.documentElement.lang = (lang === 'ar') ? 'ar' : 'en';
+        document.documentElement.dir  = (lang === 'ar') ? 'rtl' : 'ltr';
+      }
 
       function setStatus(message, isError) {
         if (!authStatus) return;
@@ -575,19 +591,33 @@
         authStatus.classList.add(isError ? 'status-error' : 'status-ok');
       }
 
-      function updateNavLabel(text) {
-        if (navAuthLabel) {
-          navAuthLabel.textContent = text;
-        }
+      function updateNavLabelNotSigned(lang) {
+        if (!navAuthLabel) return;
+        const en = navAuthLabel.getAttribute('data-en') || 'Not signed in';
+        const ar = navAuthLabel.getAttribute('data-ar') || en;
+        navAuthLabel.textContent = (lang === 'ar') ? ar : en;
       }
 
-      async function refreshUserLabel() {
+      function updateCurrentUserNotSigned(lang) {
+        if (!currentUserLabel) return;
+        const en = currentUserLabel.getAttribute('data-en') || 'Status: not signed in.';
+        const ar = currentUserLabel.getAttribute('data-ar') || en;
+        currentUserLabel.textContent = (lang === 'ar') ? ar : en;
+      }
+
+      // === Supabase auth ===
+      const SUPABASE_URL = 'https://tnohzvrpqiaiupwyaxcp.supabase.co';
+      const SUPABASE_ANON_KEY = 'sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K';
+
+      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      async function refreshUserLabel(langOverride) {
+        const lang = langOverride || currentLang;
+
         const { data, error } = await supabase.auth.getUser();
-        if (error || !data.user) {
-          if (currentUserLabel) {
-            currentUserLabel.textContent = 'Status: not signed in.';
-          }
-          updateNavLabel('Not signed in');
+        if (error || !data || !data.user) {
+          updateCurrentUserNotSigned(lang);
+          updateNavLabelNotSigned(lang);
           return;
         }
 
@@ -596,23 +626,40 @@
         const displayName = meta.display_name || user.email;
         const alwaysAnon = !!meta.always_anonymous;
 
-        let label;
+        let labelNav;
+        let labelStatus;
+
         if (alwaysAnon) {
-          label = 'Signed in: Anonymous (name hidden)';
+          labelNav = (lang === 'ar')
+            ? 'مسجّل: مجهول (الاسم مخفي)'
+            : 'Signed in: Anonymous (name hidden)';
+          labelStatus = labelNav;
         } else {
-          label = 'Signed in: ' + displayName;
+          labelNav = (lang === 'ar')
+            ? 'مسجّل: ' + displayName
+            : 'Signed in: ' + displayName;
+          labelStatus = labelNav;
         }
 
-        if (currentUserLabel) {
-          currentUserLabel.textContent = label;
+        if (navAuthLabel) {
+          navAuthLabel.textContent = labelNav;
         }
-        updateNavLabel(label);
+        if (currentUserLabel) {
+          currentUserLabel.textContent = labelStatus;
+        }
       }
 
+      // Sign up
       if (signupForm) {
         signupForm.addEventListener('submit', async (e) => {
           e.preventDefault();
-          setStatus('Creating your account…', false);
+
+          setStatus(
+            currentLang === 'ar'
+              ? 'جاري إنشاء حسابك…'
+              : 'Creating your account…',
+            false
+          );
 
           const email = document.getElementById('signup-email').value.trim();
           const password = document.getElementById('signup-password').value;
@@ -631,19 +678,34 @@
           });
 
           if (error) {
-            setStatus('Error: ' + error.message, true);
+            setStatus(
+              (currentLang === 'ar' ? 'خطأ: ' : 'Error: ') + error.message,
+              true
+            );
           } else {
-            setStatus('Account created! Check your email if confirmation is required, then sign in below.', false);
+            setStatus(
+              currentLang === 'ar'
+                ? 'تم إنشاء الحساب! إذا كان تفعيل الإيميل مطلوب، تأكد من بريدك ثم سجّل الدخول من الجهة اليمين.'
+                : 'Account created! If email confirmation is required, check your inbox, then sign in on the right.',
+              false
+            );
             signupForm.reset();
             refreshUserLabel();
           }
         });
       }
 
+      // Sign in
       if (signinForm) {
         signinForm.addEventListener('submit', async (e) => {
           e.preventDefault();
-          setStatus('Signing you in…', false);
+
+          setStatus(
+            currentLang === 'ar'
+              ? 'جاري تسجيل الدخول…'
+              : 'Signing you in…',
+            false
+          );
 
           const email = document.getElementById('signin-email').value.trim();
           const password = document.getElementById('signin-password').value;
@@ -654,17 +716,41 @@
           });
 
           if (error) {
-            setStatus('Error: ' + error.message, true);
+            setStatus(
+              (currentLang === 'ar' ? 'خطأ: ' : 'Error: ') + error.message,
+              true
+            );
           } else {
-            setStatus('Signed in successfully.', false);
+            setStatus(
+              currentLang === 'ar'
+                ? 'تم تسجيل الدخول بنجاح.'
+                : 'Signed in successfully.',
+              false
+            );
             signinForm.reset();
             refreshUserLabel();
           }
         });
       }
 
+      // === Init language from localStorage ===
+      const initialLang = getInitialLang();
+      applyLanguage(initialLang);
+
+      if (langSelect) {
+        langSelect.value = initialLang;
+        langSelect.addEventListener('change', () => {
+          const lang = langSelect.value;
+          try {
+            localStorage.setItem(LANG_KEY, lang);
+          } catch (e) {}
+          applyLanguage(lang);
+          refreshUserLabel(lang);
+        });
+      }
+
       // On first load, check if already signed in
-      refreshUserLabel();
+      refreshUserLabel(initialLang);
     })();
   </script>
 </body>
