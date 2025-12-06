@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta
     name="description"
-    content="Read honest family stories from people like you – about kids, teens, marriage, adult life and money."
+    content="Read real family stories from people like you – and see you’re not alone."
   />
 
   <!-- Font -->
@@ -23,14 +23,14 @@
       --bg-card: #ffffff;
       --primary: #4b6fff;
       --primary-soft: #e2e7ff;
-      --text-main: #1f2933;
+      --text-main: #111827;
       --text-muted: #6b7280;
       --border-soft: #e5e7eb;
       --accent: #10b981;
       --danger: #ef4444;
-      --radius-lg: 16px;
-      --radius-md: 10px;
-      --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --shadow-soft: 0 14px 35px rgba(15, 23, 42, 0.08);
     }
 
     * {
@@ -41,7 +41,7 @@
 
     body {
       font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
-      "Segoe UI", sans-serif;
+        "Segoe UI", sans-serif;
       background: radial-gradient(circle at top left, #eef2ff, #f9fafb 40%);
       color: var(--text-main);
       line-height: 1.6;
@@ -64,7 +64,7 @@
       padding: 0 1.25rem;
     }
 
-    /* HEADER / NAV */
+    /* HEADER */
 
     header {
       position: sticky;
@@ -114,7 +114,7 @@
     }
 
     .nav-links a.active {
-      background: rgba(129, 140, 248, 0.35);
+      background: rgba(129, 140, 248, 0.38);
       color: #ffffff;
     }
 
@@ -158,13 +158,14 @@
       background: linear-gradient(135deg, #4f46e5, #6366f1);
       color: #fff;
       border-radius: 999px;
-      padding: 0.6rem 1.3rem;
+      padding: 0.65rem 1.4rem;
       font-size: 0.95rem;
       font-weight: 600;
       border: none;
       cursor: pointer;
       box-shadow: 0 12px 30px rgba(79, 70, 229, 0.35);
       transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
+      white-space: nowrap;
     }
 
     .btn-primary:hover {
@@ -198,154 +199,147 @@
     /* LAYOUT */
 
     main {
-      padding: 2.8rem 0 2rem;
+      padding: 2.6rem 0 2rem;
     }
 
-    .page-title-block {
-      max-width: 720px;
-      margin: 0 auto 1.8rem;
+    .page-header {
       text-align: center;
+      margin-bottom: 1.8rem;
     }
 
-    .page-title-block h1 {
-      font-size: 1.6rem;
+    .page-header h1 {
+      font-size: 1.7rem;
       margin-bottom: 0.4rem;
     }
 
-    .page-title-block p {
+    .page-header p {
       font-size: 0.95rem;
       color: var(--text-muted);
+      max-width: 640px;
+      margin: 0 auto;
     }
 
-    .top-actions {
+    .actions-row {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       gap: 0.75rem;
-      margin-top: 1rem;
-      flex-wrap: wrap;
+      margin: 1.6rem 0 1.2rem;
     }
 
-    .section {
-      padding: 0 0 2.2rem;
-    }
-
-    /* FILTER ROW */
-
-    .filter-row {
+    .filters-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1.4rem;
       justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.8rem;
     }
 
-    .filter-btn {
+    .filter-pill {
+      padding: 0.2rem 0.9rem;
       border-radius: 999px;
-      border: 1px solid #c7d2fe;
-      padding: 0.35rem 0.9rem;
-      font-size: 0.82rem;
-      background: #eef2ff;
-      color: #4f46e5;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      font-size: 0.85rem;
+      color: #4b5563;
       cursor: pointer;
-      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
     }
 
-    .filter-btn:hover {
-      background: #e0e7ff;
-      border-color: #a5b4fc;
-      transform: translateY(-1px);
-    }
-
-    .filter-btn.active {
+    .filter-pill.active {
       background: #4f46e5;
-      color: #ffffff;
       border-color: #4f46e5;
+      color: #ffffff;
     }
 
     /* STORIES GRID */
 
     .stories-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1rem;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.1rem;
+      margin-bottom: 1.5rem;
     }
 
-    @media (max-width: 900px) {
+    @media (min-width: 900px) {
       .stories-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
-    @media (max-width: 640px) {
-      .stories-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
     .story-card {
       background: var(--bg-card);
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-lg);
+      padding: 1.2rem 1.15rem;
       border: 1px solid var(--border-soft);
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 0.5rem;
-      transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.04);
+      transition: box-shadow 0.16s ease, transform 0.16s ease,
+        border-color 0.16s ease;
     }
 
     .story-card:hover {
-      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.075);
+      box-shadow: var(--shadow-soft);
       transform: translateY(-2px);
       border-color: #e5e7eb;
     }
 
     .story-category {
-      font-size: 0.75rem;
-      padding: 0.15rem 0.55rem;
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.78rem;
+      font-weight: 500;
       border-radius: 999px;
-      background: #f3f4ff;
+      padding: 0.18rem 0.7rem;
+      background: #eef2ff;
       color: #4f46e5;
-      display: inline-block;
-      margin-bottom: 0.2rem;
+      margin-bottom: 0.35rem;
     }
 
     .story-title {
-      font-size: 0.95rem;
+      font-size: 1rem;
       font-weight: 600;
-      margin-bottom: 0.1rem;
+      margin-bottom: 0.3rem;
     }
 
-    .story-text {
-      font-size: 0.85rem;
-      color: var(--text-muted);
+    .story-meta {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 0.4rem;
+    }
+
+    .story-content {
+      font-size: 0.9rem;
+      color: #374151;
+      margin-bottom: 0.7rem;
     }
 
     .story-footer {
-      font-size: 0.8rem;
-      color: #4b5563;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 0.4rem;
-      flex-wrap: wrap;
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    .story-footer span {
+      display: inline-flex;
+      align-items: center;
       gap: 0.3rem;
     }
 
-    .reactions span {
-      margin-right: 0.5rem;
-    }
-
-    .story-meta-tag {
-      font-size: 0.75rem;
-      color: #9ca3af;
+    .story-footer .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 999px;
+      background: #d1d5db;
+      display: inline-block;
     }
 
     .empty-state {
       text-align: center;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       color: var(--text-muted);
-      margin-top: 1.5rem;
+      padding: 1.8rem 1rem 0.2rem;
     }
 
     footer {
@@ -439,302 +433,61 @@
 
   <!-- MAIN -->
   <main>
-    <div class="max-w page-title-block">
-      <h1
-        data-en="Stories from people like you"
-        data-ar="قصص من ناس يشبهونك"
-      >
-        Stories from people like you
-      </h1>
-      <p
-        data-en="These are example stories showing the kind of honesty and softness Harmony is built for. In the full app, this page will show real posts from the community."
-        data-ar="هاي قصص نموذجية تشرح نوع الصراحة واللطف اللي مبنيّة عليها هارموني. في النسخة الكاملة، هالصفحة رح تعرض منشورات حقيقية من المجتمع."
-      >
-        These are example stories showing the kind of honesty and softness Harmony is built for. In the full app, this page will show real posts from the community.
-      </p>
+    <div class="max-w">
+      <div class="page-header">
+        <h1
+          data-en="Stories from people like you"
+          data-ar="قصص من ناس مثلك تماماً"
+        >
+          Stories from people like you
+        </h1>
+        <p
+          data-en="In the full Harmony app, this page shows real stories from the community. Below you can already see the first real posts coming from the database."
+          data-ar="في تطبيق هارموني الكامل، هذه الصفحة بتعرض قصص حقيقية من المجتمع. تحت رح تبلّش تشوف أول القصص الحقيقية القادمة من قاعدة البيانات."
+        >
+          In the full Harmony app, this page shows real stories from the community. Below you can already see the first real posts coming from the database.
+        </p>
+      </div>
 
-      <div class="top-actions">
+      <div class="actions-row">
         <a href="share.html">
-          <button class="btn-primary"
-                  data-en="Share your own story"
-                  data-ar="شارك قصتك إنت">
+          <button
+            class="btn-primary"
+            data-en="Share your own story"
+            data-ar="إحكي قصتك إنت"
+          >
             Share your own story
           </button>
         </a>
         <a href="signin.html">
-          <button class="btn-secondary"
-                  data-en="Sign in to save & react"
-                  data-ar="سجّل الدخول للحفظ والتفاعل">
+          <button
+            class="btn-secondary"
+            data-en="Sign in to save & react"
+            data-ar="سجّل دخول حتى تحفظ وترد"
+          >
             Sign in to save & react
           </button>
         </a>
       </div>
-    </div>
 
-    <section class="section">
-      <div class="max-w">
-        <!-- Filters -->
-        <div class="filter-row">
-          <button class="filter-btn active" data-category-filter="all"
-                  data-en="All"
-                  data-ar="الكل">
-            All
-          </button>
-          <button class="filter-btn" data-category-filter="Kids"
-                  data-en="Kids"
-                  data-ar="أطفال">
-            Kids
-          </button>
-          <button class="filter-btn" data-category-filter="Teens"
-                  data-en="Teens"
-                  data-ar="مراهقين">
-            Teens
-          </button>
-          <button class="filter-btn" data-category-filter="Adult"
-                  data-en="Adult"
-                  data-ar="كبار">
-            Adult
-          </button>
-          <button class="filter-btn" data-category-filter="Marriage"
-                  data-en="Marriage"
-                  data-ar="زواج">
-            Marriage
-          </button>
-          <button class="filter-btn" data-category-filter="Finance"
-                  data-en="Finance"
-                  data-ar="أمور مالية">
-            Finance
-          </button>
-        </div>
-
-        <!-- Stories grid -->
-        <div id="stories-grid" class="stories-grid">
-          <!-- Teens -->
-          <article class="story-card" data-category="Teens">
-            <div>
-              <div class="story-category">Teens</div>
-              <div
-                class="story-title"
-                data-en="“Every talk with my teenager turns into a fight”"
-                data-ar="«كل حديث مع ابني المراهق ينتهي بخلاف»"
-              >
-                “Every talk with my teenager turns into a fight”
-              </div>
-              <p
-                class="story-text"
-                data-en="I used to be very close to my son. Now at 16 he barely looks at me. If I ask about school, he says I’m controlling. If I stay quiet, I feel like a bad parent. I’m scared I’m losing him and don’t know how to reach him without shouting…"
-                data-ar="كنت قريبة جداً من ابني. اليوم وهو عمره ١٦ سنة بالكاد يطلع فيني. إذا سألت عن المدرسة بقول إني متحكّمة، وإذا سكت بحس حالي أم سيئة. خايفة أخسره ومش عارفة كيف أوصل له بدون ما أصرخ…"
-              >
-                I used to be very close to my son. Now at 16 he barely looks at me...
-              </p>
-            </div>
-            <div class="story-footer">
-              <div class="reactions">
-                <span data-en="❤️ 27 people related" data-ar="❤️ ٢٧ شخص حاسّوا مثلي">
-                  ❤️ 27 people related
-                </span>
-                <span data-en="💬 7 gentle replies" data-ar="💬 ٧ ردود لطيفة">
-                  💬 7 gentle replies
-                </span>
-              </div>
-              <span class="story-meta-tag"
-                    data-en="Example story"
-                    data-ar="قصة نموذجية">
-                Example story
-              </span>
-            </div>
-          </article>
-
-          <!-- Finance -->
-          <article class="story-card" data-category="Finance">
-            <div>
-              <div class="story-category">Finance</div>
-              <div
-                class="story-title"
-                data-en="“We love each other, but money is breaking us”"
-                data-ar="«نحب بعض، بس الفلوس عم تكسرنا»"
-              >
-                “We love each other, but money is breaking us”
-              </div>
-              <p
-                class="story-text"
-                data-en="We both work hard, but the bills keep winning. At the end of every month we’re angry, tired and blaming each other. I miss when we used to laugh together. I don’t want our kids to grow up in a house where money equals war…"
-                data-ar="نشتغل نحن الاثنين ونتعب، بس الفواتير دايماً هي اللي تربح. آخر كل شهر نكون معصّبين، مرهقين ونلوم بعض. مشتاق لأيام الضحك اللي بيننا. ما بدي أولادي يكبروا في بيت يعني فيه المال = حرب…"
-              >
-                We both work hard, but the bills keep winning...
-              </p>
-            </div>
-            <div class="story-footer">
-              <div class="reactions">
-                <span data-en="❤️ 19 people related" data-ar="❤️ ١٩ شخص حاسّوا مثلي">
-                  ❤️ 19 people related
-                </span>
-                <span data-en="💬 6 gentle replies" data-ar="💬 ٦ ردود لطيفة">
-                  💬 6 gentle replies
-                </span>
-              </div>
-              <span class="story-meta-tag"
-                    data-en="Example story"
-                    data-ar="قصة نموذجية">
-                Example story
-              </span>
-            </div>
-          </article>
-
-          <!-- Adult -->
-          <article class="story-card" data-category="Adult">
-            <div>
-              <div class="story-category">Adult</div>
-              <div
-                class="story-title"
-                data-en="“I’m the strong one for everyone… except myself”"
-                data-ar="«أنا القوي عشان الكل… إلا نفسي»"
-              >
-                “I’m the strong one for everyone… except myself”
-              </div>
-              <p
-                class="story-text"
-                data-en="In my family I’m the problem-solver. Everyone calls me when they need help. But when I’m tired or sad, I feel like there’s no space for me to fall apart. I’m starting to feel invisible in my own life and I’m scared this emptiness will never go away…"
-                data-ar="في عيلتي أنا الشخص اللي يحل المشاكل. الكل يتصل فيني لما يحتاج مساعدة. بس لما أنا أكون تعبان أو حزين، بحس ما في مكان أقدر أضعف فيه. بديت أحس إني شفاف في حياتي الخاصة، وخايف هالفراغ يضل طول العمر…"
-              >
-                In my family I’m the problem-solver. Everyone calls me when they need help...
-              </p>
-            </div>
-            <div class="story-footer">
-              <div class="reactions">
-                <span data-en="❤️ 34 people related" data-ar="❤️ ٣٤ شخص حاسّوا مثلي">
-                  ❤️ 34 people related
-                </span>
-                <span data-en="💬 9 gentle replies" data-ar="💬 ٩ ردود لطيفة">
-                  💬 9 gentle replies
-                </span>
-              </div>
-              <span class="story-meta-tag"
-                    data-en="Example story"
-                    data-ar="قصة نموذجية">
-                Example story
-              </span>
-            </div>
-          </article>
-
-          <!-- Kids -->
-          <article class="story-card" data-category="Kids">
-            <div>
-              <div class="story-category">Kids</div>
-              <div
-                class="story-title"
-                data-en="“I feel like I’m failing as a parent”"
-                data-ar="«حاسس إني فاشل كأب/أم»"
-              >
-                “I feel like I’m failing as a parent”
-              </div>
-              <p
-                class="story-text"
-                data-en="My 8-year-old daughter has become so clingy and emotional. Some days I lose my patience and shout, then I cry after she sleeps. I love her so much, but I’m scared I’m doing permanent damage to her heart…"
-                data-ar="بنتي عمرها ٨ سنين صارت تتعلّق فيني كتير وحسّاسة زيادة. أحياناً بفقد أعصابي وبصرخ، وببكي بعد ما تنام. بحبها من قلبي، بس خايف أجرح قلبها للأبد…"
-              >
-                My 8-year-old daughter has become so emotional and clingy...
-              </p>
-            </div>
-            <div class="story-footer">
-              <div class="reactions">
-                <span data-en="❤️ 22 people related" data-ar="❤️ ٢٢ شخص حاسّوا مثلي">
-                  ❤️ 22 people related
-                </span>
-                <span data-en="💬 5 gentle replies" data-ar="💬 ٥ ردود لطيفة">
-                  💬 5 gentle replies
-                </span>
-              </div>
-              <span class="story-meta-tag"
-                    data-en="Example story"
-                    data-ar="قصة نموذجية">
-                Example story
-              </span>
-            </div>
-          </article>
-
-          <!-- Marriage -->
-          <article class="story-card" data-category="Marriage">
-            <div>
-              <div class="story-category">Marriage</div>
-              <div
-                class="story-title"
-                data-en="“We stopped talking like friends, only like roommates”"
-                data-ar="«بطّلنا نحكي كأصحاب، صرنا بس سكان نفس البيت»"
-              >
-                “We stopped talking like friends, only like roommates”
-              </div>
-              <p
-                class="story-text"
-                data-en="We don’t fight loudly, but the silence hurts. We talk about chores, bills, kids, but not about our hearts. I miss laughing together and feeling chosen. I’m scared to say it out loud because I don’t want to start a war…"
-                data-ar="ما بنتخانق بصوت عالي، بس الصمت مؤلم. نحكي عن الفواتير، الأولاد، الشغل… بس مش عن قلوبنا. مشتاق/ة نضحك سوا ونحس إننا مختارين بعض. خايف/ة أحكي بصراحة حتى ما تبدأ حرب…"
-              >
-                We don’t fight loudly, but the silence hurts more...
-              </p>
-            </div>
-            <div class="story-footer">
-              <div class="reactions">
-                <span data-en="❤️ 31 people related" data-ar="❤️ ٣١ شخص حاسّوا مثلي">
-                  ❤️ 31 people related
-                </span>
-                <span data-en="💬 8 gentle replies" data-ar="💬 ٨ ردود لطيفة">
-                  💬 8 gentle replies
-                </span>
-              </div>
-              <span class="story-meta-tag"
-                    data-en="Example story"
-                    data-ar="قصة نموذجية">
-                Example story
-              </span>
-            </div>
-          </article>
-
-          <!-- Adult / Finance mixed -->
-          <article class="story-card" data-category="Adult">
-            <div>
-              <div class="story-category">Adult</div>
-              <div
-                class="story-title"
-                data-en="“I’m the oldest child who never got to be a child”"
-                data-ar="«أنا أكبر واحد بالبيت… وما حسّيت طفولتي»"
-              >
-                “I’m the oldest child who never got to be a child”
-              </div>
-              <p
-                class="story-text"
-                data-en="Since I was young I handled my siblings, house work and my parents’ stress. Now as an adult, everyone still expects me to fix everything. I don’t know who I am outside of being responsible for everyone else…"
-                data-ar="من وأنا صغير/ة وأنا مسؤولة عن إخوتي، والبيت، ومشاكل أهلي. اليوم وأنا كبير/ة، الكل لسا متوقّع مني أصلّح كل شي. ما بعرف مين أنا بعيد عن دور الشخص المسؤول عن الكل…"
-              >
-                Since I was young I was the one who handled everything at home...
-              </p>
-            </div>
-            <div class="story-footer">
-              <div class="reactions">
-                <span data-en="❤️ 26 people related" data-ar="❤️ ٢٦ شخص حاسّوا مثلي">
-                  ❤️ 26 people related
-                </span>
-                <span data-en="💬 6 gentle replies" data-ar="💬 ٦ ردود لطيفة">
-                  💬 6 gentle replies
-                </span>
-              </div>
-              <span class="story-meta-tag"
-                    data-en="Example story"
-                    data-ar="قصة نموذجية">
-                Example story
-              </span>
-            </div>
-          </article>
-        </div>
-
-        <p class="empty-state"
-           id="no-stories-message"
-           style="display:none;"
-           data-en="No stories in this category yet. In the real app, this is where new posts from the community will appear."
-           data-ar="ما في قصص ضمن هالفئة حالياً. في النسخة الكاملة، هون رح يظهروا منشورات جديدة من المجتمع.">
-          No stories in this category yet. In the real app, this is where new posts from the community will appear.
-        </p>
+      <div class="filters-row">
+        <button class="filter-pill active" data-filter="All" data-en="All" data-ar="الكل">All</button>
+        <button class="filter-pill" data-filter="Kids" data-en="Kids" data-ar="الأطفال">Kids</button>
+        <button class="filter-pill" data-filter="Teens" data-en="Teens" data-ar="المراهقين">Teens</button>
+        <button class="filter-pill" data-filter="Adult" data-en="Adult" data-ar="الكبار">Adult</button>
+        <button class="filter-pill" data-filter="Marriage" data-en="Marriage" data-ar="الزواج">Marriage</button>
+        <button class="filter-pill" data-filter="Finance" data-en="Finance" data-ar="المال">Finance</button>
       </div>
-    </section>
+
+      <!-- STORIES RENDER HERE -->
+      <div id="stories-list" class="stories-grid"></div>
+
+      <div id="stories-empty" class="empty-state" style="display:none;"
+           data-en="No real stories yet. Be the first person to share what’s on your heart."
+           data-ar="لسا ما في قصص حقيقية. كون أول شخص يشارك اللي بقلبك.">
+        No real stories yet. Be the first person to share what’s on your heart.
+      </div>
+    </div>
   </main>
 
   <!-- FOOTER -->
@@ -750,65 +503,115 @@
   (function () {
     const langSelect = document.getElementById('language-select');
     const navAuthLabel = document.getElementById('nav-auth-label');
+    const storiesList = document.getElementById('stories-list');
+    const storiesEmpty = document.getElementById('stories-empty');
+    const filterButtons = document.querySelectorAll('.filter-pill');
+
+    let currentLang = 'en';
+    let allStories = [];
+    let currentFilter = 'All';
 
     function applyLanguage(lang) {
+      currentLang = lang;
       const elements = document.querySelectorAll('[data-en]');
       elements.forEach(el => {
         const en = el.getAttribute('data-en');
         const ar = el.getAttribute('data-ar') || en;
-        el.innerHTML = lang === 'ar' ? ar : en;
+        el.textContent = lang === 'ar' ? ar : en;
       });
 
       document.documentElement.lang = lang === 'ar' ? 'ar' : 'en';
       document.documentElement.dir  = lang === 'ar' ? 'rtl' : 'ltr';
     }
 
-    // Always start in English
+    // Start in English always
     applyLanguage('en');
     if (langSelect) {
       langSelect.value = 'en';
       langSelect.addEventListener('change', () => {
-        const lang = langSelect.value;
-        applyLanguage(lang);
+        applyLanguage(langSelect.value);
+        renderStories(); // re-render labels like "Anonymous" in correct language
       });
     }
 
-    // === Simple filter logic ===
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const storyCards = document.querySelectorAll('.story-card');
-    const noStoriesMessage = document.getElementById('no-stories-message');
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr);
+      return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+    }
 
-    function applyFilter(category) {
-      let visibleCount = 0;
+    function escapeHTML(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
 
-      storyCards.forEach(card => {
-        const cardCat = card.getAttribute('data-category');
-        if (category === 'all' || cardCat === category) {
-          card.style.display = '';
-          visibleCount++;
-        } else {
-          card.style.display = 'none';
-        }
+    function renderStories() {
+      if (!storiesList) return;
+
+      const filtered = allStories.filter(story => {
+        if (currentFilter === 'All') return true;
+        return story.category === currentFilter;
       });
 
-      if (noStoriesMessage) {
-        noStoriesMessage.style.display = visibleCount === 0 ? '' : 'none';
+      storiesList.innerHTML = '';
+
+      if (!filtered.length) {
+        if (storiesEmpty) storiesEmpty.style.display = 'block';
+        return;
+      } else {
+        if (storiesEmpty) storiesEmpty.style.display = 'none';
       }
+
+      filtered.forEach(story => {
+        const who =
+          story.is_anonymous
+            ? (currentLang === 'ar' ? 'مجهول' : 'Anonymous')
+            : (currentLang === 'ar' ? 'عضو من المجتمع' : 'Community member');
+
+        const shortContent = story.content.length > 260
+          ? story.content.slice(0, 260) + '…'
+          : story.content;
+
+        const card = document.createElement('article');
+        card.className = 'story-card';
+        card.innerHTML = `
+          <div class="story-category">${escapeHTML(story.category || '')}</div>
+          <div class="story-title">${escapeHTML(story.title || '')}</div>
+          <div class="story-meta">
+            ${escapeHTML(who)} • ${formatDate(story.created_at)}
+          </div>
+          <div class="story-content">
+            ${escapeHTML(shortContent || '')}
+          </div>
+          <div class="story-footer">
+            <span>
+              <span class="dot"></span>
+              ${currentLang === 'ar'
+                ? 'هذا مثال بسيط لكيف رح تُعرض القصص الحقيقية'
+                : 'Preview of how real stories will appear'}
+            </span>
+            <span>
+              💛 ${currentLang === 'ar' ? 'أنت لست وحدك' : 'You’re not alone'}
+            </span>
+          </div>
+        `;
+        storiesList.appendChild(card);
+      });
     }
 
+    // Category filter buttons
     filterButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         filterButtons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        const cat = btn.getAttribute('data-category-filter');
-        applyFilter(cat);
+        currentFilter = btn.getAttribute('data-filter') || 'All';
+        renderStories();
       });
     });
 
-    // Initial filter
-    applyFilter('all');
-
-    // === Supabase auth label (just for header status) ===
+    // === Supabase setup ===
     const SUPABASE_URL = 'https://tnohzvrpqiaiupwyaxcp.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K';
 
@@ -840,7 +643,35 @@
       }
     }
 
+    async function loadStories() {
+      try {
+        const { data, error } = await supabase
+          .from('stories')
+          .select('id, title, content, category, is_anonymous, created_at')
+          .order('created_at', { ascending: false })
+          .limit(50);
+
+        if (error) {
+          console.error('Error loading stories:', error);
+          if (storiesEmpty) {
+            storiesEmpty.style.display = 'block';
+            storiesEmpty.textContent =
+              currentLang === 'ar'
+                ? 'صار خطأ بسيط أثناء تحميل القصص.'
+                : 'Something went wrong while loading stories.';
+          }
+          return;
+        }
+
+        allStories = data || [];
+        renderStories();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
     refreshUserLabel();
+    loadStories();
   })();
 </script>
 </body>
