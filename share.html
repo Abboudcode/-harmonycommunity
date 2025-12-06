@@ -579,29 +579,21 @@
 
             <p
               class="note"
-              data-en="If your account is set to “Always show me as Anonymous”, Harmony will still hide your name even if this box is unchecked."
-              data-ar="إذا حسابك مفعّل على &quot;دائماً إظهرني كمجهول&quot;، هارموني رح تخفي اسمك حتى لو هذا الخيار غير مفعّل."
+              id="share-note"
+              data-en="Your story will be saved privately in Harmony’s database. Soon, it will appear on the Stories page so others can react with kindness."
+              data-ar="قصتك رح تنحفظ بشكل خاص في قاعدة بيانات هارموني. قريباً، رح تظهر في صفحة القصص حتى الناس تتفاعل معها بلطف."
             >
-              If your account is set to “Always show me as Anonymous”, Harmony will still hide your name even if this box is unchecked.
+              Your story will be saved privately in Harmony’s database. Soon, it will appear on the Stories page so others can react with kindness.
             </p>
 
             <button
               type="submit"
               class="btn-primary"
-              data-en="Share my story (preview)"
-              data-ar="أنشر قصتي (نسخة معاينة)"
+              data-en="Share my story"
+              data-ar="أنشر قصتي"
             >
-              Share my story (preview)
+              Share my story
             </button>
-
-            <p
-              class="note"
-              id="share-note"
-              data-en="Right now this is a preview. Your words are not yet saved to the live database. Soon, this button will publish your story to the Harmony community."
-              data-ar="حالياً هذه نسخة معاينة. كلماتك لسا ما تنحفظ في قاعدة بيانات حقيقية. قريباً، هذا الزر رح ينشر قصتك لمجتمع هارموني."
-            >
-              Right now this is a preview. Your words are not yet saved to the live database. Soon, this button will publish your story to the Harmony community.
-            </p>
 
             <div id="share-status"></div>
           </form>
@@ -709,6 +701,7 @@
     const shareForm = document.getElementById('share-form');
     const shareStatus = document.getElementById('share-status');
 
+    // ===== Language handling =====
     function applyLanguage(lang) {
       const elements = document.querySelectorAll('[data-en]');
       elements.forEach(el => {
@@ -731,60 +724,35 @@
       });
     }
 
-    function setStatus(message, type) {
-      if (!shareStatus) return;
-      if (!message) {
-        shareStatus.innerHTML = '';
-        return;
-      }
-      const cls = type === 'error' ? 'error-message' : 'success-message';
-      shareStatus.innerHTML = '<div class="' + cls + '">' + message + '</div>';
-    }
-
-    // For now: demo-only submit (no backend write yet).
-    if (shareForm) {
-      shareForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const title = document.getElementById('story-title').value.trim();
-        const category = document.getElementById('story-category').value;
-        const details = document.getElementById('story-details').value.trim();
-        const anon = document.getElementById('story-anon').checked;
-
-        if (!title || !details) {
-          setStatus('Please fill the title and details before you share.', 'error');
-          return;
-        }
-
-        // Just a preview success, no real save yet.
-        setStatus(
-          'Thank you for trusting Harmony with your story. In this preview version, your words are not saved yet – but this is exactly how it will feel when the real posting goes live. 💛',
-          'success'
-        );
-
-        // Optionally clear the form after a short delay
-        setTimeout(() => {
-          shareForm.reset();
-        }, 1000);
-      });
-    }
-
-    // === Supabase auth label (header status only, same project as sign-in) ===
+    // ===== Supabase client =====
     const SUPABASE_URL = 'https://tnohzvrpqiaiupwyaxcp.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K';
 
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    async function refreshUserLabel() {
-      const { data, error } = await supabase.auth.getUser();
+    let cachedUser = null;
+
+    async function getCurrentUser() {
+      if (cachedUser !== null) return cachedUser;
+      const { data, error } = await supabaseClient.auth.getUser();
       if (error || !data.user) {
+        cachedUser = null;
+      } else {
+        cachedUser = data.user;
+      }
+      return cachedUser;
+    }
+
+    // ===== Header auth label =====
+    async function refreshUserLabel() {
+      const user = await getCurrentUser();
+      if (!user) {
         if (navAuthLabel) {
           navAuthLabel.textContent = 'Not signed in';
         }
         return;
       }
 
-      const user = data.user;
       const meta = user.user_metadata || {};
       const displayName = meta.display_name || user.email;
       const alwaysAnon = !!meta.always_anonymous;
@@ -802,6 +770,78 @@
     }
 
     refreshUserLabel();
+
+    // ===== Helper for status messages =====
+    function setStatus(message, type) {
+      if (!shareStatus) return;
+      if (!message) {
+        shareStatus.innerHTML = '';
+        return;
+      }
+      const cls = type === 'error' ? 'error-message' : 'success-message';
+      shareStatus.innerHTML = '<div class="' + cls + '">' + message + '</div>';
+    }
+
+    // ===== Form submit: insert into Supabase =====
+    if (shareForm) {
+      shareForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        setStatus('', 'success');
+
+        const titleEl = document.getElementById('story-title');
+        const categoryEl = document.getElementById('story-category');
+        const detailsEl = document.getElementById('story-details');
+        const anonEl = document.getElementById('story-anon');
+
+        const title = titleEl.value.trim();
+        const category = categoryEl.value;
+        const details = detailsEl.value.trim();
+        const anonChecked = anonEl.checked;
+
+        if (!title || !details) {
+          setStatus('Please fill the title and details before you share.', 'error');
+          return;
+        }
+
+        setStatus('Saving your story…', 'success');
+
+        try {
+          const user = await getCurrentUser();
+          const userId = user ? user.id : null;
+          const meta = user ? (user.user_metadata || {}) : {};
+          const alwaysAnon = !!meta.always_anonymous;
+
+          const isAnonymous = alwaysAnon || anonChecked;
+
+          const { error } = await supabaseClient
+            .from('stories')
+            .insert([{
+              user_id: userId,          // can be null for guests
+              title: title,
+              content: details,
+              category: category,
+              is_anonymous: isAnonymous,
+              media_url: null          // we’ll wire this later
+            }]);
+
+          if (error) {
+            console.error(error);
+            setStatus('There was a problem saving your story. Please try again in a moment.', 'error');
+            return;
+          }
+
+          setStatus(
+            'Thank you for trusting Harmony with your story. It was saved safely. Soon it will appear on the Stories page so others can support you. 💛',
+            'success'
+          );
+
+          shareForm.reset();
+        } catch (err) {
+          console.error(err);
+          setStatus('Unexpected error while saving your story. Please try again.', 'error');
+        }
+      });
+    }
   })();
 </script>
 </body>
