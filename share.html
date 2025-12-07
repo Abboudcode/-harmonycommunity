@@ -768,16 +768,17 @@
 
         const title   = document.getElementById('story-title').value.trim();
         const details = document.getElementById('story-details').value.trim();
+        const category = document.getElementById('story-category').value;
         const anonCheckbox = document.getElementById('story-anon');
         const isAnonFromCheckbox = anonCheckbox ? anonCheckbox.checked : false;
 
         const lang = (langSelect && langSelect.value) ? langSelect.value : initialLang;
 
-        if (!title || !details) {
+        if (!title || !details || !category) {
           setStatus(
             lang === 'ar'
-              ? 'رجاءً اكتب عنواناً ونصاً قبل إرسال قصتك.'
-              : 'Please fill the title and details before you share.',
+              ? 'رجاءً اكتب عنواناً، واختر فئة، واكتب التفاصيل قبل إرسال قصتك.'
+              : 'Please fill the title, choose a category, and add details before you share.',
             'error'
           );
           return;
@@ -812,8 +813,9 @@
             .insert({
               title,
               content: details,
-              user_id: userId
-              // later: category, is_anonymous: finalIsAnon
+              category,
+              user_id: userId,
+              is_anonymous: finalIsAnon
             });
 
           if (insertError) {
@@ -855,7 +857,6 @@
     async function refreshUserLabel() {
       const { data, error } = await supabase.auth.getUser();
       if (error || !data.user) {
-        // keep default data-en/data-ar; language switcher will handle text
         return;
       }
       const user = data.user;
