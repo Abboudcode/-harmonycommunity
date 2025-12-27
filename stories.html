@@ -4,10 +4,7 @@
   <meta charset="UTF-8" />
   <title>Stories – Harmony Community</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta
-    name="description"
-    content="Read real family stories from people like you – and see you’re not alone."
-  />
+  <meta name="description" content="Read example stories on Harmony Community." />
 
   <!-- Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -30,47 +27,30 @@
       --danger: #ef4444;
       --radius-lg: 18px;
       --radius-md: 12px;
-      --shadow-soft: 0 14px 35px rgba(15, 23, 42, 0.08);
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.12);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", sans-serif;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: radial-gradient(circle at top left, #eef2ff, #f9fafb 40%);
       color: var(--text-main);
       line-height: 1.6;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    a { color: inherit; text-decoration: none; }
 
-    .page {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+    .page { min-height: 100vh; display: flex; flex-direction: column; }
 
-    .max-w {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 0 1.25rem;
-    }
+    .max-w { max-width: 1120px; margin: 0 auto; padding: 0 1.25rem; }
 
-    /* HEADER */
-
+    /* HEADER / NAV */
     header {
       position: sticky;
       top: 0;
       z-index: 50;
-      backdrop-filter: blur(16px);
+      backdrop-filter: blur(18px);
       background: linear-gradient(180deg, #050817, #0f172a);
       border-bottom: 1px solid rgba(148, 163, 184, 0.35);
     }
@@ -83,16 +63,8 @@
       gap: 1rem;
     }
 
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .logo-wrapper {
-      display: flex;
-      align-items: center;
-    }
+    .nav-left { display: flex; align-items: center; gap: 0.5rem; }
+    .logo-wrapper { display: flex; align-items: center; }
 
     .nav-links {
       display: flex;
@@ -103,26 +75,15 @@
     }
 
     .nav-links a {
-      padding: 0.3rem 0.6rem;
+      padding: 0.3rem 0.7rem;
       border-radius: 999px;
       transition: background 0.2s, color 0.2s;
     }
 
-    .nav-links a:hover {
-      background: rgba(148, 163, 184, 0.22);
-      color: #ffffff;
-    }
+    .nav-links a:hover { background: rgba(148, 163, 184, 0.22); color: #ffffff; }
+    .nav-links a.active { background: rgba(129, 140, 248, 0.35); color: #ffffff; }
 
-    .nav-links a.active {
-      background: rgba(129, 140, 248, 0.38);
-      color: #ffffff;
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
+    .nav-right { display: flex; align-items: center; gap: 0.75rem; }
 
     .nav-ghost {
       font-size: 0.9rem;
@@ -141,90 +102,20 @@
       cursor: pointer;
     }
 
-    .language-select option {
-      color: #111827;
-      background: #ffffff;
-    }
+    .language-select option { color: #111827; background: #ffffff; }
 
-    @media (max-width: 720px) {
-      .nav-links {
-        display: none;
-      }
-    }
-
-    /* BUTTONS */
-
-    .btn-primary {
-      background: linear-gradient(135deg, #4f46e5, #6366f1);
-      color: #fff;
-      border-radius: 999px;
-      padding: 0.65rem 1.4rem;
-      font-size: 0.95rem;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.35);
-      transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
-      white-space: nowrap;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 16px 35px rgba(79, 70, 229, 0.45);
-    }
-
-    .btn-primary:active {
-      transform: translateY(0);
-      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
-      opacity: 0.9;
-    }
-
-    .btn-secondary {
-      background: #eef2ff;
-      color: #4f46e5;
-      border-radius: 999px;
-      padding: 0.55rem 1.2rem;
-      font-size: 0.92rem;
-      font-weight: 500;
-      border: 1px solid #c7d2fe;
-      cursor: pointer;
-      transition: background 0.15s, border-color 0.15s;
-    }
-
-    .btn-secondary:hover {
-      background: #e0e7ff;
-      border-color: #a5b4fc;
-    }
+    @media (max-width: 720px) { .nav-links { display: none; } }
 
     /* LAYOUT */
+    main { padding: 2.6rem 0 2rem; }
 
-    main {
-      padding: 2.6rem 0 2rem;
-    }
-
-    .page-header {
-      text-align: center;
-      margin-bottom: 1.8rem;
-    }
-
-    .page-header h1 {
-      font-size: 1.7rem;
-      margin-bottom: 0.4rem;
-    }
-
+    .page-header { text-align: center; margin-bottom: 1.8rem; }
+    .page-header h1 { font-size: 1.9rem; margin-bottom: 0.45rem; }
     .page-header p {
-      font-size: 0.95rem;
       color: var(--text-muted);
-      max-width: 640px;
+      font-size: 0.95rem;
+      max-width: 680px;
       margin: 0 auto;
-    }
-
-    .actions-row {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.75rem;
-      margin: 1.6rem 0 1.2rem;
     }
 
     .filters-row {
@@ -253,19 +144,15 @@
     }
 
     /* STORIES GRID */
-
     .stories-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      gap: 1.1rem;
-      margin-bottom: 1.5rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.15rem;
+      padding-bottom: 2rem;
     }
 
-    @media (min-width: 900px) {
-      .stories-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
+    @media (max-width: 1020px) { .stories-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 720px) { .stories-grid { grid-template-columns: minmax(0, 1fr); } }
 
     .story-card {
       background: var(--bg-card);
@@ -273,14 +160,20 @@
       padding: 1.2rem 1.15rem;
       border: 1px solid var(--border-soft);
       box-shadow: 0 12px 28px rgba(15, 23, 42, 0.04);
-      transition: box-shadow 0.16s ease, transform 0.16s ease,
-        border-color 0.16s ease;
+      transition: box-shadow 0.16s ease, transform 0.16s ease, border-color 0.16s ease;
+      height: 100%;
+      cursor: pointer; /* makes it obvious it’s clickable */
     }
 
     .story-card:hover {
       box-shadow: var(--shadow-soft);
       transform: translateY(-2px);
       border-color: #e5e7eb;
+    }
+
+    .story-card:focus-visible {
+      outline: 3px solid rgba(79, 70, 229, 0.35);
+      outline-offset: 4px;
     }
 
     .story-category {
@@ -295,23 +188,8 @@
       margin-bottom: 0.35rem;
     }
 
-    .story-title {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-    }
-
-    .story-meta {
-      font-size: 0.8rem;
-      color: #9ca3af;
-      margin-bottom: 0.4rem;
-    }
-
-    .story-content {
-      font-size: 0.9rem;
-      color: #374151;
-      margin-bottom: 0.7rem;
-    }
+    .story-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem; }
+    .story-excerpt { font-size: 0.9rem; color: #374151; margin-bottom: 0.7rem; }
 
     .story-footer {
       display: flex;
@@ -321,11 +199,7 @@
       color: #6b7280;
     }
 
-    .story-footer span {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
+    .story-footer span { display: inline-flex; align-items: center; gap: 0.3rem; }
 
     .story-footer .dot {
       width: 5px;
@@ -335,12 +209,7 @@
       display: inline-block;
     }
 
-    .empty-state {
-      text-align: center;
-      font-size: 0.92rem;
-      color: var(--text-muted);
-      padding: 1.8rem 1rem 0.2rem;
-    }
+    .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
 
     footer {
       padding: 1rem 0 1.5rem;
@@ -351,16 +220,19 @@
     }
 
     @media (max-width: 640px) {
-      main {
-        padding-top: 2.2rem;
-      }
-
-      .nav {
-        padding: 0.6rem 0;
-      }
+      main { padding-top: 2.2rem; }
+      .nav { padding: 0.6rem 0; }
     }
+
+    /* Minimal RTL support */
+    html[dir="rtl"] .story-card,
+    html[dir="rtl"] .story-card p,
+    html[dir="rtl"] .story-title { text-align: start; }
+
+    html[dir="rtl"] .story-footer { direction: rtl; }
   </style>
 </head>
+
 <body>
 <div class="page">
   <!-- HEADER -->
@@ -368,69 +240,23 @@
     <div class="max-w nav">
       <div class="nav-left">
         <div class="logo-wrapper">
-          <!-- Arc + heartbeat + Harmony text logo -->
-          <svg
-            width="180"
-            height="40"
-            viewBox="0 0 180 40"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-label="Harmony logo"
-            role="img"
-          >
-            <!-- Arc -->
-            <path
-              d="M10 22 C25 5, 55 5, 70 22"
-              fill="none"
-              stroke="#40cbb4"
-              stroke-width="3"
-              stroke-linecap="round"
-            />
-            <!-- Heartbeat / wave -->
-            <path
-              d="M12 22 L22 22 L27 15 L33 30 L38 22 L68 22"
-              fill="none"
-              stroke="#f5c451"
-              stroke-width="3"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <!-- Text -->
-            <text
-              x="78"
-              y="27"
-              font-family="Inter, system-ui, sans-serif"
-              font-size="18"
-              font-weight="600"
-              fill="#ffffff"
-            >
-              Harmony
-            </text>
+          <!-- Logo -->
+          <svg width="180" height="40" viewBox="0 0 180 40" xmlns="http://www.w3.org/2000/svg" aria-label="Harmony logo" role="img">
+            <path d="M10 22 C25 5, 55 5, 70 22" fill="none" stroke="#40cbb4" stroke-width="3" stroke-linecap="round" />
+            <path d="M12 22 L22 22 L27 15 L33 30 L38 22 L68 22" fill="none" stroke="#f5c451" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+            <text x="78" y="27" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="600" fill="#ffffff">Harmony</text>
           </svg>
         </div>
       </div>
 
       <nav class="nav-links">
-        <a href="index.html"
-           data-en="Home"
-           data-ar="الرئيسية">Home</a>
-        <a href="stories.html" class="active"
-           data-en="Stories"
-           data-ar="القصص">Stories</a>
-        <a href="share.html"
-           data-en="Share a Story"
-           data-ar="شارك قصة">Share a Story</a>
-        <a href="signin.html"
-           data-en="Sign In"
-           data-ar="تسجيل الدخول">Sign In</a>
-        <a href="about.html"
-           data-en="About"
-           data-ar="عن هارموني">About</a>
-        <a href="faq.html"
-           data-en="FAQ"
-           data-ar="الأسئلة الشائعة">FAQ</a>
-        <a href="contact.html"
-           data-en="Contact"
-           data-ar="اتصال">Contact</a>
+        <a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+        <a href="stories.html" class="active" data-en="Stories" data-ar="القصص">Stories</a>
+        <a href="share.html" data-en="Share a Story" data-ar="شارك قصة">Share a Story</a>
+        <a href="signin.html" data-en="Sign In" data-ar="تسجيل الدخول">Sign In</a>
+        <a href="about.html" data-en="About" data-ar="عن هارموني">About</a>
+        <a href="faq.html" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a>
+        <a href="contact.html" data-en="Contact" data-ar="اتصال">Contact</a>
       </nav>
 
       <div class="nav-right">
@@ -438,11 +264,7 @@
           <option value="en">English</option>
           <option value="ar">العربية</option>
         </select>
-        <div class="nav-ghost" id="nav-auth-label"
-             data-en="Not signed in"
-             data-ar="غير مسجّل الدخول">
-          Not signed in
-        </div>
+        <div class="nav-ghost" id="nav-auth-label" data-en="Not signed in" data-ar="غير مسجّل الدخول">Not signed in</div>
       </div>
     </div>
   </header>
@@ -451,65 +273,35 @@
   <main>
     <div class="max-w">
       <div class="page-header">
-        <h1
-          data-en="Stories from people like you"
-          data-ar="قصص من ناس مثلك تماماً"
-        >
-          Stories from people like you
-        </h1>
-        <p
-          data-en="In the full Harmony app, this page shows real stories from the community. Below you can already see the first real posts coming from the database."
-          data-ar="في تطبيق هارموني الكامل، هذه الصفحة بتعرض قصص حقيقية من المجتمع. تحت رح تبلّش تشوف أول القصص الحقيقية القادمة من قاعدة البيانات."
-        >
-          In the full Harmony app, this page shows real stories from the community. Below you can already see the first real posts coming from the database.
+        <h1 data-en="Stories" data-ar="القصص">Stories</h1>
+        <p data-en="Read example stories from the Harmony community preview." data-ar="اقرأ قصصاً تجريبية من معاينة مجتمع هارموني.">
+          Read example stories from the Harmony community preview.
         </p>
       </div>
 
-      <div class="actions-row">
-        <a href="share.html">
-          <button
-            class="btn-primary"
-            data-en="Share your own story"
-            data-ar="إحكي قصتك إنت"
-          >
-            Share your own story
-          </button>
-        </a>
-        <a href="signin.html">
-          <button
-            class="btn-secondary"
-            data-en="Sign in to save & react"
-            data-ar="سجّل دخول حتى تحفظ وترد"
-          >
-            Sign in to save & react
-          </button>
-        </a>
-      </div>
-
       <div class="filters-row">
-        <button class="filter-pill active" data-filter="All" data-en="All" data-ar="الكل">All</button>
-        <button class="filter-pill" data-filter="Kids" data-en="Kids" data-ar="الأطفال">Kids</button>
-        <button class="filter-pill" data-filter="Teens" data-en="Teens" data-ar="المراهقين">Teens</button>
-        <button class="filter-pill" data-filter="Adult" data-en="Adult" data-ar="الكبار">Adult</button>
-        <button class="filter-pill" data-filter="Marriage" data-en="Marriage" data-ar="الزواج">Marriage</button>
-        <button class="filter-pill" data-filter="Finance" data-en="Finance" data-ar="المال">Finance</button>
+        <button class="filter-pill active" data-filter="all" data-en="All" data-ar="الكل">All</button>
+        <button class="filter-pill" data-filter="kids" data-en="Kids" data-ar="أطفال">Kids</button>
+        <button class="filter-pill" data-filter="teens" data-en="Teens" data-ar="مراهقين">Teens</button>
+        <button class="filter-pill" data-filter="marriage" data-en="Marriage" data-ar="زواج">Marriage</button>
+        <button class="filter-pill" data-filter="inlaws" data-en="In-laws" data-ar="الأهل">In-laws</button>
+        <button class="filter-pill" data-filter="money" data-en="Money" data-ar="المال">Money</button>
+        <button class="filter-pill" data-filter="finance" data-en="Finance" data-ar="التمويل">Finance</button>
       </div>
 
-      <!-- STORIES RENDER HERE -->
-      <div id="stories-list" class="stories-grid"></div>
+      <!-- STORIES RENDER TARGET -->
+      <div id="stories-grid" class="stories-grid"></div>
 
-      <div id="stories-empty" class="empty-state" style="display:none;"
-           data-en="No real stories yet. Be the first person to share what’s on your heart."
-           data-ar="لسا ما في قصص حقيقية. كون أول شخص يشارك اللي بقلبك.">
-        No real stories yet. Be the first person to share what’s on your heart.
+      <div id="empty-state" class="empty-state" style="display:none;"
+           data-en="No stories found for this category."
+           data-ar="لا توجد قصص لهذه الفئة حالياً.">
+        No stories found for this category.
       </div>
     </div>
   </main>
 
   <!-- FOOTER -->
-  <footer>
-    Harmony Community © 2025
-  </footer>
+  <footer>Harmony Community © 2025</footer>
 </div>
 
 <!-- Supabase client -->
@@ -521,27 +313,16 @@
 
     const langSelect = document.getElementById('language-select');
     const navAuthLabel = document.getElementById('nav-auth-label');
-    const storiesList = document.getElementById('stories-list');
-    const storiesEmpty = document.getElementById('stories-empty');
-    const filterButtons = document.querySelectorAll('.filter-pill');
-
-    let currentLang = 'en';
-    let allStories = [];
-    let currentFilter = 'All';
 
     function getInitialLang() {
       try {
         const saved = localStorage.getItem(LANG_KEY);
         if (saved === 'ar' || saved === 'en') return saved;
-      } catch (e) {
-        // ignore
-      }
+      } catch (e) {}
       return 'en';
     }
 
     function applyLanguage(lang) {
-      currentLang = lang;
-
       const elements = document.querySelectorAll('[data-en]');
       elements.forEach(el => {
         const en = el.getAttribute('data-en');
@@ -553,93 +334,24 @@
       document.documentElement.dir  = (lang === 'ar') ? 'rtl' : 'ltr';
     }
 
-    function formatDate(dateStr) {
-      if (!dateStr) return '';
-      const d = new Date(dateStr);
-      return d.toLocaleDateString(undefined, {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-      });
-    }
-
-    function escapeHTML(str) {
-      if (!str) return '';
-      return str
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-    }
-
-    function renderStories() {
-      if (!storiesList) return;
-
-      const filtered = allStories.filter(story => {
-        if (currentFilter === 'All') return true;
-        return story.category === currentFilter;
-      });
-
-      storiesList.innerHTML = '';
-
-      if (!filtered.length) {
-        if (storiesEmpty) storiesEmpty.style.display = 'block';
-        return;
-      } else {
-        if (storiesEmpty) storiesEmpty.style.display = 'none';
-      }
-
-      filtered.forEach(story => {
-        const who =
-          story.is_anonymous
-            ? (currentLang === 'ar' ? 'مجهول' : 'Anonymous')
-            : (currentLang === 'ar' ? 'عضو من المجتمع' : 'Community member');
-
-        const shortContent = story.content && story.content.length > 260
-          ? story.content.slice(0, 260) + '…'
-          : (story.content || '');
-
-        const card = document.createElement('article');
-        card.className = 'story-card';
-        card.innerHTML = `
-          <div class="story-category">${escapeHTML(story.category || '')}</div>
-          <div class="story-title">${escapeHTML(story.title || '')}</div>
-          <div class="story-meta">
-            ${escapeHTML(who)} • ${formatDate(story.created_at)}
-          </div>
-          <div class="story-content">
-            ${escapeHTML(shortContent)}
-          </div>
-          <div class="story-footer">
-            <span>
-              <span class="dot"></span>
-              ${currentLang === 'ar'
-                ? 'هذا مثال بسيط لكيف رح تُعرض القصص الحقيقية'
-                : 'Preview of how real stories will appear'}
-            </span>
-            <span>
-              💛 ${currentLang === 'ar' ? 'أنت لست وحدك' : 'You’re not alone'}
-            </span>
-          </div>
-        `;
-        storiesList.appendChild(card);
-      });
-    }
-
-    // Category filter buttons
-    filterButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentFilter = btn.getAttribute('data-filter') || 'All';
-        renderStories();
-      });
-    });
-
-    // === Supabase setup ===
+    // === Supabase setup (same project) ===
     const SUPABASE_URL = 'https://tnohzvrpqiaiupwyaxcp.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K';
-
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let currentLang = getInitialLang();
+    applyLanguage(currentLang);
+
+    if (langSelect) {
+      langSelect.value = currentLang;
+      langSelect.addEventListener('change', () => {
+        currentLang = langSelect.value;
+        try { localStorage.setItem(LANG_KEY, currentLang); } catch (e) {}
+        applyLanguage(currentLang);
+        refreshUserLabel(currentLang);
+        renderStories(activeFilter);
+      });
+    }
 
     async function refreshUserLabel(langOverride) {
       const lang = langOverride || currentLang;
@@ -670,58 +382,128 @@
           : 'Signed in: ' + displayName;
       }
 
-      if (navAuthLabel) {
-        navAuthLabel.textContent = label;
-      }
+      if (navAuthLabel) navAuthLabel.textContent = label;
     }
 
-    async function loadStories() {
-      try {
-        const { data, error } = await supabase
-          .from('stories')
-          .select('id, title, content, category, is_anonymous, created_at')
-          .order('created_at', { ascending: false })
-          .limit(50);
+    const exampleStories = [
+      {
+        id: 1,
+        category: 'kids',
+        categoryLabelEn: 'Kids',
+        categoryLabelAr: 'أطفال',
+        titleEn: '“I feel like I’m failing as a parent”',
+        titleAr: '«حاسس إني عم أفشل كأب/أم»',
+        excerptEn: 'My 8-year-old has become so clingy and emotional. Some days I lose my patience and shout, then cry after she sleeps...',
+        excerptAr: 'بنتي عمرها ٨ سنين صارت متعلّقة فيّ وعصبيّة زيادة. أحياناً بفقد أعصابي وبصرخ، وبالليل بعد ما تنام ببكي من الندم...',
+        relatedEn: '22 people related',
+        relatedAr: '٢٢ شخص حسّوا بنفس الشي',
+        repliesEn: '5 gentle replies',
+        repliesAr: '٥ ردود لطيفة',
+      },
+      {
+        id: 2,
+        category: 'marriage',
+        categoryLabelEn: 'Marriage',
+        categoryLabelAr: 'زواج',
+        titleEn: '“My spouse and I stopped talking”',
+        titleAr: '«أنا وشريكي وقفنا نحكي»',
+        excerptEn: 'It feels like we live in the same house but we are strangers. Every conversation becomes an argument...',
+        excerptAr: 'حسّيت كأنو عايشين بنفس البيت بس غرباء. كل حكي بيتحوّل لمشكلة وخناق...',
+        relatedEn: '14 people related',
+        relatedAr: '١٤ شخص حسّوا بنفس الشي',
+        repliesEn: '3 gentle replies',
+        repliesAr: '٣ ردود لطيفة',
+      },
+      {
+        id: 3,
+        category: 'money',
+        categoryLabelEn: 'Money',
+        categoryLabelAr: 'المال',
+        titleEn: '“Bills are crushing us”',
+        titleAr: '«الفواتير عم تكسرنا»',
+        excerptEn: 'Rent, groceries, school, car… everything is going up. I smile in front of my kids but inside I’m panicking...',
+        excerptAr: 'إيجار، أكل، مدرسة، سيارة… كل شي عم يغلى. بضحك قدام ولادي بس من جوّا عم بخاف...',
+        relatedEn: '31 people related',
+        relatedAr: '٣١ شخص حسّوا بنفس الشي',
+        repliesEn: '7 gentle replies',
+        repliesAr: '٧ ردود لطيفة',
+      }
+    ];
 
-        if (error) {
-          console.error('Error loading stories:', error);
-          if (storiesEmpty) {
-            storiesEmpty.style.display = 'block';
-            storiesEmpty.textContent =
-              currentLang === 'ar'
-                ? 'صار خطأ بسيط أثناء تحميل القصص.'
-                : 'Something went wrong while loading stories.';
+    let activeFilter = 'all';
+
+    function goToStory(id) {
+      window.location.href = `story.html?id=${encodeURIComponent(id)}`;
+    }
+
+    function renderStories(filter = 'all') {
+      const grid = document.getElementById('stories-grid');
+      const empty = document.getElementById('empty-state');
+      if (!grid || !empty) return;
+
+      grid.innerHTML = '';
+
+      const filtered = (filter === 'all')
+        ? exampleStories
+        : exampleStories.filter(s => s.category === filter);
+
+      if (!filtered.length) {
+        empty.style.display = 'block';
+        return;
+      }
+
+      empty.style.display = 'none';
+
+      filtered.forEach(story => {
+        const cat = (currentLang === 'ar') ? story.categoryLabelAr : story.categoryLabelEn;
+        const title = (currentLang === 'ar') ? story.titleAr : story.titleEn;
+        const excerpt = (currentLang === 'ar') ? story.excerptAr : story.excerptEn;
+        const related = (currentLang === 'ar') ? story.relatedAr : story.relatedEn;
+        const replies = (currentLang === 'ar') ? story.repliesAr : story.repliesEn;
+
+        const card = document.createElement('div');
+        card.className = 'story-card';
+        card.setAttribute('role', 'link');
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-label', title);
+
+        card.innerHTML = `
+          <div class="story-category">${cat}</div>
+          <div class="story-title">${title}</div>
+          <div class="story-excerpt">${excerpt}</div>
+          <div class="story-footer">
+            <span><span class="dot"></span>${related}</span>
+            <span><span class="dot"></span>${replies}</span>
+          </div>
+        `;
+
+        // Bullet-proof click handling
+        card.addEventListener('click', () => goToStory(story.id));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            goToStory(story.id);
           }
-          return;
-        }
+        });
 
-        allStories = data || [];
-        renderStories();
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
-    // === Init language from localStorage ===
-    const initialLang = getInitialLang();
-    applyLanguage(initialLang);
-
-    if (langSelect) {
-      langSelect.value = initialLang;
-      langSelect.addEventListener('change', () => {
-        const lang = langSelect.value;
-        try {
-          localStorage.setItem(LANG_KEY, lang);
-        } catch (e) {}
-        applyLanguage(lang);
-        refreshUserLabel(lang);
-        renderStories();
+        grid.appendChild(card);
       });
     }
 
-    // Initial data + auth label
-    refreshUserLabel(initialLang);
-    loadStories();
+    function setActiveFilter(filter) {
+      activeFilter = filter;
+      document.querySelectorAll('.filter-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === filter);
+      });
+      renderStories(filter);
+    }
+
+    document.querySelectorAll('.filter-pill').forEach(btn => {
+      btn.addEventListener('click', () => setActiveFilter(btn.dataset.filter));
+    });
+
+    refreshUserLabel(currentLang);
+    renderStories(activeFilter);
   })();
 </script>
 </body>
