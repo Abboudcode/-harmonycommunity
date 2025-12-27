@@ -309,20 +309,20 @@
 
           <div class="hero-actions">
             <a href="share.html">
-              <button class="btn-primary" data-en="Share your own story" data-ar="شارك قصتك">Share your own story</button>
+              <button class="btn-primary" type="button" data-en="Share your own story" data-ar="شارك قصتك">Share your own story</button>
             </a>
             <a href="signin.html">
-              <button class="btn-secondary" data-en="Sign in to save & react" data-ar="سجّل لتتفاعل وتحفظ">Sign in to save & react</button>
+              <button class="btn-secondary" type="button" data-en="Sign in to save & react" data-ar="سجّل لتتفاعل وتحفظ">Sign in to save & react</button>
             </a>
           </div>
 
           <div class="filters" id="filters">
-            <button class="filter-pill active" data-filter="all" data-en="All" data-ar="الكل">All</button>
-            <button class="filter-pill" data-filter="Kids" data-en="Kids" data-ar="أطفال">Kids</button>
-            <button class="filter-pill" data-filter="Teens" data-en="Teens" data-ar="مراهقين">Teens</button>
-            <button class="filter-pill" data-filter="Adult" data-en="Adult" data-ar="بالغين">Adult</button>
-            <button class="filter-pill" data-filter="Marriage" data-en="Marriage" data-ar="زواج">Marriage</button>
-            <button class="filter-pill" data-filter="Finance" data-en="Finance" data-ar="مال">Finance</button>
+            <button class="filter-pill active" type="button" data-filter="all" data-en="All" data-ar="الكل">All</button>
+            <button class="filter-pill" type="button" data-filter="Kids" data-en="Kids" data-ar="أطفال">Kids</button>
+            <button class="filter-pill" type="button" data-filter="Teens" data-en="Teens" data-ar="مراهقين">Teens</button>
+            <button class="filter-pill" type="button" data-filter="Adult" data-en="Adult" data-ar="بالغين">Adult</button>
+            <button class="filter-pill" type="button" data-filter="Marriage" data-en="Marriage" data-ar="زواج">Marriage</button>
+            <button class="filter-pill" type="button" data-filter="Finance" data-en="Finance" data-ar="مال">Finance</button>
           </div>
         </div>
 
@@ -340,99 +340,98 @@
 
   <script>
     (function () {
-      const LANG_KEY = 'harmony_lang';
+      const LANG_KEY = "harmony_lang";
 
-      const langSelect = document.getElementById('language-select');
-      const navAuthLabel = document.getElementById('nav-auth-label');
+      const langSelect = document.getElementById("language-select");
+      const navAuthLabel = document.getElementById("nav-auth-label");
 
-      const storiesList = document.getElementById('stories-list');
-      const storiesEmpty = document.getElementById('stories-empty');
-      const filters = document.getElementById('filters');
+      const storiesList = document.getElementById("stories-list");
+      const storiesEmpty = document.getElementById("stories-empty");
+      const filters = document.getElementById("filters");
 
-      let currentLang = 'en';
+      let currentLang = "en";
       let allStories = [];
-      let activeFilter = 'all';
+      let activeFilter = "all";
 
       function getInitialLang() {
         try {
           const saved = localStorage.getItem(LANG_KEY);
-          if (saved === 'ar' || saved === 'en') return saved;
+          if (saved === "ar" || saved === "en") return saved;
         } catch (e) {}
-        return 'en';
+        return "en";
       }
 
       function applyLanguage(lang) {
         currentLang = lang;
 
-        const elements = document.querySelectorAll('[data-en]');
-        elements.forEach(el => {
-          const en = el.getAttribute('data-en');
-          const ar = el.getAttribute('data-ar') || en;
-          el.innerHTML = (lang === 'ar') ? ar : en;
+        document.querySelectorAll("[data-en]").forEach((el) => {
+          const en = el.getAttribute("data-en");
+          const ar = el.getAttribute("data-ar") || en;
+          el.innerHTML = lang === "ar" ? ar : en;
         });
 
-        document.documentElement.lang = (lang === 'ar') ? 'ar' : 'en';
-        document.documentElement.dir  = (lang === 'ar') ? 'rtl' : 'ltr';
+        document.documentElement.lang = lang === "ar" ? "ar" : "en";
+        document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
       }
 
       function escapeHtml(str) {
-        return String(str || '')
-          .replaceAll('&', '&amp;')
-          .replaceAll('<', '&lt;')
-          .replaceAll('>', '&gt;')
-          .replaceAll('"', '&quot;')
-          .replaceAll("'", '&#039;');
+        return String(str || "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
       }
 
       function formatDate(dateStr) {
-        if (!dateStr) return '';
+        if (!dateStr) return "";
         const d = new Date(dateStr);
-        if (isNaN(d.getTime())) return '';
-        return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        if (isNaN(d.getTime())) return "";
+        return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
       }
 
       function showErrorMessage() {
         if (!storiesEmpty) return;
-        storiesEmpty.style.display = 'block';
+        storiesEmpty.style.display = "block";
         storiesEmpty.textContent =
-          currentLang === 'ar'
-            ? 'صار خطأ بسيط أثناء تحميل القصص.'
-            : 'Something went wrong while loading stories.';
+          currentLang === "ar"
+            ? "صار خطأ بسيط أثناء تحميل القصص."
+            : "Something went wrong while loading stories.";
       }
 
       function renderStories() {
         if (!storiesList) return;
 
-        const filtered = allStories.filter(story => {
-          if (activeFilter === 'all') return true;
-          return (story.category || '') === activeFilter;
+        const filtered = allStories.filter((story) => {
+          if (activeFilter === "all") return true;
+          return (story.category || "") === activeFilter;
         });
 
-        storiesList.innerHTML = '';
+        storiesList.innerHTML = "";
 
         if (!filtered.length) {
           if (storiesEmpty) {
-            storiesEmpty.style.display = 'block';
+            storiesEmpty.style.display = "block";
             storiesEmpty.textContent =
-              currentLang === 'ar'
-                ? 'لا توجد قصص ضمن هذا التصنيف حالياً.'
-                : 'No stories in this category yet.';
+              currentLang === "ar"
+                ? "لا توجد قصص ضمن هذا التصنيف حالياً."
+                : "No stories in this category yet.";
           }
           return;
         }
 
-        if (storiesEmpty) storiesEmpty.style.display = 'none';
+        if (storiesEmpty) storiesEmpty.style.display = "none";
 
-        filtered.forEach(story => {
-          const title = story.title || '';
-          const content = story.content || '';
-          const category = story.category || 'General';
-          const createdAt = story.created_at || '';
+        filtered.forEach((story) => {
+          const title = story.title || "";
+          const content = story.content || "";
+          const category = story.category || "General";
+          const createdAt = story.created_at || "";
 
-          const snippet = content.length > 140 ? content.slice(0, 140) + '…' : content;
+          const snippet = content.length > 140 ? content.slice(0, 140) + "…" : content;
 
-          const card = document.createElement('div');
-          card.className = 'story-card';
+          const card = document.createElement("div");
+          card.className = "story-card";
 
           card.innerHTML = `
             <div class="story-tag">${escapeHtml(category)}</div>
@@ -442,8 +441,8 @@
               <span>${escapeHtml(formatDate(createdAt))}</span>
               <span>${
                 story.is_anonymous
-                  ? (currentLang === 'ar' ? 'مجهول' : 'Anonymous')
-                  : (currentLang === 'ar' ? 'اسم ظاهر' : 'Name visible')
+                  ? (currentLang === "ar" ? "مجهول" : "Anonymous")
+                  : (currentLang === "ar" ? "اسم ظاهر" : "Name visible")
               }</span>
             </div>
           `;
@@ -452,53 +451,102 @@
         });
       }
 
+      // ===== URL -> Filter (NEW) =====
+      function normalizeFilterValue(v) {
+        const raw = String(v || "").trim();
+        if (!raw) return "all";
+
+        const lower = raw.toLowerCase();
+
+        if (lower === "all") return "all";
+        if (lower === "kids") return "Kids";
+        if (lower === "teens" || lower === "teen") return "Teens";
+        if (lower === "adult" || lower === "adults") return "Adult";
+        if (lower === "marriage") return "Marriage";
+        if (lower === "finance" || lower === "money") return "Finance";
+
+        // If someone passes exact category names, keep them
+        return raw;
+      }
+
+      function setActivePill(filterValue) {
+        if (!filters) return;
+
+        const pills = filters.querySelectorAll(".filter-pill");
+        pills.forEach((p) => p.classList.remove("active"));
+
+        const match = filters.querySelector(`.filter-pill[data-filter="${CSS.escape(filterValue)}"]`);
+        if (match) {
+          match.classList.add("active");
+        } else {
+          // fallback to All
+          const allBtn = filters.querySelector(`.filter-pill[data-filter="all"]`);
+          if (allBtn) allBtn.classList.add("active");
+          activeFilter = "all";
+        }
+      }
+
+      function applyFilterFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        const urlCategory = params.get("category");
+        if (!urlCategory) return;
+
+        const normalized = normalizeFilterValue(urlCategory);
+        activeFilter = normalized;
+        setActivePill(activeFilter);
+      }
+
       // === Supabase setup ===
-      const SUPABASE_URL = 'https://tnohzvrpqiaiupwyaxcp.supabase.co';
-      const SUPABASE_ANON_KEY = 'sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K';
+      const SUPABASE_URL = "https://tnohzvrpqiaiupwyaxcp.supabase.co";
+      const SUPABASE_ANON_KEY = "sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K";
       const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
       async function refreshUserLabel(langOverride) {
         const lang = langOverride || currentLang;
 
-        const { data, error } = await supabase.auth.getUser();
-        if (error || !data || !data.user) {
-          if (navAuthLabel) {
-            const en = navAuthLabel.getAttribute('data-en') || 'Not signed in';
-            const ar = navAuthLabel.getAttribute('data-ar') || en;
-            navAuthLabel.textContent = (lang === 'ar') ? ar : en;
+        try {
+          const { data, error } = await supabase.auth.getUser();
+          if (error || !data || !data.user) {
+            if (navAuthLabel) {
+              const en = navAuthLabel.getAttribute("data-en") || "Not signed in";
+              const ar = navAuthLabel.getAttribute("data-ar") || en;
+              navAuthLabel.textContent = lang === "ar" ? ar : en;
+            }
+            return;
           }
-          return;
+
+          const user = data.user;
+          const meta = user.user_metadata || {};
+          const displayName = meta.display_name || user.email;
+          const alwaysAnon = !!meta.always_anonymous;
+
+          let label;
+          if (alwaysAnon) {
+            label = lang === "ar"
+              ? "مسجّل: مجهول (الاسم مخفي)"
+              : "Signed in: Anonymous (name hidden)";
+          } else {
+            label = lang === "ar"
+              ? "مسجّل: " + displayName
+              : "Signed in: " + displayName;
+          }
+
+          if (navAuthLabel) navAuthLabel.textContent = label;
+        } catch (e) {
+          // keep stable
         }
-
-        const user = data.user;
-        const meta = user.user_metadata || {};
-        const displayName = meta.display_name || user.email;
-        const alwaysAnon = !!meta.always_anonymous;
-
-        let label;
-        if (alwaysAnon) {
-          label = (lang === 'ar')
-            ? 'مسجّل: مجهول (الاسم مخفي)'
-            : 'Signed in: Anonymous (name hidden)';
-        } else {
-          label = (lang === 'ar')
-            ? 'مسجّل: ' + displayName
-            : 'Signed in: ' + displayName;
-        }
-
-        if (navAuthLabel) navAuthLabel.textContent = label;
       }
 
       async function loadStories() {
         try {
           const { data, error } = await supabase
-            .from('stories')
-            .select('id, title, content, category, is_anonymous, created_at')
-            .order('created_at', { ascending: false })
+            .from("stories")
+            .select("id, title, content, category, is_anonymous, created_at")
+            .order("created_at", { ascending: false })
             .limit(50);
 
           if (error) {
-            console.error('Error loading stories:', error);
+            console.error("Error loading stories:", error);
             showErrorMessage();
             return;
           }
@@ -506,23 +554,19 @@
           allStories = Array.isArray(data) ? data : [];
           renderStories();
         } catch (e) {
-          console.error('Unexpected error:', e);
+          console.error("Unexpected error:", e);
           showErrorMessage();
         }
       }
 
-      // Filters
+      // Filters click
       if (filters) {
-        filters.addEventListener('click', (e) => {
-          const btn = e.target.closest('.filter-pill');
+        filters.addEventListener("click", (e) => {
+          const btn = e.target.closest(".filter-pill");
           if (!btn) return;
 
-          activeFilter = btn.getAttribute('data-filter') || 'all';
-
-          const pills = filters.querySelectorAll('.filter-pill');
-          pills.forEach(p => p.classList.remove('active'));
-          btn.classList.add('active');
-
+          activeFilter = btn.getAttribute("data-filter") || "all";
+          setActivePill(activeFilter);
           renderStories();
         });
       }
@@ -533,7 +577,7 @@
 
       if (langSelect) {
         langSelect.value = initialLang;
-        langSelect.addEventListener('change', () => {
+        langSelect.addEventListener("change", () => {
           const lang = langSelect.value;
           try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
           applyLanguage(lang);
@@ -541,6 +585,9 @@
           renderStories();
         });
       }
+
+      // ✅ Apply URL filter BEFORE loading stories
+      applyFilterFromUrl();
 
       // Initial data + auth label
       refreshUserLabel(initialLang);
