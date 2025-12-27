@@ -33,39 +33,22 @@
       --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", sans-serif;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: radial-gradient(circle at top left, #eef2ff, #f9fafb 40%);
       color: var(--text-main);
       line-height: 1.6;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    a { color: inherit; text-decoration: none; }
 
-    .page {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+    .page { min-height: 100vh; display: flex; flex-direction: column; }
 
-    .max-w {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 0 1.25rem;
-    }
+    .max-w { max-width: 1080px; margin: 0 auto; padding: 0 1.25rem; }
 
     /* HEADER / NAV */
-
     header {
       position: sticky;
       top: 0;
@@ -83,16 +66,8 @@
       gap: 1rem;
     }
 
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .logo-wrapper {
-      display: flex;
-      align-items: center;
-    }
+    .nav-left { display: flex; align-items: center; gap: 0.5rem; }
+    .logo-wrapper { display: flex; align-items: center; }
 
     .nav-links {
       display: flex;
@@ -108,27 +83,12 @@
       transition: background 0.2s, color 0.2s;
     }
 
-    .nav-links a:hover {
-      background: rgba(148, 163, 184, 0.22);
-      color: #ffffff;
-    }
+    .nav-links a:hover { background: rgba(148, 163, 184, 0.22); color: #ffffff; }
+    .nav-links a.active { background: rgba(129, 140, 248, 0.35); color: #ffffff; }
 
-    .nav-links a.active {
-      background: rgba(129, 140, 248, 0.35);
-      color: #ffffff;
-    }
+    .nav-right { display: flex; align-items: center; gap: 0.75rem; }
 
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .nav-ghost {
-      font-size: 0.9rem;
-      color: #cbd5f5;
-      white-space: nowrap;
-    }
+    .nav-ghost { font-size: 0.9rem; color: #cbd5f5; white-space: nowrap; }
 
     .language-select {
       border-radius: 999px;
@@ -141,19 +101,11 @@
       cursor: pointer;
     }
 
-    .language-select option {
-      color: #111827;
-      background: #ffffff;
-    }
+    .language-select option { color: #111827; background: #ffffff; }
 
-    @media (max-width: 720px) {
-      .nav-links {
-        display: none;
-      }
-    }
+    @media (max-width: 720px) { .nav-links { display: none; } }
 
     /* BUTTONS */
-
     .btn-primary {
       background: linear-gradient(135deg, #4f46e5, #6366f1);
       color: #fff;
@@ -167,16 +119,8 @@
       transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
     }
 
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 16px 35px rgba(79, 70, 229, 0.45);
-    }
-
-    .btn-primary:active {
-      transform: translateY(0);
-      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
-      opacity: 0.9;
-    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 16px 35px rgba(79, 70, 229, 0.45); }
+    .btn-primary:active { transform: translateY(0); box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3); opacity: 0.9; }
 
     .btn-secondary {
       background: #eef2ff;
@@ -190,16 +134,10 @@
       transition: background 0.15s, border-color 0.15s;
     }
 
-    .btn-secondary:hover {
-      background: #e0e7ff;
-      border-color: #a5b4fc;
-    }
+    .btn-secondary:hover { background: #e0e7ff; border-color: #a5b4fc; }
 
     /* LAYOUT */
-
-    main {
-      padding: 2.8rem 0 2rem;
-    }
+    main { padding: 2.8rem 0 2rem; }
 
     .two-col {
       display: grid;
@@ -207,11 +145,7 @@
       gap: 1.8rem;
     }
 
-    @media (max-width: 900px) {
-      .two-col {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
+    @media (max-width: 900px) { .two-col { grid-template-columns: minmax(0, 1fr); } }
 
     .card {
       background: var(--bg-card);
@@ -222,33 +156,15 @@
       transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
     }
 
-    .card:hover {
-      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.07);
-      transform: translateY(-2px);
-      border-color: #e5e7eb;
-    }
+    .card:hover { box-shadow: 0 16px 35px rgba(15, 23, 42, 0.07); transform: translateY(-2px); border-color: #e5e7eb; }
 
-    .card h3 {
-      font-size: 1.1rem;
-      margin-bottom: 0.4rem;
-    }
+    .card h3 { font-size: 1.1rem; margin-bottom: 0.4rem; }
 
-    .card p.sub {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-    }
+    .card p.sub { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; }
 
-    .field {
-      margin-bottom: 0.9rem;
-      font-size: 0.9rem;
-    }
+    .field { margin-bottom: 0.9rem; font-size: 0.9rem; }
 
-    .field label {
-      display: block;
-      margin-bottom: 0.25rem;
-      font-weight: 500;
-    }
+    .field label { display: block; margin-bottom: 0.25rem; font-weight: 500; }
 
     .field input[type="text"],
     .field input[type="email"],
@@ -277,39 +193,18 @@
       margin-bottom: 0.8rem;
     }
 
-    .field-inline input[type="checkbox"] {
-      margin-top: 0.1rem;
-    }
+    .field-inline input[type="checkbox"] { margin-top: 0.1rem; }
 
-    .note {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 0.5rem;
-    }
+    .note { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; }
 
-    .page-title-block {
-      max-width: 640px;
-      margin: 0 auto 1.8rem;
-      text-align: center;
-    }
+    .page-title-block { max-width: 640px; margin: 0 auto 1.8rem; text-align: center; }
+    .page-title-block h1 { font-size: 1.6rem; margin-bottom: 0.4rem; }
+    .page-title-block p { font-size: 0.95rem; color: var(--text-muted); }
 
-    .page-title-block h1 {
-      font-size: 1.6rem;
-      margin-bottom: 0.4rem;
-    }
+    .status-ok { color: #16a34a; }
+    .status-error { color: var(--danger); }
 
-    .page-title-block p {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-    }
-
-    .status-ok {
-      color: #16a34a;
-    }
-
-    .status-error {
-      color: var(--danger);
-    }
+    .signout-wrap { margin-top: 1rem; display: none; }
 
     footer {
       padding: 1rem 0 1.5rem;
@@ -320,20 +215,18 @@
     }
 
     @media (max-width: 640px) {
-      main {
-        padding-top: 2.2rem;
-      }
-
-      .card {
-        padding: 1.2rem 1.1rem;
-      }
-
-      .nav {
-        padding: 0.6rem 0;
-      }
+      main { padding-top: 2.2rem; }
+      .card { padding: 1.2rem 1.1rem; }
+      .nav { padding: 0.6rem 0; }
     }
+
+    /* Minimal RTL support without changing layout */
+    html[dir="rtl"] .card,
+    html[dir="rtl"] .field label,
+    html[dir="rtl"] .page-title-block { text-align: start; }
   </style>
 </head>
+
 <body>
   <div class="page">
     <!-- HEADER -->
@@ -341,69 +234,22 @@
       <div class="max-w nav">
         <div class="nav-left">
           <div class="logo-wrapper">
-            <!-- Arc + heartbeat + Harmony text logo -->
-            <svg
-              width="180"
-              height="40"
-              viewBox="0 0 180 40"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-label="Harmony logo"
-              role="img"
-            >
-              <!-- Arc -->
-              <path
-                d="M10 22 C25 5, 55 5, 70 22"
-                fill="none"
-                stroke="#40cbb4"
-                stroke-width="3"
-                stroke-linecap="round"
-              />
-              <!-- Heartbeat / wave -->
-              <path
-                d="M12 22 L22 22 L27 15 L33 30 L38 22 L68 22"
-                fill="none"
-                stroke="#f5c451"
-                stroke-width="3"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <!-- Text -->
-              <text
-                x="78"
-                y="27"
-                font-family="Inter, system-ui, sans-serif"
-                font-size="18"
-                font-weight="600"
-                fill="#ffffff"
-              >
-                Harmony
-              </text>
+            <svg width="180" height="40" viewBox="0 0 180 40" xmlns="http://www.w3.org/2000/svg" aria-label="Harmony logo" role="img">
+              <path d="M10 22 C25 5, 55 5, 70 22" fill="none" stroke="#40cbb4" stroke-width="3" stroke-linecap="round" />
+              <path d="M12 22 L22 22 L27 15 L33 30 L38 22 L68 22" fill="none" stroke="#f5c451" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+              <text x="78" y="27" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="600" fill="#ffffff">Harmony</text>
             </svg>
           </div>
         </div>
 
         <nav class="nav-links">
-          <a href="index.html"
-             data-en="Home"
-             data-ar="الرئيسية">Home</a>
-          <a href="stories.html"
-             data-en="Stories"
-             data-ar="القصص">Stories</a>
-          <a href="share.html"
-             data-en="Share a Story"
-             data-ar="شارك قصة">Share a Story</a>
-          <a href="signin.html" class="active"
-             data-en="Sign In"
-             data-ar="تسجيل الدخول">Sign In</a>
-          <a href="about.html"
-             data-en="About"
-             data-ar="عن هارموني">About</a>
-          <a href="faq.html"
-             data-en="FAQ"
-             data-ar="الأسئلة الشائعة">FAQ</a>
-          <a href="contact.html"
-             data-en="Contact"
-             data-ar="اتصال">Contact</a>
+          <a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+          <a href="stories.html" data-en="Stories" data-ar="القصص">Stories</a>
+          <a href="share.html" data-en="Share a Story" data-ar="شارك قصة">Share a Story</a>
+          <a href="signin.html" class="active" data-en="Sign In" data-ar="تسجيل الدخول">Sign In</a>
+          <a href="about.html" data-en="About" data-ar="عن هارموني">About</a>
+          <a href="faq.html" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a>
+          <a href="contact.html" data-en="Contact" data-ar="اتصال">Contact</a>
         </nav>
 
         <div class="nav-right">
@@ -411,11 +257,7 @@
             <option value="en">English</option>
             <option value="ar">العربية</option>
           </select>
-          <div class="nav-ghost" id="nav-auth-label"
-               data-en="Not signed in"
-               data-ar="غير مسجّل الدخول">
-            Not signed in
-          </div>
+          <div class="nav-ghost" id="nav-auth-label" data-en="Not signed in" data-ar="غير مسجّل الدخول">Not signed in</div>
         </div>
       </div>
     </header>
@@ -423,9 +265,7 @@
     <!-- MAIN -->
     <main>
       <div class="max-w page-title-block">
-        <h1 data-en="Sign in to Harmony" data-ar="سجّل الدخول إلى هارموني">
-          Sign in to Harmony
-        </h1>
+        <h1 data-en="Sign in to Harmony" data-ar="سجّل الدخول إلى هارموني">Sign in to Harmony</h1>
         <p
           data-en="Create a free account or sign in to share your story with your name or as Anonymous. Your email stays private."
           data-ar="أنشئ حساب مجاني أو سجّل الدخول لتشارك قصتك باسمك أو كمجهول. إيميلك يبقى خاص."
@@ -438,14 +278,11 @@
         <div class="max-w two-col">
           <!-- SIGN UP -->
           <div class="card">
-            <h3 data-en="Create your Harmony account" data-ar="أنشئ حسابك في هارموني">
-              Create your Harmony account
-            </h3>
+            <h3 data-en="Create your Harmony account" data-ar="أنشئ حسابك في هارموني">Create your Harmony account</h3>
             <p class="sub"
                data-en="Use this form to create a real Harmony account. We only ask for email, password and an optional name."
                data-ar="استخدم هذا النموذج لإنشاء حساب حقيقي في هارموني. نحتاج فقط الإيميل وكلمة السر، والاسم اختياري.">
-              Use this form to create a real Harmony account. We only ask for email,
-              password and an optional name.
+              Use this form to create a real Harmony account. We only ask for email, password and an optional name.
             </p>
 
             <form id="signup-form">
@@ -474,25 +311,24 @@
                     data-en="If checked, Harmony will hide your name and only show “Anonymous” when you post."
                     data-ar="إذا فعّلت هذا الخيار، هارموني رح تخفي اسمك وتعرض فقط &quot;مجهول&quot; عند النشر."
                   >
-                    If checked, Harmony will hide your name and only show “Anonymous”
-                    when you post.
+                    If checked, Harmony will hide your name and only show “Anonymous” when you post.
                   </small>
                 </label>
               </div>
 
-              <button type="submit" class="btn-primary"
-                      data-en="Create account"
-                      data-ar="إنشاء حساب">
-                Create account
-              </button>
+              <button type="submit" class="btn-primary" data-en="Create account" data-ar="إنشاء حساب">Create account</button>
             </form>
+
+            <p class="note"
+               data-en="Note: After you sign up, you may receive a confirmation email depending on your Supabase settings."
+               data-ar="ملاحظة: بعد إنشاء الحساب، ممكن يوصلك إيميل تأكيد حسب إعدادات Supabase.">
+              Note: After you sign up, you may receive a confirmation email depending on your Supabase settings.
+            </p>
           </div>
 
           <!-- SIGN IN -->
           <div class="card">
-            <h3 data-en="Sign in to your account" data-ar="سجّل الدخول إلى حسابك">
-              Sign in to your account
-            </h3>
+            <h3 data-en="Sign in to your account" data-ar="سجّل الدخول إلى حسابك">Sign in to your account</h3>
             <p class="sub"
                data-en="Already created an account before? Use the same email and password to sign in."
                data-ar="عندك حساب من قبل؟ استخدم نفس الإيميل وكلمة السر لتسجّل الدخول.">
@@ -510,16 +346,18 @@
                 <input id="signin-password" type="password" required minlength="6" />
               </div>
 
-              <button type="submit" class="btn-secondary"
-                      data-en="Sign in"
-                      data-ar="تسجيل الدخول">
-                Sign in
-              </button>
+              <button type="submit" class="btn-secondary" data-en="Sign in" data-ar="تسجيل الدخول">Sign in</button>
             </form>
 
-            <p id="current-user-label"
-               class="note"
-               style="margin-top:1rem;"
+            <div class="signout-wrap" id="signout-wrap">
+              <button id="signout-btn" class="btn-secondary" type="button"
+                      data-en="Sign out"
+                      data-ar="تسجيل الخروج">
+                Sign out
+              </button>
+            </div>
+
+            <p id="current-user-label" class="note" style="margin-top:1rem;"
                data-en="Status: not signed in."
                data-ar="الحالة: غير مسجّل الدخول.">
               Status: not signed in.
@@ -538,9 +376,7 @@
     </main>
 
     <!-- FOOTER -->
-    <footer>
-      Harmony Community © 2025
-    </footer>
+    <footer>Harmony Community © 2025</footer>
   </div>
 
   <!-- Supabase client -->
@@ -556,6 +392,8 @@
       const signinForm = document.getElementById('signin-form');
       const authStatus = document.getElementById('auth-status');
       const currentUserLabel = document.getElementById('current-user-label');
+      const signoutWrap = document.getElementById('signout-wrap');
+      const signoutBtn = document.getElementById('signout-btn');
 
       let currentLang = 'en';
 
@@ -563,9 +401,7 @@
         try {
           const saved = localStorage.getItem(LANG_KEY);
           if (saved === 'ar' || saved === 'en') return saved;
-        } catch (e) {
-          // ignore
-        }
+        } catch (e) {}
         return 'en';
       }
 
@@ -605,11 +441,24 @@
         currentUserLabel.textContent = (lang === 'ar') ? ar : en;
       }
 
+      function showSignout(show) {
+        if (!signoutWrap) return;
+        signoutWrap.style.display = show ? 'block' : 'none';
+      }
+
       // === Supabase auth ===
       const SUPABASE_URL = 'https://tnohzvrpqiaiupwyaxcp.supabase.co';
       const SUPABASE_ANON_KEY = 'sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K';
-
       const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      // Important for email confirmation redirects (works on localhost + GitHub Pages)
+      function getRedirectUrl() {
+        const origin = window.location.origin;
+        const pathBase = window.location.pathname.includes('/-harmonycommunity/')
+          ? '/-harmonycommunity/'
+          : '/';
+        return origin + pathBase + 'signin.html';
+      }
 
       async function refreshUserLabel(langOverride) {
         const lang = langOverride || currentLang;
@@ -618,6 +467,7 @@
         if (error || !data || !data.user) {
           updateCurrentUserNotSigned(lang);
           updateNavLabelNotSigned(lang);
+          showSignout(false);
           return;
         }
 
@@ -626,40 +476,33 @@
         const displayName = meta.display_name || user.email;
         const alwaysAnon = !!meta.always_anonymous;
 
-        let labelNav;
-        let labelStatus;
-
+        let label;
         if (alwaysAnon) {
-          labelNav = (lang === 'ar')
+          label = (lang === 'ar')
             ? 'مسجّل: مجهول (الاسم مخفي)'
             : 'Signed in: Anonymous (name hidden)';
-          labelStatus = labelNav;
         } else {
-          labelNav = (lang === 'ar')
+          label = (lang === 'ar')
             ? 'مسجّل: ' + displayName
             : 'Signed in: ' + displayName;
-          labelStatus = labelNav;
         }
 
-        if (navAuthLabel) {
-          navAuthLabel.textContent = labelNav;
-        }
-        if (currentUserLabel) {
-          currentUserLabel.textContent = labelStatus;
-        }
+        if (navAuthLabel) navAuthLabel.textContent = label;
+        if (currentUserLabel) currentUserLabel.textContent = label;
+        showSignout(true);
       }
+
+      // Handle auth state changes (refresh labels automatically)
+      supabase.auth.onAuthStateChange((_event, _session) => {
+        refreshUserLabel();
+      });
 
       // Sign up
       if (signupForm) {
         signupForm.addEventListener('submit', async (e) => {
           e.preventDefault();
 
-          setStatus(
-            currentLang === 'ar'
-              ? 'جاري إنشاء حسابك…'
-              : 'Creating your account…',
-            false
-          );
+          setStatus(currentLang === 'ar' ? 'جاري إنشاء حسابك…' : 'Creating your account…', false);
 
           const email = document.getElementById('signup-email').value.trim();
           const password = document.getElementById('signup-password').value;
@@ -670,6 +513,7 @@
             email,
             password,
             options: {
+              emailRedirectTo: getRedirectUrl(),
               data: {
                 display_name: name,
                 always_anonymous: alwaysAnon
@@ -678,15 +522,12 @@
           });
 
           if (error) {
-            setStatus(
-              (currentLang === 'ar' ? 'خطأ: ' : 'Error: ') + error.message,
-              true
-            );
+            setStatus((currentLang === 'ar' ? 'خطأ: ' : 'Error: ') + error.message, true);
           } else {
             setStatus(
               currentLang === 'ar'
-                ? 'تم إنشاء الحساب! إذا كان تفعيل الإيميل مطلوب، تأكد من بريدك ثم سجّل الدخول من الجهة اليمين.'
-                : 'Account created! If email confirmation is required, check your inbox, then sign in on the right.',
+                ? 'تم إنشاء الحساب! إذا وصل إيميل تأكيد، افتحه واضغط الرابط، بعدها ارجع وسجّل دخول.'
+                : 'Account created! If a confirmation email was sent, open it and click the link, then come back and sign in.',
               false
             );
             signupForm.reset();
@@ -700,40 +541,38 @@
         signinForm.addEventListener('submit', async (e) => {
           e.preventDefault();
 
-          setStatus(
-            currentLang === 'ar'
-              ? 'جاري تسجيل الدخول…'
-              : 'Signing you in…',
-            false
-          );
+          setStatus(currentLang === 'ar' ? 'جاري تسجيل الدخول…' : 'Signing you in…', false);
 
           const email = document.getElementById('signin-email').value.trim();
           const password = document.getElementById('signin-password').value;
 
-          const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password
-          });
+          const { error } = await supabase.auth.signInWithPassword({ email, password });
 
           if (error) {
-            setStatus(
-              (currentLang === 'ar' ? 'خطأ: ' : 'Error: ') + error.message,
-              true
-            );
+            setStatus((currentLang === 'ar' ? 'خطأ: ' : 'Error: ') + error.message, true);
           } else {
-            setStatus(
-              currentLang === 'ar'
-                ? 'تم تسجيل الدخول بنجاح.'
-                : 'Signed in successfully.',
-              false
-            );
+            setStatus(currentLang === 'ar' ? 'تم تسجيل الدخول بنجاح.' : 'Signed in successfully.', false);
             signinForm.reset();
             refreshUserLabel();
           }
         });
       }
 
-      // === Init language from localStorage ===
+      // Sign out
+      if (signoutBtn) {
+        signoutBtn.addEventListener('click', async () => {
+          setStatus(currentLang === 'ar' ? 'جاري تسجيل الخروج…' : 'Signing out…', false);
+          const { error } = await supabase.auth.signOut();
+          if (error) {
+            setStatus((currentLang === 'ar' ? 'خطأ: ' : 'Error: ') + error.message, true);
+          } else {
+            setStatus(currentLang === 'ar' ? 'تم تسجيل الخروج.' : 'Signed out.', false);
+            refreshUserLabel();
+          }
+        });
+      }
+
+      // === Init language ===
       const initialLang = getInitialLang();
       applyLanguage(initialLang);
 
@@ -741,9 +580,7 @@
         langSelect.value = initialLang;
         langSelect.addEventListener('change', () => {
           const lang = langSelect.value;
-          try {
-            localStorage.setItem(LANG_KEY, lang);
-          } catch (e) {}
+          try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
           applyLanguage(lang);
           refreshUserLabel(lang);
         });
