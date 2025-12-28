@@ -8,30 +8,35 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
 
   <style>
     :root {
       --bg: #f5f7fb;
       --bg-card: #ffffff;
+      --primary: #4b6fff;
+      --primary-soft: #e2e7ff;
       --text-main: #111827;
       --text-muted: #6b7280;
       --border-soft: #e5e7eb;
       --radius-lg: 18px;
+      --radius-md: 12px;
       --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.12);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: radial-gradient(circle at top left, #eef2ff, #f9fafb 40%);
       color: var(--text-main);
       line-height: 1.7;
     }
-
+    a { color: inherit; text-decoration: none; }
     .page { min-height: 100vh; display: flex; flex-direction: column; }
-    .max-w { max-width: 980px; margin: 0 auto; padding: 0 1.25rem; }
+    .max-w { max-width: 1120px; margin: 0 auto; padding: 0 1.25rem; }
 
     header {
       position: sticky;
@@ -50,7 +55,7 @@
       gap: 1rem;
     }
 
-    .nav-left { display: flex; align-items: center; gap: 0.6rem; }
+    .nav-left { display: flex; align-items: center; gap: 0.5rem; }
     .logo-wrapper { display: flex; align-items: center; }
 
     .nav-links {
@@ -65,11 +70,10 @@
       padding: 0.3rem 0.7rem;
       border-radius: 999px;
       transition: background 0.2s, color 0.2s;
-      text-decoration: none;
-      color: inherit;
     }
 
     .nav-links a:hover { background: rgba(148, 163, 184, 0.22); color: #ffffff; }
+    .nav-links a.active { background: rgba(129, 140, 248, 0.35); color: #ffffff; }
 
     .nav-right { display: flex; align-items: center; gap: 0.75rem; }
     .nav-ghost { font-size: 0.9rem; color: #cbd5f5; white-space: nowrap; }
@@ -84,27 +88,27 @@
       outline: none;
       cursor: pointer;
     }
-
     .language-select option { color: #111827; background: #ffffff; }
     @media (max-width: 720px) { .nav-links { display: none; } }
 
-    main { padding: 2.2rem 0; }
+    main { padding: 2.4rem 0 2.2rem; }
 
     .card {
       background: var(--bg-card);
       border-radius: var(--radius-lg);
       border: 1px solid var(--border-soft);
-      box-shadow: var(--shadow-soft);
-      padding: 1.4rem;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+      padding: 1.3rem 1.3rem 1.15rem;
+      max-width: 920px;
+      margin: 0 auto;
     }
 
     .top-row {
       display: flex;
+      align-items: flex-start;
       justify-content: space-between;
-      gap: 0.8rem;
-      align-items: center;
-      margin-bottom: 0.9rem;
-      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
     }
 
     .tag {
@@ -115,26 +119,25 @@
       font-size: 0.78rem;
       background: #eef2ff;
       color: #4f46e5;
-      border: 1px solid #c7d2fe;
     }
 
-    .back {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.35rem 0.85rem;
-      border-radius: 999px;
-      border: 1px solid #e5e7eb;
+    .back-btn {
+      border: 1px solid var(--border-soft);
       background: #ffffff;
+      border-radius: 999px;
+      padding: 0.38rem 0.8rem;
+      font-size: 0.86rem;
       color: #334155;
-      font-size: 0.9rem;
       cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      white-space: nowrap;
     }
+    .back-btn:hover { background: #f8fafc; border-color: #dbe2ea; }
 
     h1 {
-      font-size: 1.55rem;
-      line-height: 1.25;
-      margin-bottom: 0.7rem;
+      font-size: 1.8rem;
+      line-height: 1.2;
+      margin-bottom: 0.55rem;
       word-break: break-word;
     }
 
@@ -144,21 +147,80 @@
       flex-wrap: wrap;
       color: var(--text-muted);
       font-size: 0.9rem;
-      margin-bottom: 1.1rem;
+      margin-bottom: 1rem;
     }
 
     .content {
       font-size: 1rem;
-      color: #111827;
       white-space: pre-wrap;
       word-break: break-word;
+      margin-bottom: 1.15rem;
     }
 
-    .muted-center {
-      text-align: center;
-      color: var(--text-muted);
-      margin-top: 1rem;
+    .error {
+      display: none;
+      margin: 0.9rem auto 0;
+      max-width: 920px;
+      color: #b91c1c;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 12px;
+      padding: 0.8rem 1rem;
+      font-size: 0.95rem;
     }
+
+    /* Media (shows if story has media_url) */
+    .media-wrap {
+      margin: 0.7rem 0 1.1rem;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #0b1220;
+    }
+    .media-wrap img { width: 100%; display: block; height: auto; background: #0b1220; }
+    .media-wrap video { width: 100%; display: block; background: #0b1220; }
+    .media-caption {
+      padding: 0.6rem 0.8rem;
+      color: #e5e7eb;
+      font-size: 0.85rem;
+      background: rgba(0,0,0,0.35);
+    }
+
+    /* Reactions */
+    .reactions {
+      margin-top: 0.6rem;
+      padding-top: 0.9rem;
+      border-top: 1px solid var(--border-soft);
+    }
+    .reactions-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.7rem;
+    }
+    .reactions-title h2 { font-size: 1rem; margin: 0; }
+    .reactions-note { color: var(--text-muted); font-size: 0.85rem; }
+
+    .reaction-row { display: flex; flex-wrap: wrap; gap: 0.55rem; }
+
+    .reaction-btn {
+      border: 1px solid var(--border-soft);
+      background: #ffffff;
+      border-radius: 999px;
+      padding: 0.45rem 0.75rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.15s, border-color 0.15s, transform 0.08s;
+    }
+    .reaction-btn:hover { background: #f8fafc; border-color: #dbe2ea; }
+    .reaction-btn:active { transform: translateY(1px); }
+    .reaction-btn.active { background: var(--primary-soft); border-color: rgba(75, 111, 255, 0.55); }
+
+    .reaction-count { color: #334155; font-weight: 600; font-size: 0.86rem; }
 
     footer {
       padding: 1.5rem 0 1.8rem;
@@ -176,6 +238,7 @@
       <div class="max-w nav">
         <div class="nav-left">
           <div class="logo-wrapper">
+            <!-- ✅ Correct Harmony logo -->
             <svg width="180" height="40" viewBox="0 0 180 40" xmlns="http://www.w3.org/2000/svg" aria-label="Harmony logo" role="img">
               <path d="M10 22 C25 5, 55 5, 70 22" fill="none" stroke="#40cbb4" stroke-width="3" stroke-linecap="round" />
               <path d="M12 22 L22 22 L27 15 L33 30 L38 22 L68 22" fill="none" stroke="#f5c451" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
@@ -184,9 +247,9 @@
           </div>
         </div>
 
-        <nav class="nav-links">
+        <nav class="nav-links" aria-label="Main navigation">
           <a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a>
-          <a href="stories.html" data-en="Stories" data-ar="القصص">Stories</a>
+          <a href="stories.html" class="active" data-en="Stories" data-ar="القصص">Stories</a>
           <a href="share.html" data-en="Share a Story" data-ar="شارك قصة">Share a Story</a>
           <a href="signin.html" data-en="Sign In" data-ar="تسجيل الدخول">Sign In</a>
           <a href="about.html" data-en="About" data-ar="عن هارموني">About</a>
@@ -195,34 +258,66 @@
         </nav>
 
         <div class="nav-right">
-          <select id="language-select" class="language-select" aria-label="Choose language">
+          <select id="language-select" class="language-select" aria-label="Language selector">
             <option value="en">English</option>
             <option value="ar">العربية</option>
           </select>
-          <div class="nav-ghost" id="nav-auth-label" data-en="Not signed in" data-ar="غير مسجّل الدخول">Not signed in</div>
+          <div id="nav-auth-label" class="nav-ghost" data-en="Not signed in" data-ar="غير مسجّل">Not signed in</div>
         </div>
       </div>
     </header>
 
     <main>
-      <div class="max-w">
-        <div class="card">
-          <div class="top-row">
-            <span class="tag" id="story-category">—</span>
-            <button class="back" id="back-btn" type="button" data-en="← Back to Stories" data-ar="← الرجوع للقصص">← Back to Stories</button>
+      <div class="card" aria-live="polite">
+        <div class="top-row">
+          <span id="story-category" class="tag">—</span>
+          <button id="back-btn" class="back-btn" type="button" data-en="← Back to Stories" data-ar="رجوع إلى القصص">← Back to Stories</button>
+        </div>
+
+        <h1 id="story-title">…</h1>
+
+        <div class="meta">
+          <span id="story-date">—</span>
+          <span id="story-visibility">—</span>
+        </div>
+
+        <!-- Media -->
+        <div id="story-media" style="display:none;"></div>
+
+        <div id="story-content" class="content"></div>
+
+        <!-- Reactions (local device temporary) -->
+        <div class="reactions">
+          <div class="reactions-title">
+            <h2 data-en="Reactions" data-ar="التفاعلات">Reactions</h2>
+            <div id="reactions-note" class="reactions-note"></div>
           </div>
 
-          <h1 id="story-title">Loading…</h1>
+          <div class="reaction-row" id="reaction-row">
+            <button class="reaction-btn" type="button" data-reaction="like">
+              👍 <span data-en="Like" data-ar="إعجاب">Like</span>
+              <span class="reaction-count" id="count-like">0</span>
+            </button>
 
-          <div class="meta">
-            <span id="story-date">—</span>
-            <span id="story-visibility">—</span>
+            <button class="reaction-btn" type="button" data-reaction="heart">
+              ❤️ <span data-en="Heart" data-ar="حب">Heart</span>
+              <span class="reaction-count" id="count-heart">0</span>
+            </button>
+
+            <button class="reaction-btn" type="button" data-reaction="same">
+              🤝 <span data-en="Same problem" data-ar="عندي نفس المشكلة">Same problem</span>
+              <span class="reaction-count" id="count-same">0</span>
+            </button>
+
+            <button class="reaction-btn" type="button" data-reaction="support">
+              🫂 <span data-en="Support" data-ar="دعم">Support</span>
+              <span class="reaction-count" id="count-support">0</span>
+            </button>
           </div>
-
-          <div id="story-content" class="content"></div>
-          <div id="story-error" class="muted-center" style="display:none;"></div>
         </div>
       </div>
+
+      <div id="story-error" class="error"></div>
     </main>
 
     <footer>Harmony Community © 2025</footer>
@@ -245,7 +340,28 @@
       const elError = document.getElementById("story-error");
       const backBtn = document.getElementById("back-btn");
 
+      const mediaHost = document.getElementById("story-media");
+      const reactionsNote = document.getElementById("reactions-note");
+      const reactionRow = document.getElementById("reaction-row");
+
+      const countEls = {
+        like: document.getElementById("count-like"),
+        heart: document.getElementById("count-heart"),
+        same: document.getElementById("count-same"),
+        support: document.getElementById("count-support"),
+      };
+
+      const REACTION_TYPES = ["like", "heart", "same", "support"];
+
       let currentLang = "en";
+      let storyId = null;
+
+      let myActive = new Set();
+      let counts = { like: 0, heart: 0, same: 0, support: 0 };
+
+      const SUPABASE_URL = "https://tnohzvrpqiaiupwyaxcp.supabase.co";
+      const SUPABASE_ANON_KEY = "sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K";
+      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
       function getInitialLang() {
         try {
@@ -268,6 +384,21 @@
         document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
       }
 
+      function showError(msgEn, msgAr) {
+        if (!elError) return;
+        elError.style.display = "block";
+        elError.textContent = currentLang === "ar" ? (msgAr || msgEn) : msgEn;
+      }
+
+      function escapeHtml(str) {
+        return String(str || "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
       function formatDate(dateStr) {
         if (!dateStr) return "";
         const d = new Date(dateStr);
@@ -277,19 +408,9 @@
 
       function getIdFromUrl() {
         const params = new URLSearchParams(window.location.search);
-        const id = params.get("id") || "";
+        const id = params.get("id");
         return String(id || "").trim();
       }
-
-      function showError(msgEn, msgAr) {
-        if (!elError) return;
-        elError.style.display = "block";
-        elError.textContent = currentLang === "ar" ? (msgAr || msgEn) : msgEn;
-      }
-
-      const SUPABASE_URL = "https://tnohzvrpqiaiupwyaxcp.supabase.co";
-      const SUPABASE_ANON_KEY = "sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K";
-      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
       async function refreshUserLabel(langOverride) {
         const lang = langOverride || currentLang;
@@ -316,10 +437,126 @@
         } catch (e) {}
       }
 
-      async function loadStory() {
-        const id = getIdFromUrl();
+      function localKey() {
+        return "harmony_reactions_story_" + String(storyId || "");
+      }
 
-        if (!id) {
+      function setReactionsNote() {
+        if (!reactionsNote) return;
+        reactionsNote.textContent = currentLang === "ar"
+          ? "التفاعلات محفوظة على جهازك (مؤقتاً)."
+          : "Reactions are saved on your device (temporary).";
+      }
+
+      function loadLocalReactions() {
+        myActive = new Set();
+        counts = { like: 0, heart: 0, same: 0, support: 0 };
+
+        try {
+          const raw = localStorage.getItem(localKey());
+          if (!raw) return;
+          const obj = JSON.parse(raw);
+          if (obj && Array.isArray(obj.active)) {
+            obj.active.forEach((t) => { if (REACTION_TYPES.includes(t)) myActive.add(t); });
+          }
+          if (obj && obj.counts && typeof obj.counts === "object") {
+            REACTION_TYPES.forEach((t) => {
+              const v = obj.counts[t];
+              counts[t] = Number.isFinite(Number(v)) ? Number(v) : 0;
+            });
+          }
+        } catch (e) {}
+      }
+
+      function saveLocalReactions() {
+        try {
+          const payload = { active: Array.from(myActive), counts };
+          localStorage.setItem(localKey(), JSON.stringify(payload));
+        } catch (e) {}
+      }
+
+      function updateReactionUI() {
+        REACTION_TYPES.forEach((t) => {
+          if (countEls[t]) countEls[t].textContent = String(counts[t] || 0);
+        });
+
+        if (reactionRow) {
+          reactionRow.querySelectorAll(".reaction-btn").forEach((btn) => {
+            const type = btn.getAttribute("data-reaction");
+            if (myActive.has(type)) btn.classList.add("active");
+            else btn.classList.remove("active");
+          });
+        }
+
+        setReactionsNote();
+      }
+
+      async function toggleReaction(type) {
+        if (!REACTION_TYPES.includes(type)) return;
+
+        if (myActive.has(type)) {
+          myActive.delete(type);
+          counts[type] = Math.max(0, (counts[type] || 0) - 1);
+        } else {
+          myActive.add(type);
+          counts[type] = (counts[type] || 0) + 1;
+        }
+
+        saveLocalReactions();
+        updateReactionUI();
+      }
+
+      function wireReactionClicks() {
+        if (!reactionRow) return;
+        reactionRow.addEventListener("click", async (e) => {
+          const btn = e.target.closest(".reaction-btn");
+          if (!btn) return;
+          const type = btn.getAttribute("data-reaction");
+          await toggleReaction(type);
+        });
+      }
+
+      function renderMedia(data) {
+        if (!mediaHost) return;
+
+        const url = data && (data.media_url || "");
+        const mediaType = data && (data.media_type || "");
+
+        if (!url) {
+          mediaHost.style.display = "none";
+          mediaHost.innerHTML = "";
+          return;
+        }
+
+        const u = String(url);
+        const lower = u.toLowerCase();
+        const isVideo =
+          mediaType.toLowerCase().includes("video") ||
+          lower.endsWith(".mp4") || lower.endsWith(".webm") || lower.endsWith(".mov") || lower.endsWith(".m4v");
+        const isImage =
+          mediaType.toLowerCase().includes("image") ||
+          lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".png") || lower.endsWith(".gif") || lower.endsWith(".webp");
+
+        let html = '<div class="media-wrap">';
+        if (isVideo) {
+          html += '<video controls preload="metadata" src="' + escapeHtml(u) + '"></video>';
+        } else if (isImage) {
+          html += '<img src="' + escapeHtml(u) + '" alt="Story media" />';
+        } else {
+          html += '<img src="' + escapeHtml(u) + '" alt="Story media" />';
+        }
+        html += '<div class="media-caption">' +
+          (currentLang === "ar" ? "مرفق" : "Attachment") +
+          '</div></div>';
+
+        mediaHost.innerHTML = html;
+        mediaHost.style.display = "block";
+      }
+
+      async function loadStory() {
+        storyId = getIdFromUrl();
+
+        if (!storyId) {
           elTitle.textContent = currentLang === "ar" ? "قصة غير موجودة" : "Story not found";
           showError("Missing story id in the URL.", "لا يوجد رقم قصة في الرابط.");
           return;
@@ -328,8 +565,8 @@
         try {
           const { data, error } = await supabase
             .from("stories")
-            .select("id, title, content, category, is_anonymous, created_at")
-            .eq("id", id)
+            .select("*")
+            .eq("id", storyId)
             .maybeSingle();
 
           if (error) {
@@ -345,13 +582,23 @@
             return;
           }
 
-          elCategory.textContent = data.category || "General";
+          elError.style.display = "none";
+
+          elCategory.textContent = data.category || (currentLang === "ar" ? "عام" : "General");
           elTitle.textContent = data.title || (currentLang === "ar" ? "بدون عنوان" : "Untitled");
           elDate.textContent = formatDate(data.created_at);
           elVisibility.textContent = data.is_anonymous
             ? (currentLang === "ar" ? "مجهول" : "Anonymous")
             : (currentLang === "ar" ? "اسم ظاهر" : "Name visible");
           elContent.textContent = data.content || "";
+
+          renderMedia(data);
+
+          // reactions local
+          loadLocalReactions();
+          updateReactionUI();
+
+          await refreshUserLabel(currentLang);
         } catch (e) {
           console.error("Unexpected error:", e);
           elTitle.textContent = currentLang === "ar" ? "تعذر التحميل" : "Could not load";
@@ -368,7 +615,6 @@
           const lang = langSelect.value;
           try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
           applyLanguage(lang);
-          refreshUserLabel(lang);
           loadStory();
         });
       }
@@ -381,7 +627,7 @@
         });
       }
 
-      refreshUserLabel(initialLang);
+      wireReactionClicks();
       loadStory();
     })();
   </script>
