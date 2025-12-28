@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Story – Harmony Community</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Read a story on Harmony Community." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --bg-card: #ffffff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --border-soft: #e5e7eb;
+      --radius-lg: 18px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #eef2ff, #f9fafb 40%);
+      color: var(--text-main);
+      line-height: 1.7;
+    }
+
+    .page { min-height: 100vh; display: flex; flex-direction: column; }
+    .max-w { max-width: 980px; margin: 0 auto; padding: 0 1.25rem; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(180deg, #050817, #0f172a);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 0;
+      gap: 1rem;
+    }
+
+    .nav-left { display: flex; align-items: center; gap: 0.6rem; }
+    .logo-wrapper { display: flex; align-items: center; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.95rem;
+      color: #e5e7eb;
+    }
+
+    .nav-links a {
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      transition: background 0.2s, color 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .nav-links a:hover { background: rgba(148, 163, 184, 0.22); color: #ffffff; }
+
+    .nav-right { display: flex; align-items: center; gap: 0.75rem; }
+    .nav-ghost { font-size: 0.9rem; color: #cbd5f5; white-space: nowrap; }
+
+    .language-select {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.8);
+      color: #e5e7eb;
+      font-size: 0.8rem;
+      padding: 0.25rem 0.7rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .language-select option { color: #111827; background: #ffffff; }
+    @media (max-width: 720px) { .nav-links { display: none; } }
+
+    main { padding: 2.2rem 0; }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      padding: 1.4rem;
+    }
+
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.8rem;
+      align-items: center;
+      margin-bottom: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.18rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      background: #eef2ff;
+      color: #4f46e5;
+      border: 1px solid #c7d2fe;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      color: #334155;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    h1 {
+      font-size: 1.55rem;
+      line-height: 1.25;
+      margin-bottom: 0.7rem;
+      word-break: break-word;
+    }
+
+    .meta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .content {
+      font-size: 1rem;
+      color: #111827;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .muted-center {
+      text-align: center;
+      color: var(--text-muted);
+      margin-top: 1rem;
+    }
+
+    footer {
+      padding: 1.5rem 0 1.8rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header>
+      <div class="max-w nav">
+        <div class="nav-left">
+          <div class="logo-wrapper">
+            <svg width="180" height="40" viewBox="0 0 180 40" xmlns="http://www.w3.org/2000/svg" aria-label="Harmony logo" role="img">
+              <path d="M10 22 C25 5, 55 5, 70 22" fill="none" stroke="#40cbb4" stroke-width="3" stroke-linecap="round" />
+              <path d="M12 22 L22 22 L27 15 L33 30 L38 22 L68 22" fill="none" stroke="#f5c451" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+              <text x="78" y="27" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="600" fill="#ffffff">Harmony</text>
+            </svg>
+          </div>
+        </div>
+
+        <nav class="nav-links">
+          <a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+          <a href="stories.html" data-en="Stories" data-ar="القصص">Stories</a>
+          <a href="share.html" data-en="Share a Story" data-ar="شارك قصة">Share a Story</a>
+          <a href="signin.html" data-en="Sign In" data-ar="تسجيل الدخول">Sign In</a>
+          <a href="about.html" data-en="About" data-ar="عن هارموني">About</a>
+          <a href="faq.html" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a>
+          <a href="contact.html" data-en="Contact" data-ar="اتصال">Contact</a>
+        </nav>
+
+        <div class="nav-right">
+          <select id="language-select" class="language-select" aria-label="Choose language">
+            <option value="en">English</option>
+            <option value="ar">العربية</option>
+          </select>
+          <div class="nav-ghost" id="nav-auth-label" data-en="Not signed in" data-ar="غير مسجّل الدخول">Not signed in</div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="max-w">
+        <div class="card">
+          <div class="top-row">
+            <span class="tag" id="story-category">—</span>
+            <button class="back" id="back-btn" type="button" data-en="← Back to Stories" data-ar="← الرجوع للقصص">← Back to Stories</button>
+          </div>
+
+          <h1 id="story-title">Loading…</h1>
+
+          <div class="meta">
+            <span id="story-date">—</span>
+            <span id="story-visibility">—</span>
+          </div>
+
+          <div id="story-content" class="content"></div>
+          <div id="story-error" class="muted-center" style="display:none;"></div>
+        </div>
+      </div>
+    </main>
+
+    <footer>Harmony Community © 2025</footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    (function () {
+      const LANG_KEY = "harmony_lang";
+
+      const langSelect = document.getElementById("language-select");
+      const navAuthLabel = document.getElementById("nav-auth-label");
+
+      const elCategory = document.getElementById("story-category");
+      const elTitle = document.getElementById("story-title");
+      const elDate = document.getElementById("story-date");
+      const elVisibility = document.getElementById("story-visibility");
+      const elContent = document.getElementById("story-content");
+      const elError = document.getElementById("story-error");
+      const backBtn = document.getElementById("back-btn");
+
+      let currentLang = "en";
+
+      function getInitialLang() {
+        try {
+          const saved = localStorage.getItem(LANG_KEY);
+          if (saved === "ar" || saved === "en") return saved;
+        } catch (e) {}
+        return "en";
+      }
+
+      function applyLanguage(lang) {
+        currentLang = lang;
+
+        document.querySelectorAll("[data-en]").forEach((el) => {
+          const en = el.getAttribute("data-en");
+          const ar = el.getAttribute("data-ar") || en;
+          el.innerHTML = lang === "ar" ? ar : en;
+        });
+
+        document.documentElement.lang = lang === "ar" ? "ar" : "en";
+        document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+      }
+
+      function formatDate(dateStr) {
+        if (!dateStr) return "";
+        const d = new Date(dateStr);
+        if (isNaN(d.getTime())) return "";
+        return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+      }
+
+      function getIdFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id") || "";
+        return String(id || "").trim();
+      }
+
+      function showError(msgEn, msgAr) {
+        if (!elError) return;
+        elError.style.display = "block";
+        elError.textContent = currentLang === "ar" ? (msgAr || msgEn) : msgEn;
+      }
+
+      const SUPABASE_URL = "https://tnohzvrpqiaiupwyaxcp.supabase.co";
+      const SUPABASE_ANON_KEY = "sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K";
+      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      async function refreshUserLabel(langOverride) {
+        const lang = langOverride || currentLang;
+
+        try {
+          const { data, error } = await supabase.auth.getUser();
+          if (error || !data || !data.user) {
+            if (navAuthLabel) {
+              const en = navAuthLabel.getAttribute("data-en") || "Not signed in";
+              const ar = navAuthLabel.getAttribute("data-ar") || en;
+              navAuthLabel.textContent = lang === "ar" ? ar : en;
+            }
+            return;
+          }
+
+          const user = data.user;
+          const meta = user.user_metadata || {};
+          const displayName = meta.display_name || user.email;
+          const alwaysAnon = !!meta.always_anonymous;
+
+          navAuthLabel.textContent = alwaysAnon
+            ? (lang === "ar" ? "مسجّل: مجهول (الاسم مخفي)" : "Signed in: Anonymous (name hidden)")
+            : (lang === "ar" ? "مسجّل: " + displayName : "Signed in: " + displayName);
+        } catch (e) {}
+      }
+
+      async function loadStory() {
+        const id = getIdFromUrl();
+
+        if (!id) {
+          elTitle.textContent = currentLang === "ar" ? "قصة غير موجودة" : "Story not found";
+          showError("Missing story id in the URL.", "لا يوجد رقم قصة في الرابط.");
+          return;
+        }
+
+        try {
+          const { data, error } = await supabase
+            .from("stories")
+            .select("id, title, content, category, is_anonymous, created_at")
+            .eq("id", id)
+            .maybeSingle();
+
+          if (error) {
+            console.error("Supabase error:", error);
+            elTitle.textContent = currentLang === "ar" ? "تعذر التحميل" : "Could not load";
+            showError("Error loading this story (check console).", "خطأ في تحميل القصة (تحقق من الكونسول).");
+            return;
+          }
+
+          if (!data) {
+            elTitle.textContent = currentLang === "ar" ? "قصة غير موجودة" : "Story not found";
+            showError("This story does not exist (or was deleted).", "هذه القصة غير موجودة (أو تم حذفها).");
+            return;
+          }
+
+          elCategory.textContent = data.category || "General";
+          elTitle.textContent = data.title || (currentLang === "ar" ? "بدون عنوان" : "Untitled");
+          elDate.textContent = formatDate(data.created_at);
+          elVisibility.textContent = data.is_anonymous
+            ? (currentLang === "ar" ? "مجهول" : "Anonymous")
+            : (currentLang === "ar" ? "اسم ظاهر" : "Name visible");
+          elContent.textContent = data.content || "";
+        } catch (e) {
+          console.error("Unexpected error:", e);
+          elTitle.textContent = currentLang === "ar" ? "تعذر التحميل" : "Could not load";
+          showError("Something went wrong while loading this story.", "صار خطأ أثناء تحميل القصة.");
+        }
+      }
+
+      const initialLang = getInitialLang();
+      applyLanguage(initialLang);
+
+      if (langSelect) {
+        langSelect.value = initialLang;
+        langSelect.addEventListener("change", () => {
+          const lang = langSelect.value;
+          try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+          applyLanguage(lang);
+          refreshUserLabel(lang);
+          loadStory();
+        });
+      }
+
+      if (backBtn) {
+        backBtn.addEventListener("click", () => {
+          const ref = document.referrer || "";
+          if (ref.includes("stories.html")) window.history.back();
+          else window.location.href = "stories.html";
+        });
+      }
+
+      refreshUserLabel(initialLang);
+      loadStory();
+    })();
+  </script>
+</body>
+</html>
