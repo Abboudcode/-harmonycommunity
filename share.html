@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta
     name="description"
-    content="Share your real family story – with your name or completely anonymous – in a calm, safe space."
+    content="Share your story with kindness. Post with your name or anonymously. Optionally attach a picture or video."
   />
 
   <!-- Font -->
@@ -18,435 +18,261 @@
   />
 
   <style>
-    :root {
-      --bg: #f5f7fb;
-      --bg-card: #ffffff;
-      --primary: #4b6fff;
-      --primary-soft: #e2e7ff;
-      --text-main: #1f2933;
-      --text-muted: #6b7280;
-      --border-soft: #e5e7eb;
-      --accent: #10b981;
-      --danger: #ef4444;
-      --radius-lg: 16px;
-      --radius-md: 10px;
-      --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+    :root{
+      --bg:#f5f7fb;
+      --bg-card:#ffffff;
+      --primary:#4b6fff;
+      --primary-soft:#e2e7ff;
+      --text-main:#111827;
+      --text-muted:#6b7280;
+      --border-soft:#e5e7eb;
+      --radius-lg:18px;
+      --radius-md:12px;
+      --shadow-soft:0 18px 45px rgba(15,23,42,0.12);
+      --danger:#ef4444;
+      --ok:#16a34a;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
-      "Segoe UI", sans-serif;
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
       background: radial-gradient(circle at top left, #eef2ff, #f9fafb 40%);
-      color: var(--text-main);
-      line-height: 1.6;
+      color:var(--text-main);
+      line-height:1.6;
     }
+    a{color:inherit;text-decoration:none}
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    .page{min-height:100vh;display:flex;flex-direction:column}
+    .max-w{max-width:1120px;margin:0 auto;padding:0 1.25rem}
 
-    .page {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .max-w {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 0 1.25rem;
-    }
-
-    /* HEADER / NAV – DARK */
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(16px);
+    header{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter: blur(18px);
       background: linear-gradient(180deg, #050817, #0f172a);
       border-bottom: 1px solid rgba(148, 163, 184, 0.35);
     }
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0.8rem 0;gap:1rem;
+    }
+    .nav-left{display:flex;align-items:center;gap:.5rem}
+    .logo-wrapper{display:flex;align-items:center}
 
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.8rem 0;
-      gap: 1rem;
+    .nav-links{
+      display:flex;align-items:center;gap:1rem;
+      font-size:.95rem;color:#e5e7eb;
+    }
+    .nav-links a{
+      padding:.3rem .7rem;border-radius:999px;
+      transition: background .2s, color .2s;
+    }
+    .nav-links a:hover{background:rgba(148,163,184,.22);color:#fff}
+    .nav-links a.active{background:rgba(129,140,248,.35);color:#fff}
+    @media (max-width:720px){.nav-links{display:none}}
+
+    .nav-right{display:flex;align-items:center;gap:.75rem}
+    .nav-ghost{font-size:.9rem;color:#cbd5f5;white-space:nowrap}
+
+    .language-select{
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.6);
+      background:rgba(15,23,42,.8);
+      color:#e5e7eb;
+      font-size:.8rem;
+      padding:.25rem .7rem;
+      outline:none;
+      cursor:pointer;
+    }
+    .language-select option{color:#111827;background:#fff}
+
+    main{padding:2.4rem 0 2.2rem}
+
+    .hero{
+      max-width:860px;margin:0 auto 1.2rem;text-align:center;
+    }
+    .hero h1{font-size:2rem;line-height:1.2;margin-bottom:.4rem}
+    .hero p{color:var(--text-muted);font-size:.98rem}
+
+    .layout{
+      display:grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+      gap:1.2rem;
+      margin-top:1.4rem;
+      align-items:start;
+    }
+    @media (max-width:980px){
+      .layout{grid-template-columns:minmax(0,1fr)}
     }
 
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+    .card{
+      background:var(--bg-card);
+      border:1px solid var(--border-soft);
+      border-radius:var(--radius-lg);
+      box-shadow:0 10px 28px rgba(15,23,42,0.05);
+      padding:1.25rem;
     }
 
-    .logo-wrapper {
-      display: flex;
-      align-items: center;
+    .card h2{font-size:1.1rem;margin-bottom:.75rem}
+    .subtext{color:var(--text-muted);font-size:.92rem;margin-bottom:1rem}
+
+    .field{margin-bottom:.9rem}
+    .field label{
+      display:block;
+      font-weight:600;
+      margin-bottom:.35rem;
+      font-size:.92rem;
     }
 
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      font-size: 0.95rem;
-      color: #e5e7eb;
+    input[type="text"], select, textarea{
+      width:100%;
+      border-radius:12px;
+      border:1px solid #d1d5db;
+      padding:.6rem .75rem;
+      font-family:inherit;
+      font-size:.95rem;
+      background:#fff;
+      transition:border-color .12s ease, box-shadow .12s ease;
+    }
+    textarea{min-height:170px;resize:vertical}
+    input:focus, select:focus, textarea:focus{
+      outline:none;
+      border-color:#6366f1;
+      box-shadow:0 0 0 2px rgba(99,102,241,.18);
     }
 
-    .nav-links a {
-      padding: 0.3rem 0.6rem;
-      border-radius: 999px;
-      transition: background 0.2s, color 0.2s;
+    .row{
+      display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;
     }
 
-    .nav-links a:hover {
-      background: rgba(148, 163, 184, 0.22);
-      color: #ffffff;
+    .toggle{
+      display:flex;gap:.55rem;align-items:flex-start;color:var(--text-muted);
+      font-size:.9rem;margin:.2rem 0 .9rem;
     }
+    .toggle input{margin-top:.25rem}
 
-    .nav-links a.active {
-      background: rgba(129, 140, 248, 0.35);
-      color: #ffffff;
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .nav-ghost {
-      font-size: 0.9rem;
-      color: #cbd5f5;
-      white-space: nowrap;
-    }
-
-    .language-select {
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      background: rgba(15, 23, 42, 0.8);
-      color: #e5e7eb;
-      font-size: 0.8rem;
-      padding: 0.25rem 0.7rem;
-      outline: none;
-      cursor: pointer;
-    }
-
-    .language-select option {
-      color: #111827;
-      background: #ffffff;
-    }
-
-    @media (max-width: 720px) {
-      .nav-links {
-        display: none;
-      }
-    }
-
-    /* BUTTONS */
-
-    .btn-primary {
+    .btn-primary{
       background: linear-gradient(135deg, #4f46e5, #6366f1);
-      color: #fff;
-      border-radius: 999px;
-      padding: 0.6rem 1.3rem;
-      font-size: 0.95rem;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.35);
-      transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
+      color:#fff;
+      border:none;
+      border-radius:999px;
+      padding:.7rem 1.2rem;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 12px 30px rgba(79, 70, 229, 0.28);
+      transition: transform .1s ease, box-shadow .1s ease, opacity .1s ease;
+    }
+    .btn-primary:hover{transform:translateY(-1px);box-shadow:0 16px 35px rgba(79,70,229,.38)}
+    .btn-primary:active{transform:translateY(0);opacity:.95}
+
+    .btn-ghost{
+      background:#fff;
+      border:1px solid #d1d5db;
+      color:#111827;
+      border-radius:999px;
+      padding:.55rem 1rem;
+      cursor:pointer;
+      transition: background .12s, border-color .12s, transform .1s;
+    }
+    .btn-ghost:hover{background:#f8fafc;border-color:#cbd5e1}
+    .btn-ghost:active{transform:translateY(0);opacity:.95}
+
+    .status{
+      margin-top:.85rem;
+      font-size:.92rem;
+      color:var(--text-muted);
+    }
+    .status.ok{color:var(--ok)}
+    .status.err{color:var(--danger)}
+
+    /* Attachment UI */
+    .attach-box{
+      border:1px dashed #cbd5e1;
+      border-radius:14px;
+      padding:0.9rem;
+      background:linear-gradient(180deg,#fff, #fbfdff);
+    }
+    .attach-actions{
+      display:flex;
+      gap:.6rem;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .attach-left{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+    .file-name{
+      font-size:.9rem;
+      color:var(--text-muted);
+      margin-top:.55rem;
+      display:flex;
+      justify-content:space-between;
+      gap:.75rem;
+      flex-wrap:wrap;
+    }
+    .file-name strong{color:#111827;font-weight:600}
+    .hint{
+      font-size:.85rem;
+      color:var(--text-muted);
+      margin-top:.55rem;
     }
 
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 16px 35px rgba(79, 70, 229, 0.45);
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      padding:.2rem .65rem;
+      border-radius:999px;
+      font-size:.8rem;
+      background:#eef2ff;
+      color:#4f46e5;
+      border:1px solid #e0e7ff;
+    }
+    .side-pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem}
+
+    .divider{height:1px;background:#eef2f7;margin:1rem 0}
+
+    footer{
+      padding:1.5rem 0 1.8rem;
+      font-size:.8rem;
+      color:var(--text-muted);
+      text-align:center;
+      margin-top:auto;
     }
 
-    .btn-primary:active {
-      transform: translateY(0);
-      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
-      opacity: 0.9;
+    .lock-banner{
+      display:none;
+      background:#fff;
+      border:1px solid #e5e7eb;
+      border-radius:14px;
+      padding:.9rem;
+      margin-bottom:1rem;
+      box-shadow:0 10px 28px rgba(15,23,42,0.04);
     }
-
-    /* LAYOUT */
-
-    main {
-      padding: 2.8rem 0 2.2rem;
-    }
-
-    .page-title-block {
-      max-width: 720px;
-      margin: 0 auto 1.8rem;
-      text-align: center;
-    }
-
-    .page-title-block h1 {
-      font-size: 1.6rem;
-      margin-bottom: 0.4rem;
-    }
-
-    .page-title-block p {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-    }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.5fr);
-      gap: 1.8rem;
-    }
-
-    @media (max-width: 900px) {
-      .two-col {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .card {
-      background: var(--bg-card);
-      border-radius: var(--radius-lg);
-      padding: 1.4rem 1.3rem;
-      border: 1px solid var(--border-soft);
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.03);
-      transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
-    }
-
-    .card:hover {
-      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.07);
-      transform: translateY(-2px);
-      border-color: #e5e7eb;
-    }
-
-    .card h3 {
-      font-size: 1.05rem;
-      margin-bottom: 0.4rem;
-    }
-
-    .card p.sub {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-    }
-
-    .field {
-      margin-bottom: 0.9rem;
-      font-size: 0.9rem;
-    }
-
-    .field label {
-      display: block;
-      margin-bottom: 0.25rem;
-      font-weight: 500;
-    }
-
-    .field input[type="text"],
-    .field select,
-    .field textarea {
-      width: 100%;
-      border-radius: 10px;
-      border: 1px solid #d1d5db;
-      padding: 0.55rem 0.7rem;
-      font-family: inherit;
-      font-size: 0.9rem;
-      transition: border-color 0.12s ease, box-shadow 0.12s ease;
-    }
-
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      outline: none;
-      border-color: #6366f1;
-      box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.25);
-    }
-
-    .field textarea {
-      resize: vertical;
-      min-height: 140px;
-    }
-
-    .field input[type="file"] {
-      font-size: 0.85rem;
-    }
-
-    .field small {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .field-inline {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.45rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 0.8rem;
-    }
-
-    .field-inline input[type="checkbox"] {
-      margin-top: 0.1rem;
-    }
-
-    .note {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 0.5rem;
-    }
-
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-top: 0.6rem;
-      font-size: 0.8rem;
-    }
-
-    .pill {
-      padding: 0.2rem 0.6rem;
-      border-radius: 999px;
-      background: #eef2ff;
-      color: #4f46e5;
-      border: 1px solid #c7d2fe;
-    }
-
-    .example-block {
-      font-size: 0.86rem;
-      color: var(--text-muted);
-      margin-top: 0.5rem;
-      line-height: 1.7;
-    }
-
-    .example-label {
-      font-size: 0.78rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: #9ca3af;
-      margin-bottom: 0.25rem;
-    }
-
-    .success-message,
-    .error-message {
-      margin-top: 0.75rem;
-      padding: 0.6rem 0.8rem;
-      border-radius: 10px;
-      font-size: 0.82rem;
-    }
-
-    .success-message {
-      background: #ecfdf5;
-      border: 1px solid #bbf7d0;
-      color: #166534;
-    }
-
-    .error-message {
-      background: #fef2f2;
-      border: 1px solid #fecaca;
-      color: #b91c1c;
-    }
-
-    footer {
-      padding: 1rem 0 1.5rem;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      text-align: center;
-      margin-top: auto;
-    }
-
-    @media (max-width: 640px) {
-      main {
-        padding-top: 2.2rem;
-      }
-
-      .nav {
-        padding: 0.6rem 0;
-      }
-
-      .card {
-        padding: 1.2rem 1.05rem;
-      }
-    }
+    .lock-banner strong{display:block;margin-bottom:.25rem}
+    .lock-banner p{color:var(--text-muted);font-size:.92rem}
   </style>
 </head>
+
 <body>
 <div class="page">
-  <!-- HEADER -->
   <header>
     <div class="max-w nav">
       <div class="nav-left">
         <div class="logo-wrapper">
-          <!-- Arc + heartbeat + Harmony text logo -->
-          <svg
-            width="180"
-            height="40"
-            viewBox="0 0 180 40"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-label="Harmony logo"
-            role="img"
-          >
-            <!-- Arc -->
-            <path
-              d="M10 22 C25 5, 55 5, 70 22"
-              fill="none"
-              stroke="#40cbb4"
-              stroke-width="3"
-              stroke-linecap="round"
-            />
-            <!-- Heartbeat / wave -->
-            <path
-              d="M12 22 L22 22 L27 15 L33 30 L38 22 L68 22"
-              fill="none"
-              stroke="#f5c451"
-              stroke-width="3"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <!-- Text -->
-            <text
-              x="78"
-              y="27"
-              font-family="Inter, system-ui, sans-serif"
-              font-size="18"
-              font-weight="600"
-              fill="#ffffff"
-            >
-              Harmony
-            </text>
+          <svg width="180" height="40" viewBox="0 0 180 40" xmlns="http://www.w3.org/2000/svg" aria-label="Harmony logo" role="img">
+            <path d="M10 22 C25 5, 55 5, 70 22" fill="none" stroke="#40cbb4" stroke-width="3" stroke-linecap="round" />
+            <path d="M12 22 L22 22 L27 15 L33 30 L38 22 L68 22" fill="none" stroke="#f5c451" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+            <text x="78" y="27" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="600" fill="#ffffff">Harmony</text>
           </svg>
         </div>
       </div>
 
       <nav class="nav-links">
-        <a href="index.html"
-           data-en="Home"
-           data-ar="الرئيسية">Home</a>
-        <a href="stories.html"
-           data-en="Stories"
-           data-ar="القصص">Stories</a>
-        <a href="share.html" class="active"
-           data-en="Share a Story"
-           data-ar="شارك قصة">Share a Story</a>
-        <a href="signin.html"
-           data-en="Sign In"
-           data-ar="تسجيل الدخول">Sign In</a>
-        <a href="about.html"
-           data-en="About"
-           data-ar="عن هارموني">About</a>
-        <a href="faq.html"
-           data-en="FAQ"
-           data-ar="الأسئلة الشائعة">FAQ</a>
-        <a href="contact.html"
-           data-en="Contact"
-           data-ar="تواصل معنا">Contact</a>
+        <a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+        <a href="stories.html" data-en="Stories" data-ar="القصص">Stories</a>
+        <a href="share.html" class="active" data-en="Share a Story" data-ar="شارك قصة">Share a Story</a>
+        <a href="signin.html" data-en="Sign In" data-ar="تسجيل الدخول">Sign In</a>
+        <a href="about.html" data-en="About" data-ar="عن هارموني">About</a>
+        <a href="faq.html" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a>
+        <a href="contact.html" data-en="Contact" data-ar="اتصال">Contact</a>
       </nav>
 
       <div class="nav-right">
@@ -454,436 +280,515 @@
           <option value="en">English</option>
           <option value="ar">العربية</option>
         </select>
-        <div class="nav-ghost"
-             id="nav-auth-label"
-             data-en="Not signed in"
-             data-ar="لست مسجّل دخول">
-          Not signed in
-        </div>
+        <div class="nav-ghost" id="nav-auth-label" data-en="Not signed in" data-ar="غير مسجّل الدخول">Not signed in</div>
       </div>
     </div>
   </header>
 
-  <!-- MAIN -->
   <main>
-    <div class="max-w page-title-block">
-      <h1
-        data-en="Share what’s really happening at home"
-        data-ar="إحكي شو فعلاً عم يصير ببيتك"
-      >
-        Share what’s really happening at home
-      </h1>
+    <div class="max-w hero">
+      <h1 data-en="Share a Story" data-ar="شارك قصة">Share a Story</h1>
       <p
-        data-en="Write your story in a calm, private space. You can show your name or choose to stay completely anonymous."
-        data-ar="إكتب قصتك بمكان هادي وسري. تقدر تظهر اسمك أو تختار تكون مجهول بالكامل."
+        data-en="Share your story with kindness. You can post with your name or anonymously. Optionally attach a picture or video."
+        data-ar="شارك قصتك بلطف. فيك تنشر باسمك أو كمجهول. وباختيارك ترفق صورة أو فيديو."
       >
-        Write your story in a calm, private space. You can show your name or choose to stay completely anonymous.
+        Share your story with kindness. You can post with your name or anonymously. Optionally attach a picture or video.
       </p>
     </div>
 
-    <section>
-      <div class="max-w two-col">
-        <!-- FORM SIDE -->
-        <div class="card">
-          <h3
-            data-en="Your story"
-            data-ar="قصتك"
-          >
-            Your story
-          </h3>
-          <p
-            class="sub"
-            data-en="Take your time. You don’t have to be perfect or polite here. Just be honest."
-            data-ar="خد وقتك. مش لازم تكون منمّق أو مثالي هون. بس كن صادق."
-          >
-            Take your time. You don’t have to be perfect or polite here. Just be honest.
-          </p>
-
-          <form id="share-form">
-            <div class="field">
-              <label
-                for="story-title"
-                data-en="Title"
-                data-ar="العنوان"
-              >Title</label>
-              <input
-                id="story-title"
-                type="text"
-                required
-                data-en-placeholder="Example: I feel like I’m failing as a parent…"
-                data-ar-placeholder="مثال: حاسس/ة إني عم أفشل كأب أو أم…"
-                placeholder="Example: I feel like I’m failing as a parent…"
-              />
-            </div>
-
-            <div class="field">
-              <label
-                for="story-category"
-                data-en="Category"
-                data-ar="الفئة"
-              >Category</label>
-              <select id="story-category" required>
-                <option value="Kids">Kids</option>
-                <option value="Teens">Teens</option>
-                <option value="Adult">Adult</option>
-                <option value="Marriage">Marriage</option>
-                <option value="Finance">Finance</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label
-                for="story-details"
-                data-en="Details"
-                data-ar="التفاصيل"
-              >Details</label>
-              <textarea
-                id="story-details"
-                required
-                data-en-placeholder="Share what’s going on, how it makes you feel, and what you wish someone could tell you right now…"
-                data-ar-placeholder="إحكي شو عم يصير، شو إحساسك، وشو الكلمة اللي بتتمنى حدا يقولّك ياها هلّق…"
-                placeholder="Share what’s going on, how it makes you feel, and what you wish someone could tell you right now…"
-              ></textarea>
-            </div>
-
-            <div class="field">
-              <label
-                for="story-media"
-                data-en="Attach a picture or video (optional)"
-                data-ar="إرفق صورة أو فيديو (اختياري)"
-              >Attach a picture or video (optional)</label>
-              <input id="story-media" type="file" />
-              <small
-                data-en="In the full app, screenshots or photos can help others understand your situation better."
-                data-ar="في النسخة الكاملة، لقطات الشاشة أو الصور تساعد الناس يفهموا وضعك أكثر."
-              >
-                In the full app, screenshots or photos can help others understand your situation better.
-              </small>
-            </div>
-
-            <div class="field-inline">
-              <input id="story-anon" type="checkbox" />
-              <label for="story-anon">
-                <strong
-                  data-en="Post this story as Anonymous"
-                  data-ar="أنشر هذه القصة كمجهول"
-                >
-                  Post this story as Anonymous
-                </strong><br />
-                <small
-                  data-en="If checked, people will see “Anonymous” instead of your name for this story."
-                  data-ar="إذا فعّلت هذا الخيار، الناس رح تشوف &quot;مجهول&quot; بدل اسمك في هذه القصة."
-                >
-                  If checked, people will see “Anonymous” instead of your name for this story.
-                </small>
-              </label>
-            </div>
-
-            <p
-              class="note"
-              id="share-note"
-              data-en="Your story will be saved privately in our database and soon will appear on the Stories page."
-              data-ar="قصتك رح تنحفظ بشكل آمن في قاعدة البيانات، وقريباً رح تظهر في صفحة القصص."
-            >
-              Your story will be saved privately in our database and soon will appear on the Stories page.
-            </p>
-
-            <button
-              type="submit"
-              class="btn-primary"
-              data-en="Share my story"
-              data-ar="أنشر قصتي"
-            >
-              Share my story
-            </button>
-
-            <div id="share-status"></div>
-          </form>
-        </div>
-
-        <!-- INFO SIDE -->
-        <div class="card">
-          <h3
-            data-en="Before you share"
-            data-ar="قبل ما تحكي"
-          >
-            Before you share
-          </h3>
-          <p
-            class="sub"
-            data-en="Some gentle reminders to help you feel safe and supported while writing."
-            data-ar="شوية تذكيرات لطيفة حتى تحس بالأمان والدعم وأنت تكتب."
-          >
-            Some gentle reminders to help you feel safe and supported while writing.
-          </p>
-
-          <div class="pill-row">
-            <span class="pill"
-                  data-en="No judgment zone"
-                  data-ar="بدون حكم أو لوم">
-              No judgment zone
-            </span>
-            <span class="pill"
-                  data-en="Real feelings welcome"
-                  data-ar="المشاعر الحقيقية مرحّب فيها">
-              Real feelings welcome
-            </span>
-            <span class="pill"
-                  data-en="You control your privacy"
-                  data-ar="إنت المتحكّم بخصوصيتك">
-              You control your privacy
-            </span>
-          </div>
-
-          <div class="example-block">
-            <div
-              class="example-label"
-              data-en="Example way to start"
-              data-ar="طريقة مثال لبدء القصة"
-            >
-              Example way to start
-            </div>
-            <p
-              data-en="“I’m a parent of two kids, and lately I feel like I’m failing them. I shout more than I want to, and when the house is finally quiet I feel so guilty. I love my kids deeply, but I’m so tired and I don’t know how to break this cycle…”"
-              data-ar="«أنا أم/أب لطفلين، وبالفترة الأخيرة حاسس/ة إني عم أفشلهم. أصرخ أكثر مما بدي، ولما البيت يهدأ بالآخر بحس بذنب كبير. بحب أولادي من قلبي، بس أنا مرهق/ة ومش عارف/ة كيف أطلع من هالدائرة…»"
-            >
-              “I’m a parent of two kids, and lately I feel like I’m failing them. I shout more than I want to, and when the house is finally quiet I feel so guilty. I love my kids deeply, but I’m so tired and I don’t know how to break this cycle…”
-            </p>
-          </div>
-
-          <div class="example-block" style="margin-top:1.1rem;">
-            <div
-              class="example-label"
-              data-en="What Harmony is – and isn’t"
-              data-ar="شو هي هارموني… وشو مش هي"
-            >
-              What Harmony is – and isn’t
-            </div>
-            <p
-              data-en="Harmony is a community space for empathy, not a place for medical, legal or professional treatment. If you ever feel in danger or at risk of harming yourself or others, please contact local emergency services or a trusted professional immediately."
-              data-ar="هارموني مساحة للتعاطف والدعم بين الناس، مش مكان لعلاج طبي أو استشارة قانونية أو علاج مهني. إذا شعرت بأي خطر على نفسك أو على غيرك، تواصل فوراً مع خدمات الطوارئ في بلدك أو مع شخص مهني موثوق."
-            >
-              Harmony is a community space for empathy, not a place for medical, legal or professional treatment. If you ever feel in danger or at risk of harming yourself or others, please contact local emergency services or a trusted professional immediately.
-            </p>
-          </div>
-
-          <div class="example-block" style="margin-top:1.1rem;">
-            <div
-              class="example-label"
-              data-en="Next steps"
-              data-ar="الخطوات الجاية"
-            >
-              Next steps
-            </div>
-            <p
-              data-en="Soon, when the database is fully ready, your stories here will appear on the Stories page so others can react with kindness and share what helped them in similar situations."
-              data-ar="قريباً، لما تجهز قاعدة البيانات بالكامل، القصص اللي تكتبها هون رح تظهر في صفحة القصص، حتى الناس تقدر تتفاعل معها بلطف وتشارك شو ساعدهم في نفس الظروف."
-            >
-              Soon, when the database is fully ready, your stories here will appear on the Stories page so others can react with kindness and share what helped them in similar situations.
-            </p>
-          </div>
-        </div>
+    <div class="max-w lock-banner" id="lock-banner">
+      <strong data-en="You must be signed in to post." data-ar="لازم تكون مسجّل دخول لتقدر تنشر.">You must be signed in to post.</strong>
+      <p
+        data-en="Please sign in first, then come back to share your story."
+        data-ar="رجاءً سجّل دخول أولاً، وبعدها ارجع لهون لتشارك قصتك."
+      >
+        Please sign in first, then come back to share your story.
+      </p>
+      <div class="row" style="margin-top:.6rem;">
+        <a class="btn-primary" href="signin.html" data-en="Go to Sign In" data-ar="اذهب لتسجيل الدخول">Go to Sign In</a>
       </div>
-    </section>
+    </div>
+
+    <div class="max-w layout">
+      <!-- FORM -->
+      <section class="card">
+        <h2 data-en="Your story" data-ar="قصتك">Your story</h2>
+        <p class="subtext"
+          data-en="Take your time. You don’t have to be perfect. Just be real."
+          data-ar="خد وقتك. ما لازم تكون مثالي. بس كون صادق."
+        >
+          Take your time. You don’t have to be perfect. Just be real.
+        </p>
+
+        <form id="share-form">
+          <div class="field">
+            <label for="story-category" data-en="Category" data-ar="الفئة">Category</label>
+            <select id="story-category" required>
+              <option value="Kids">Kids</option>
+              <option value="Teens">Teens</option>
+              <option value="Adult">Adult</option>
+              <option value="Marriage">Marriage</option>
+              <option value="Finance">Finance</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="story-title" data-en="Title" data-ar="العنوان">Title</label>
+            <input
+              id="story-title"
+              type="text"
+              required
+              maxlength="140"
+              data-en-placeholder="Short title that describes your situation…"
+              data-ar-placeholder="عنوان قصير يعبّر عن وضعك…"
+              placeholder="Short title that describes your situation…"
+            />
+          </div>
+
+          <div class="field">
+            <label for="story-details" data-en="Your story" data-ar="تفاصيل القصة">Your story</label>
+            <textarea
+              id="story-details"
+              required
+              maxlength="7000"
+              data-en-placeholder="Share what’s going on, how it makes you feel, and what you wish someone could tell you right now…"
+              data-ar-placeholder="إحكي شو عم يصير، شو إحساسك، وشو الكلمة اللي بتتمنى حدا يقولّك ياها هلّق…"
+              placeholder="Share what’s going on, how it makes you feel, and what you wish someone could tell you right now…"
+            ></textarea>
+          </div>
+
+          <div class="field">
+            <label for="story-media" data-en="Attachment (optional)" data-ar="مرفق (اختياري)">Attachment (optional)</label>
+
+            <div class="attach-box">
+              <div class="attach-actions">
+                <div class="attach-left">
+                  <button class="btn-ghost" type="button" id="pick-image-btn"
+                    data-en="Upload Picture" data-ar="رفع صورة">Upload Picture</button>
+
+                  <button class="btn-ghost" type="button" id="pick-video-btn"
+                    data-en="Upload Video" data-ar="رفع فيديو">Upload Video</button>
+
+                  <button class="btn-ghost" type="button" id="remove-file-btn"
+                    data-en="Remove" data-ar="إزالة">Remove</button>
+                </div>
+
+                <span class="pill" id="file-type-pill" style="display:none;"></span>
+              </div>
+
+              <input id="story-media" type="file" style="display:none;" />
+
+              <div class="file-name">
+                <span><strong data-en="Selected:" data-ar="المختار:">Selected:</strong> <span id="file-name">No file selected</span></span>
+                <span id="file-size" style="display:none;"></span>
+              </div>
+
+              <div class="hint"
+                data-en="Allowed: images or videos. Keep files small for faster upload."
+                data-ar="مسموح: صور أو فيديو. الأفضل يكون الحجم صغير ليتم الرفع بسرعة.">
+                Allowed: images or videos. Keep files small for faster upload.
+              </div>
+            </div>
+          </div>
+
+          <div class="toggle">
+            <input id="story-anon" type="checkbox" />
+            <label for="story-anon">
+              <strong data-en="Post this story as Anonymous" data-ar="انشر القصة كمجهول">Post this story as Anonymous</strong><br />
+              <small
+                data-en="If checked, people will see “Anonymous” instead of your name for this story."
+                data-ar="إذا فعّلت هذا الخيار، الناس رح تشوف &quot;مجهول&quot; بدل اسمك في هذه القصة."
+              >If checked, people will see “Anonymous” instead of your name for this story.</small>
+            </label>
+          </div>
+
+          <div class="row">
+            <button class="btn-primary" type="submit" id="submit-btn"
+              data-en="Publish story" data-ar="نشر القصة">Publish story</button>
+          </div>
+
+          <div id="share-status" class="status" role="status" aria-live="polite"></div>
+        </form>
+      </section>
+
+      <!-- SIDE CARD -->
+      <aside class="card">
+        <h2 data-en="Gentle reminders" data-ar="تذكير لطيف">Gentle reminders</h2>
+        <p class="subtext"
+          data-en="Some gentle reminders to help you feel safe and supported while writing."
+          data-ar="شوية تذكيرات لطيفة لتساعدك تحس بالأمان والدعم وأنت عم تكتب."
+        >
+          Some gentle reminders to help you feel safe and supported while writing.
+        </p>
+
+        <div class="side-pills">
+          <span class="pill" data-en="No judgment zone" data-ar="بدون حكم أو لوم">No judgment zone</span>
+          <span class="pill" data-en="Real feelings welcome" data-ar="المشاعر الحقيقية مرحّب فيها">Real feelings welcome</span>
+          <span class="pill" data-en="Small steps matter" data-ar="الخطوات الصغيرة بتفرق">Small steps matter</span>
+          <span class="pill" data-en="You are not alone" data-ar="إنت مش لوحدك">You are not alone</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <p class="subtext"
+          data-en="If you are in immediate danger, please contact your local emergency services or a trusted professional."
+          data-ar="إذا كنت بخطر مباشر، تواصل فوراً مع خدمات الطوارئ أو مختص موثوق."
+        >
+          If you are in immediate danger, please contact your local emergency services or a trusted professional.
+        </p>
+      </aside>
+    </div>
   </main>
 
-  <!-- FOOTER -->
-  <footer>
-    Harmony Community © 2025
-  </footer>
+  <footer>Harmony Community © 2025</footer>
 </div>
 
-<!-- Supabase client -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-  (function () {
-    const langSelect = document.getElementById('language-select');
-    const navAuthLabel = document.getElementById('nav-auth-label');
-    const shareForm = document.getElementById('share-form');
-    const shareStatus = document.getElementById('share-status');
+(function () {
+  const LANG_KEY = "harmony_lang";
 
-    const LANG_KEY = 'harmony_lang';
+  const langSelect = document.getElementById("language-select");
+  const navAuthLabel = document.getElementById("nav-auth-label");
 
-    const SUPABASE_URL = 'https://tnohzvrpqiaiupwyaxcp.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const lockBanner = document.getElementById("lock-banner");
+  const shareForm = document.getElementById("share-form");
+  const statusEl = document.getElementById("share-status");
+  const submitBtn = document.getElementById("submit-btn");
 
-    // ---- Language ----
-    function applyLanguage(lang) {
-      const elements = document.querySelectorAll('[data-en]');
-      elements.forEach(el => {
-        const en = el.getAttribute('data-en');
-        const ar = el.getAttribute('data-ar') || en;
-        el.innerHTML = (lang === 'ar') ? ar : en;
-      });
+  const titleEl = document.getElementById("story-title");
+  const detailsEl = document.getElementById("story-details");
+  const categoryEl = document.getElementById("story-category");
+  const anonEl = document.getElementById("story-anon");
 
-      const placeholderEls = document.querySelectorAll('[data-en-placeholder]');
-      placeholderEls.forEach(el => {
-        const enPh = el.getAttribute('data-en-placeholder');
-        const arPh = el.getAttribute('data-ar-placeholder') || enPh;
-        el.placeholder = (lang === 'ar') ? arPh : enPh;
-      });
+  const mediaInput = document.getElementById("story-media");
+  const pickImageBtn = document.getElementById("pick-image-btn");
+  const pickVideoBtn = document.getElementById("pick-video-btn");
+  const removeFileBtn = document.getElementById("remove-file-btn");
+  const fileNameEl = document.getElementById("file-name");
+  const fileSizeEl = document.getElementById("file-size");
+  const fileTypePill = document.getElementById("file-type-pill");
 
-      document.documentElement.lang = (lang === 'ar') ? 'ar' : 'en';
-      document.documentElement.dir  = (lang === 'ar') ? 'rtl' : 'ltr';
+  let currentLang = "en";
+  let currentUser = null;
+
+  function getInitialLang() {
+    try {
+      const saved = localStorage.getItem(LANG_KEY);
+      if (saved === "ar" || saved === "en") return saved;
+    } catch (e) {}
+    return "en";
+  }
+
+  function applyLanguage(lang) {
+    currentLang = lang;
+
+    document.querySelectorAll("[data-en]").forEach((el) => {
+      const en = el.getAttribute("data-en");
+      const ar = el.getAttribute("data-ar") || en;
+      el.innerHTML = (lang === "ar") ? ar : en;
+    });
+
+    document.querySelectorAll("[data-en-placeholder]").forEach((el) => {
+      const en = el.getAttribute("data-en-placeholder") || "";
+      const ar = el.getAttribute("data-ar-placeholder") || en;
+      el.setAttribute("placeholder", (lang === "ar") ? ar : en);
+    });
+
+    document.documentElement.lang = (lang === "ar") ? "ar" : "en";
+    document.documentElement.dir  = (lang === "ar") ? "rtl" : "ltr";
+  }
+
+  function setStatus(msgEn, msgAr, kind) {
+    if (!statusEl) return;
+    const msg = (currentLang === "ar") ? (msgAr || msgEn) : msgEn;
+    statusEl.textContent = msg || "";
+    statusEl.classList.remove("ok", "err");
+    if (kind === "ok") statusEl.classList.add("ok");
+    if (kind === "err") statusEl.classList.add("err");
+  }
+
+  function disableForm(disabled) {
+    if (!shareForm) return;
+    [...shareForm.querySelectorAll("input, select, textarea, button")].forEach((el) => {
+      if (el.id === "language-select") return;
+      el.disabled = !!disabled;
+    });
+    if (submitBtn) submitBtn.disabled = !!disabled;
+  }
+
+  // Supabase
+  const SUPABASE_URL = "https://tnohzvrpqiaiupwyaxcp.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K";
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+  });
+
+  // ⚠️ Bucket name: create this bucket in Supabase Storage (Public)
+  const MEDIA_BUCKET = "story-media";
+
+  function formatBytes(bytes) {
+    if (!bytes && bytes !== 0) return "";
+    const sizes = ["B", "KB", "MB", "GB"];
+    const i = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), sizes.length - 1);
+    const val = bytes / Math.pow(1024, i);
+    return val.toFixed(val >= 10 || i === 0 ? 0 : 1) + " " + sizes[i];
+  }
+
+  function updateFileUI(file) {
+    if (!file) {
+      fileNameEl.textContent = (currentLang === "ar") ? "لا يوجد ملف" : "No file selected";
+      fileSizeEl.style.display = "none";
+      fileTypePill.style.display = "none";
+      fileTypePill.textContent = "";
+      return;
     }
 
-    function getInitialLang() {
-      try {
-        const saved = localStorage.getItem(LANG_KEY);
-        if (saved === 'ar' || saved === 'en') return saved;
-      } catch (e) {}
-      return 'en';
+    fileNameEl.textContent = file.name || "file";
+    fileSizeEl.style.display = "inline";
+    fileSizeEl.textContent = formatBytes(file.size);
+
+    const isImg = file.type && file.type.startsWith("image/");
+    const isVid = file.type && file.type.startsWith("video/");
+    fileTypePill.style.display = "inline-flex";
+    fileTypePill.textContent = isImg
+      ? ((currentLang === "ar") ? "صورة" : "Image")
+      : isVid
+        ? ((currentLang === "ar") ? "فيديو" : "Video")
+        : ((currentLang === "ar") ? "ملف" : "File");
+  }
+
+  function pickFile(mode) {
+    if (!mediaInput) return;
+    mediaInput.value = "";
+    if (mode === "image") mediaInput.accept = "image/*";
+    else if (mode === "video") mediaInput.accept = "video/*";
+    else mediaInput.accept = "image/*,video/*";
+    mediaInput.click();
+  }
+
+  if (pickImageBtn) pickImageBtn.addEventListener("click", () => pickFile("image"));
+  if (pickVideoBtn) pickVideoBtn.addEventListener("click", () => pickFile("video"));
+  if (removeFileBtn) removeFileBtn.addEventListener("click", () => {
+    mediaInput.value = "";
+    updateFileUI(null);
+  });
+
+  if (mediaInput) {
+    mediaInput.addEventListener("change", () => {
+      const file = mediaInput.files && mediaInput.files[0] ? mediaInput.files[0] : null;
+      updateFileUI(file);
+    });
+  }
+
+  function escapePathPart(s) {
+    return String(s || "").replaceAll("/", "_").replaceAll("\\", "_").replaceAll("..", "_");
+  }
+
+  async function ensureSignedIn() {
+    const { data, error } = await supabase.auth.getUser();
+    if (error || !data || !data.user) return null;
+    return data.user;
+  }
+
+  async function refreshNavAuth() {
+    const user = await ensureSignedIn();
+    currentUser = user;
+
+    if (!user) {
+      if (navAuthLabel) navAuthLabel.textContent = (currentLang === "ar") ? "غير مسجّل الدخول" : "Not signed in";
+      if (lockBanner) lockBanner.style.display = "block";
+      disableForm(true);
+      return;
     }
 
-    const initialLang = getInitialLang();
-    applyLanguage(initialLang);
+    const meta = user.user_metadata || {};
+    const displayName = meta.display_name || user.email;
+    const alwaysAnon = !!meta.always_anonymous;
 
-    if (langSelect) {
-      langSelect.value = initialLang;
-      langSelect.addEventListener('change', () => {
-        const lang = langSelect.value;
-        try {
-          localStorage.setItem(LANG_KEY, lang);
-        } catch (e) {}
-        applyLanguage(lang);
-      });
+    if (navAuthLabel) {
+      navAuthLabel.textContent = alwaysAnon
+        ? ((currentLang === "ar") ? "مسجّل: مجهول (الاسم مخفي)" : "Signed in: Anonymous (name hidden)")
+        : ((currentLang === "ar") ? ("مسجّل: " + displayName) : ("Signed in: " + displayName));
     }
 
-    function setStatus(message, type) {
-      if (!shareStatus) return;
-      if (!message) {
-        shareStatus.innerHTML = '';
+    if (lockBanner) lockBanner.style.display = "none";
+    disableForm(false);
+  }
+
+  async function uploadMediaIfAny(userId) {
+    const file = mediaInput && mediaInput.files && mediaInput.files[0] ? mediaInput.files[0] : null;
+    if (!file) return { media_url: null, media_type: null };
+
+    const isImg = file.type && file.type.startsWith("image/");
+    const isVid = file.type && file.type.startsWith("video/");
+    if (!isImg && !isVid) {
+      throw new Error(currentLang === "ar" ? "الملف لازم يكون صورة أو فيديو فقط." : "File must be an image or a video.");
+    }
+
+    // size limit (optional)
+    const maxBytes = 25 * 1024 * 1024; // 25MB
+    if (file.size > maxBytes) {
+      throw new Error(currentLang === "ar" ? "حجم الملف كبير جداً. جرّب ملف أصغر." : "File is too large. Please use a smaller file.");
+    }
+
+    const ext = (file.name && file.name.includes(".")) ? file.name.split(".").pop().toLowerCase() : (isImg ? "jpg" : "mp4");
+    const safeExt = escapePathPart(ext);
+    const ts = Date.now();
+    const rand = Math.random().toString(16).slice(2);
+    const path = `${escapePathPart(userId)}/${ts}_${rand}.${safeExt}`;
+
+    const { error: upErr } = await supabase.storage
+      .from(MEDIA_BUCKET)
+      .upload(path, file, { upsert: false, contentType: file.type || undefined });
+
+    if (upErr) {
+      // Common issue: bucket not found or not public
+      throw new Error(
+        (currentLang === "ar"
+          ? ("فشل رفع الملف: " + upErr.message + " (تأكد من وجود Bucket باسم story-media وأنه Public)")
+          : ("Upload failed: " + upErr.message + " (make sure a public bucket named story-media exists)"))
+      );
+    }
+
+    const { data } = supabase.storage.from(MEDIA_BUCKET).getPublicUrl(path);
+    const publicUrl = data && data.publicUrl ? data.publicUrl : null;
+
+    return {
+      media_url: publicUrl,
+      media_type: isImg ? "image" : "video"
+    };
+  }
+
+  async function insertStory(payload) {
+    // Try with optional columns (user_id, media_url, media_type)
+    const attempt1 = await supabase
+      .from("stories")
+      .insert(payload)
+      .select("id")
+      .single();
+
+    if (!attempt1.error) return attempt1;
+
+    // Fallback: remove optional fields if your table doesn't have them yet
+    const fallback = { ...payload };
+    delete fallback.user_id;
+    delete fallback.media_url;
+    delete fallback.media_type;
+
+    const attempt2 = await supabase
+      .from("stories")
+      .insert(fallback)
+      .select("id")
+      .single();
+
+    return attempt2;
+  }
+
+  if (shareForm) {
+    shareForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const user = await ensureSignedIn();
+      if (!user) {
+        setStatus(
+          "Please sign in first.",
+          "رجاءً سجّل دخول أولاً.",
+          "err"
+        );
+        if (lockBanner) lockBanner.style.display = "block";
         return;
       }
-      const cls = type === 'error' ? 'error-message' : 'success-message';
-      shareStatus.innerHTML = '<div class="' + cls + '">' + message + '</div>';
-    }
 
-    // ---- Save story to Supabase ----
-    if (shareForm) {
-      shareForm.addEventListener('submit', async function (e) {
-        e.preventDefault();
+      const title = (titleEl.value || "").trim();
+      const content = (detailsEl.value || "").trim();
+      const category = categoryEl.value || "Kids";
 
-        const title   = document.getElementById('story-title').value.trim();
-        const details = document.getElementById('story-details').value.trim();
-        const category = document.getElementById('story-category').value;
-        const anonCheckbox = document.getElementById('story-anon');
-        const isAnonFromCheckbox = anonCheckbox ? anonCheckbox.checked : false;
+      if (!title || !content) {
+        setStatus(
+          "Please fill in title and story details.",
+          "رجاءً عبّي العنوان وتفاصيل القصة.",
+          "err"
+        );
+        return;
+      }
 
-        const lang = (langSelect && langSelect.value) ? langSelect.value : initialLang;
+      try {
+        disableForm(true);
+        setStatus("Publishing…", "جاري النشر…", null);
 
-        if (!title || !details || !category) {
-          setStatus(
-            lang === 'ar'
-              ? 'رجاءً اكتب عنواناً، واختر فئة، واكتب التفاصيل قبل إرسال قصتك.'
-              : 'Please fill the title, choose a category, and add details before you share.',
-            'error'
-          );
-          return;
+        const meta = user.user_metadata || {};
+        const alwaysAnon = !!meta.always_anonymous;
+        const storyAnon = !!anonEl.checked;
+
+        // Upload media first (if any)
+        const media = await uploadMediaIfAny(user.id);
+
+        // Prepare story payload
+        const payload = {
+          title,
+          content,
+          category,
+          is_anonymous: alwaysAnon ? true : storyAnon,
+          user_id: user.id,
+          media_url: media.media_url,
+          media_type: media.media_type
+        };
+
+        const res = await insertStory(payload);
+
+        if (res.error) {
+          throw new Error(res.error.message || "Insert failed.");
         }
+
+        const newId = res.data && res.data.id ? res.data.id : null;
 
         setStatus(
-          lang === 'ar'
-            ? 'جاري إرسال قصتك إلى هارموني…'
-            : 'Sending your story to Harmony…',
-          'success'
+          "Published successfully ✅ Redirecting…",
+          "تم النشر ✅ جاري التحويل…",
+          "ok"
         );
 
-        // check user
-        let userId = null;
-        let finalIsAnon = isAnonFromCheckbox;
-        try {
-          const { data, error } = await supabase.auth.getUser();
-          if (!error && data && data.user) {
-            userId = data.user.id;
-            const meta = data.user.user_metadata || {};
-            if (meta.always_anonymous) {
-              finalIsAnon = true;
-            }
-          }
-        } catch (err) {
-          console.error('Error checking auth user:', err);
-        }
+        // Go to story page
+        setTimeout(() => {
+          if (newId) window.location.href = "story.html?id=" + encodeURIComponent(String(newId));
+          else window.location.href = "stories.html";
+        }, 700);
 
-        try {
-          const { error: insertError } = await supabase
-            .from('stories')
-            .insert({
-              title,
-              content: details,
-              category,
-              user_id: userId,
-              is_anonymous: finalIsAnon
-            });
-
-          if (insertError) {
-            console.error('Error inserting story:', insertError);
-            setStatus(
-              lang === 'ar'
-                ? 'صار خطأ بسيط أثناء حفظ القصة. جرّب مرة ثانية من فضلك.'
-                : 'Something went wrong while saving your story. Please try again.',
-              'error'
-            );
-            return;
-          }
-
-          setStatus(
-            lang === 'ar'
-              ? 'شكراً لأنك وثقت بهارموني. تم حفظ قصتك! قريباً ستظهر في صفحة القصص. 💛'
-              : 'Thank you for trusting Harmony with your story. Your story has been saved! Soon it will appear on the Stories page. 💛',
-            'success'
-          );
-
-          shareForm.reset();
-
-          setTimeout(() => {
-            window.location.href = 'stories.html';
-          }, 1500);
-        } catch (err) {
-          console.error('Unexpected error saving story:', err);
-          setStatus(
-            lang === 'ar'
-              ? 'صار خطأ غير متوقّع. جرّب مرة ثانية لو سمحت.'
-              : 'Unexpected error while saving your story. Please try again.',
-            'error'
-          );
-        }
-      });
-    }
-
-    // === Supabase auth label ===
-    async function refreshUserLabel() {
-      const { data, error } = await supabase.auth.getUser();
-      if (error || !data.user) {
-        return;
+      } catch (err) {
+        console.error(err);
+        setStatus(
+          "Error: " + (err && err.message ? err.message : "Something went wrong."),
+          "خطأ: " + (err && err.message ? err.message : "صار شي غلط."),
+          "err"
+        );
+        disableForm(false);
       }
-      const user = data.user;
-      const meta = user.user_metadata || {};
-      const displayName = meta.display_name || user.email;
-      const alwaysAnon = !!meta.always_anonymous;
+    });
+  }
 
-      let labelEn, labelAr;
-      if (alwaysAnon) {
-        labelEn = 'Signed in: Anonymous (name hidden)';
-        labelAr = 'مسجّل دخول: مجهول (الاسم مخفي)';
-      } else {
-        labelEn = 'Signed in: ' + displayName;
-        labelAr = 'مسجّل دخول: ' + (displayName || 'مستخدم');
-      }
+  // Language init
+  const initialLang = getInitialLang();
+  applyLanguage(initialLang);
 
-      if (navAuthLabel) {
-        navAuthLabel.setAttribute('data-en', labelEn);
-        navAuthLabel.setAttribute('data-ar', labelAr);
+  if (langSelect) {
+    langSelect.value = initialLang;
+    langSelect.addEventListener("change", () => {
+      const lang = langSelect.value;
+      try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+      applyLanguage(lang);
+      // refresh file UI language labels
+      const file = mediaInput && mediaInput.files && mediaInput.files[0] ? mediaInput.files[0] : null;
+      updateFileUI(file);
+      refreshNavAuth();
+    });
+  }
 
-        const lang = (langSelect && langSelect.value) ? langSelect.value : initialLang;
-        navAuthLabel.innerHTML = (lang === 'ar') ? labelAr : labelEn;
-      }
-    }
-
-    refreshUserLabel();
-  })();
+  // Init UI
+  updateFileUI(null);
+  refreshNavAuth();
+})();
 </script>
 </body>
 </html>
