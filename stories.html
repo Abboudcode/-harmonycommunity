@@ -23,8 +23,6 @@
       --text-main: #111827;
       --text-muted: #6b7280;
       --border-soft: #e5e7eb;
-      --accent: #10b981;
-      --danger: #ef4444;
       --radius-lg: 18px;
       --radius-md: 12px;
       --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.12);
@@ -42,10 +40,8 @@
     a { color: inherit; text-decoration: none; }
 
     .page { min-height: 100vh; display: flex; flex-direction: column; }
-
     .max-w { max-width: 1120px; margin: 0 auto; padding: 0 1.25rem; }
 
-    /* HEADER / NAV */
     header {
       position: sticky;
       top: 0;
@@ -84,7 +80,6 @@
     .nav-links a.active { background: rgba(129, 140, 248, 0.35); color: #ffffff; }
 
     .nav-right { display: flex; align-items: center; gap: 0.75rem; }
-
     .nav-ghost { font-size: 0.9rem; color: #cbd5f5; white-space: nowrap; }
 
     .language-select {
@@ -99,10 +94,8 @@
     }
 
     .language-select option { color: #111827; background: #ffffff; }
-
     @media (max-width: 720px) { .nav-links { display: none; } }
 
-    /* PAGE */
     main { padding: 2.8rem 0 2.4rem; }
 
     .center-hero {
@@ -114,51 +107,14 @@
     .center-hero h1 {
       font-size: 2rem;
       line-height: 1.2;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.55rem;
     }
 
     .center-hero p {
       font-size: 0.98rem;
       color: var(--text-muted);
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.1rem;
     }
-
-    .hero-actions {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 0.7rem;
-      margin-bottom: 1rem;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #4f46e5, #6366f1);
-      color: #fff;
-      border-radius: 999px;
-      padding: 0.7rem 1.4rem;
-      font-size: 0.95rem;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 14px 32px rgba(79, 70, 229, 0.4);
-      transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
-    }
-
-    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 18px 38px rgba(79, 70, 229, 0.5); }
-
-    .btn-secondary {
-      background: #eef2ff;
-      color: #4f46e5;
-      border-radius: 999px;
-      padding: 0.65rem 1.3rem;
-      font-size: 0.92rem;
-      font-weight: 500;
-      border: 1px solid #c7d2fe;
-      cursor: pointer;
-      transition: background 0.15s, border-color 0.15s;
-    }
-
-    .btn-secondary:hover { background: #e0e7ff; border-color: #a5b4fc; }
 
     .filters {
       display: flex;
@@ -179,11 +135,7 @@
       transition: background 0.15s, border-color 0.15s, color 0.15s;
     }
 
-    .filter-pill.active {
-      background: #4b6fff;
-      border-color: #4b6fff;
-      color: #ffffff;
-    }
+    .filter-pill.active { background: #4b6fff; border-color: #4b6fff; color: #ffffff; }
 
     .stories-grid {
       display: grid;
@@ -192,20 +144,23 @@
       margin-top: 1rem;
     }
 
-    @media (max-width: 980px) {
-      .stories-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-
-    @media (max-width: 640px) {
-      .stories-grid { grid-template-columns: minmax(0, 1fr); }
-    }
+    @media (max-width: 980px) { .stories-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 640px) { .stories-grid { grid-template-columns: minmax(0, 1fr); } }
 
     .story-card {
       background: var(--bg-card);
       border-radius: var(--radius-lg);
       border: 1px solid var(--border-soft);
-      padding: 1.15rem 1.15rem;
+      padding: 1.15rem;
       box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+    }
+
+    .story-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 34px rgba(15, 23, 42, 0.10);
+      border-color: rgba(99, 102, 241, 0.35);
     }
 
     .story-tag {
@@ -243,11 +198,7 @@
       margin-top: 0.4rem;
     }
 
-    .muted-center {
-      text-align: center;
-      color: var(--text-muted);
-      margin-top: 2rem;
-    }
+    .muted-center { text-align: center; color: var(--text-muted); margin-top: 2rem; }
 
     footer {
       padding: 1.5rem 0 1.8rem;
@@ -261,7 +212,6 @@
 
 <body>
   <div class="page">
-    <!-- HEADER -->
     <header>
       <div class="max-w nav">
         <div class="nav-left">
@@ -294,27 +244,13 @@
       </div>
     </header>
 
-    <!-- MAIN -->
     <main>
       <div class="max-w">
         <div class="center-hero">
           <h1 data-en="Stories from people like you" data-ar="قصص من ناس مثلك">Stories from people like you</h1>
-
-          <p
-            data-en="In the full Harmony app, this page shows real stories from the community. Below you can already see the first real posts coming from the database."
-            data-ar="في تطبيق هارموني الكامل، هذه الصفحة تعرض قصص حقيقية من المجتمع. بالأسفل يمكنك رؤية أول القصص الحقيقية القادمة من قاعدة البيانات."
-          >
-            In the full Harmony app, this page shows real stories from the community. Below you can already see the first real posts coming from the database.
+          <p data-en="Click any story card to open the full story page." data-ar="اضغط على أي بطاقة قصة لفتح صفحة القصة كاملة.">
+            Click any story card to open the full story page.
           </p>
-
-          <div class="hero-actions">
-            <a href="share.html">
-              <button class="btn-primary" type="button" data-en="Share your own story" data-ar="شارك قصتك">Share your own story</button>
-            </a>
-            <a href="signin.html">
-              <button class="btn-secondary" type="button" data-en="Sign in to save & react" data-ar="سجّل لتتفاعل وتحفظ">Sign in to save & react</button>
-            </a>
-          </div>
 
           <div class="filters" id="filters">
             <button class="filter-pill active" type="button" data-filter="all" data-en="All" data-ar="الكل">All</button>
@@ -326,7 +262,6 @@
           </div>
         </div>
 
-        <!-- IMPORTANT: no demo stories here. JS will render only from Supabase -->
         <div id="stories-empty" class="muted-center" style="display:none;"></div>
         <div id="stories-list" class="stories-grid"></div>
       </div>
@@ -335,7 +270,6 @@
     <footer>Harmony Community © 2025</footer>
   </div>
 
-  <!-- Supabase client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
@@ -344,7 +278,6 @@
 
       const langSelect = document.getElementById("language-select");
       const navAuthLabel = document.getElementById("nav-auth-label");
-
       const storiesList = document.getElementById("stories-list");
       const storiesEmpty = document.getElementById("stories-empty");
       const filters = document.getElementById("filters");
@@ -390,48 +323,49 @@
         return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
       }
 
-      function showErrorMessage() {
+      function showMessage(msgEn, msgAr) {
         if (!storiesEmpty) return;
         storiesEmpty.style.display = "block";
-        storiesEmpty.textContent =
-          currentLang === "ar"
-            ? "صار خطأ بسيط أثناء تحميل القصص."
-            : "Something went wrong while loading stories.";
+        storiesEmpty.textContent = currentLang === "ar" ? (msgAr || msgEn) : msgEn;
+      }
+
+      function openStory(id) {
+        if (!id) return;
+        window.location.href = "story.html?id=" + encodeURIComponent(String(id));
       }
 
       function renderStories() {
         if (!storiesList) return;
 
-        const filtered = allStories.filter((story) => {
+        const filtered = allStories.filter((s) => {
           if (activeFilter === "all") return true;
-          return (story.category || "") === activeFilter;
+          return (s.category || "") === activeFilter;
         });
 
         storiesList.innerHTML = "";
 
         if (!filtered.length) {
-          if (storiesEmpty) {
-            storiesEmpty.style.display = "block";
-            storiesEmpty.textContent =
-              currentLang === "ar"
-                ? "لا توجد قصص ضمن هذا التصنيف حالياً."
-                : "No stories in this category yet.";
-          }
+          showMessage(
+            allStories.length ? "No stories in this category yet." : "No stories yet.",
+            allStories.length ? "لا توجد قصص ضمن هذا التصنيف حالياً." : "لا توجد قصص حالياً."
+          );
           return;
         }
 
         if (storiesEmpty) storiesEmpty.style.display = "none";
 
-        filtered.forEach((story) => {
-          const title = story.title || "";
-          const content = story.content || "";
-          const category = story.category || "General";
-          const createdAt = story.created_at || "";
-
+        filtered.forEach((s) => {
+          const id = s.id;
+          const title = s.title || "";
+          const content = s.content || "";
+          const category = s.category || "General";
+          const createdAt = s.created_at || "";
           const snippet = content.length > 140 ? content.slice(0, 140) + "…" : content;
 
           const card = document.createElement("div");
           card.className = "story-card";
+          card.tabIndex = 0;
+          card.setAttribute("role", "link");
 
           card.innerHTML = `
             <div class="story-tag">${escapeHtml(category)}</div>
@@ -440,63 +374,25 @@
             <div class="story-footer">
               <span>${escapeHtml(formatDate(createdAt))}</span>
               <span>${
-                story.is_anonymous
+                s.is_anonymous
                   ? (currentLang === "ar" ? "مجهول" : "Anonymous")
                   : (currentLang === "ar" ? "اسم ظاهر" : "Name visible")
               }</span>
             </div>
           `;
 
+          card.addEventListener("click", () => openStory(id));
+          card.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              openStory(id);
+            }
+          });
+
           storiesList.appendChild(card);
         });
       }
 
-      // ===== URL -> Filter (NEW) =====
-      function normalizeFilterValue(v) {
-        const raw = String(v || "").trim();
-        if (!raw) return "all";
-
-        const lower = raw.toLowerCase();
-
-        if (lower === "all") return "all";
-        if (lower === "kids") return "Kids";
-        if (lower === "teens" || lower === "teen") return "Teens";
-        if (lower === "adult" || lower === "adults") return "Adult";
-        if (lower === "marriage") return "Marriage";
-        if (lower === "finance" || lower === "money") return "Finance";
-
-        // If someone passes exact category names, keep them
-        return raw;
-      }
-
-      function setActivePill(filterValue) {
-        if (!filters) return;
-
-        const pills = filters.querySelectorAll(".filter-pill");
-        pills.forEach((p) => p.classList.remove("active"));
-
-        const match = filters.querySelector(`.filter-pill[data-filter="${CSS.escape(filterValue)}"]`);
-        if (match) {
-          match.classList.add("active");
-        } else {
-          // fallback to All
-          const allBtn = filters.querySelector(`.filter-pill[data-filter="all"]`);
-          if (allBtn) allBtn.classList.add("active");
-          activeFilter = "all";
-        }
-      }
-
-      function applyFilterFromUrl() {
-        const params = new URLSearchParams(window.location.search);
-        const urlCategory = params.get("category");
-        if (!urlCategory) return;
-
-        const normalized = normalizeFilterValue(urlCategory);
-        activeFilter = normalized;
-        setActivePill(activeFilter);
-      }
-
-      // === Supabase setup ===
       const SUPABASE_URL = "https://tnohzvrpqiaiupwyaxcp.supabase.co";
       const SUPABASE_ANON_KEY = "sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K";
       const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -520,21 +416,10 @@
           const displayName = meta.display_name || user.email;
           const alwaysAnon = !!meta.always_anonymous;
 
-          let label;
-          if (alwaysAnon) {
-            label = lang === "ar"
-              ? "مسجّل: مجهول (الاسم مخفي)"
-              : "Signed in: Anonymous (name hidden)";
-          } else {
-            label = lang === "ar"
-              ? "مسجّل: " + displayName
-              : "Signed in: " + displayName;
-          }
-
-          if (navAuthLabel) navAuthLabel.textContent = label;
-        } catch (e) {
-          // keep stable
-        }
+          navAuthLabel.textContent = alwaysAnon
+            ? (lang === "ar" ? "مسجّل: مجهول (الاسم مخفي)" : "Signed in: Anonymous (name hidden)")
+            : (lang === "ar" ? "مسجّل: " + displayName : "Signed in: " + displayName);
+        } catch (e) {}
       }
 
       async function loadStories() {
@@ -543,11 +428,11 @@
             .from("stories")
             .select("id, title, content, category, is_anonymous, created_at")
             .order("created_at", { ascending: false })
-            .limit(50);
+            .limit(60);
 
           if (error) {
-            console.error("Error loading stories:", error);
-            showErrorMessage();
+            console.error("Supabase load error:", error);
+            showMessage("Error loading stories (check console).", "خطأ في تحميل القصص (تحقق من الكونسول).");
             return;
           }
 
@@ -555,23 +440,23 @@
           renderStories();
         } catch (e) {
           console.error("Unexpected error:", e);
-          showErrorMessage();
+          showMessage("Unexpected error (check console).", "خطأ غير متوقع (تحقق من الكونسول).");
         }
       }
 
-      // Filters click
       if (filters) {
         filters.addEventListener("click", (e) => {
           const btn = e.target.closest(".filter-pill");
           if (!btn) return;
 
           activeFilter = btn.getAttribute("data-filter") || "all";
-          setActivePill(activeFilter);
+          filters.querySelectorAll(".filter-pill").forEach((p) => p.classList.remove("active"));
+          btn.classList.add("active");
+
           renderStories();
         });
       }
 
-      // Init language
       const initialLang = getInitialLang();
       applyLanguage(initialLang);
 
@@ -586,10 +471,6 @@
         });
       }
 
-      // ✅ Apply URL filter BEFORE loading stories
-      applyFilterFromUrl();
-
-      // Initial data + auth label
       refreshUserLabel(initialLang);
       loadStories();
     })();
