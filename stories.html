@@ -216,6 +216,7 @@
       <div class="max-w nav">
         <div class="nav-left">
           <div class="logo-wrapper">
+            <!-- ✅ Correct logo (your last correct one) -->
             <svg width="180" height="40" viewBox="0 0 180 40" xmlns="http://www.w3.org/2000/svg" aria-label="Harmony logo" role="img">
               <path d="M10 22 C25 5, 55 5, 70 22" fill="none" stroke="#40cbb4" stroke-width="3" stroke-linecap="round" />
               <path d="M12 22 L22 22 L27 15 L33 30 L38 22 L68 22" fill="none" stroke="#f5c451" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
@@ -286,6 +287,8 @@
       let allStories = [];
       let activeFilter = "all";
 
+      const ALLOWED_FILTERS = new Set(["all", "Kids", "Teens", "Adult", "Marriage", "Finance"]);
+
       function getInitialLang() {
         try {
           const saved = localStorage.getItem(LANG_KEY);
@@ -332,6 +335,44 @@
       function openStory(id) {
         if (!id) return;
         window.location.href = "story.html?id=" + encodeURIComponent(String(id));
+      }
+
+      function getFilterFromUrl() {
+        try {
+          const url = new URL(window.location.href);
+          const cat = url.searchParams.get("category");
+          return cat ? String(cat) : "all";
+        } catch (e) {
+          return "all";
+        }
+      }
+
+      function setActiveFilter(newFilter, updateUrl) {
+        let f = (newFilter || "all").toString();
+        if (f.toLowerCase() === "all") f = "all";
+        if (!ALLOWED_FILTERS.has(f)) f = "all";
+        activeFilter = f;
+
+        // UI
+        if (filters) {
+          filters.querySelectorAll(".filter-pill").forEach((p) => p.classList.remove("active"));
+          const btn = filters.querySelector(`.filter-pill[data-filter="${CSS.escape(activeFilter)}"]`);
+          if (btn) btn.classList.add("active");
+          else {
+            const allBtn = filters.querySelector(`.filter-pill[data-filter="all"]`);
+            if (allBtn) allBtn.classList.add("active");
+          }
+        }
+
+        // URL
+        if (updateUrl) {
+          const url = new URL(window.location.href);
+          if (activeFilter === "all") url.searchParams.delete("category");
+          else url.searchParams.set("category", activeFilter);
+          window.history.replaceState({}, "", url.toString());
+        }
+
+        renderStories();
       }
 
       function renderStories() {
@@ -444,19 +485,17 @@
         }
       }
 
+      // Filter clicks
       if (filters) {
         filters.addEventListener("click", (e) => {
           const btn = e.target.closest(".filter-pill");
           if (!btn) return;
-
-          activeFilter = btn.getAttribute("data-filter") || "all";
-          filters.querySelectorAll(".filter-pill").forEach((p) => p.classList.remove("active"));
-          btn.classList.add("active");
-
-          renderStories();
+          const f = btn.getAttribute("data-filter") || "all";
+          setActiveFilter(f, true);
         });
       }
 
+      // Init language
       const initialLang = getInitialLang();
       applyLanguage(initialLang);
 
@@ -470,6 +509,9 @@
           renderStories();
         });
       }
+
+      // ✅ Apply category from URL on first load
+      setActiveFilter(getFilterFromUrl(), false);
 
       refreshUserLabel(initialLang);
       loadStories();
