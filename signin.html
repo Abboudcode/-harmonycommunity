@@ -45,10 +45,8 @@
     a { color: inherit; text-decoration: none; }
 
     .page { min-height: 100vh; display: flex; flex-direction: column; }
-
     .max-w { max-width: 1080px; margin: 0 auto; padding: 0 1.25rem; }
 
-    /* HEADER / NAV */
     header {
       position: sticky;
       top: 0;
@@ -87,7 +85,6 @@
     .nav-links a.active { background: rgba(129, 140, 248, 0.35); color: #ffffff; }
 
     .nav-right { display: flex; align-items: center; gap: 0.75rem; }
-
     .nav-ghost { font-size: 0.9rem; color: #cbd5f5; white-space: nowrap; }
 
     .language-select {
@@ -102,10 +99,8 @@
     }
 
     .language-select option { color: #111827; background: #ffffff; }
-
     @media (max-width: 720px) { .nav-links { display: none; } }
 
-    /* BUTTONS */
     .btn-primary {
       background: linear-gradient(135deg, #4f46e5, #6366f1);
       color: #fff;
@@ -136,7 +131,17 @@
 
     .btn-secondary:hover { background: #e0e7ff; border-color: #a5b4fc; }
 
-    /* LAYOUT */
+    .btn-link {
+      border: none;
+      background: transparent;
+      color: #4f46e5;
+      cursor: pointer;
+      padding: 0;
+      font-size: 0.88rem;
+      text-decoration: underline;
+    }
+    .btn-link:hover { opacity: 0.85; }
+
     main { padding: 2.8rem 0 2rem; }
 
     .two-col {
@@ -144,7 +149,6 @@
       grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.5fr);
       gap: 1.8rem;
     }
-
     @media (max-width: 900px) { .two-col { grid-template-columns: minmax(0, 1fr); } }
 
     .card {
@@ -159,11 +163,9 @@
     .card:hover { box-shadow: 0 16px 35px rgba(15, 23, 42, 0.07); transform: translateY(-2px); border-color: #e5e7eb; }
 
     .card h3 { font-size: 1.1rem; margin-bottom: 0.4rem; }
-
     .card p.sub { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; }
 
     .field { margin-bottom: 0.9rem; font-size: 0.9rem; }
-
     .field label { display: block; margin-bottom: 0.25rem; font-weight: 500; }
 
     .field input[type="text"],
@@ -197,9 +199,17 @@
 
     .note { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; }
 
-    .page-title-block { max-width: 640px; margin: 0 auto 1.8rem; text-align: center; }
-    .page-title-block h1 { font-size: 1.6rem; margin-bottom: 0.4rem; }
-    .page-title-block p { font-size: 0.95rem; color: var(--text-muted); }
+    .hint-box{
+      background:#f8fafc;
+      border:1px solid #e5e7eb;
+      border-radius:12px;
+      padding:.75rem .85rem;
+      margin:.65rem 0 1rem;
+      color:var(--text-muted);
+      font-size:.85rem;
+    }
+    .hint-box ul{margin:.4rem 0 0 1.2rem}
+    html[dir="rtl"] .hint-box ul{margin: .4rem 1.2rem 0 0}
 
     .status-ok { color: #16a34a; }
     .status-error { color: var(--danger); }
@@ -220,7 +230,6 @@
       .nav { padding: 0.6rem 0; }
     }
 
-    /* Minimal RTL support without changing layout */
     html[dir="rtl"] .card,
     html[dir="rtl"] .field label,
     html[dir="rtl"] .page-title-block { text-align: start; }
@@ -229,7 +238,6 @@
 
 <body>
   <div class="page">
-    <!-- HEADER -->
     <header>
       <div class="max-w nav">
         <div class="nav-left">
@@ -262,13 +270,13 @@
       </div>
     </header>
 
-    <!-- MAIN -->
     <main>
-      <div class="max-w page-title-block">
-        <h1 data-en="Sign in to Harmony" data-ar="سجّل الدخول إلى هارموني">Sign in to Harmony</h1>
+      <div class="max-w page-title-block" style="max-width:640px;margin:0 auto 1.8rem;text-align:center;">
+        <h1 data-en="Sign in to Harmony" data-ar="سجّل الدخول إلى هارموني" style="font-size:1.6rem;margin-bottom:0.4rem;">Sign in to Harmony</h1>
         <p
           data-en="Create a free account or sign in to share your story with your name or as Anonymous. Your email stays private."
           data-ar="أنشئ حساب مجاني أو سجّل الدخول لتشارك قصتك باسمك أو كمجهول. إيميلك يبقى خاص."
+          style="font-size:0.95rem;color:var(--text-muted);"
         >
           Create a free account or sign in to share your story with your name or as Anonymous. Your email stays private.
         </p>
@@ -285,22 +293,53 @@
               Use this form to create a real Harmony account. We only ask for email, password and an optional name.
             </p>
 
+            <div class="hint-box">
+              <strong data-en="Password rules:" data-ar="شروط كلمة السر:">Password rules:</strong>
+              <ul>
+                <li data-en="6–12 characters" data-ar="من 6 إلى 12 حرف">6–12 characters</li>
+                <li data-en="At least 1 uppercase letter (A–Z)" data-ar="حرف كبير واحد على الأقل (A–Z)">At least 1 uppercase letter (A–Z)</li>
+                <li data-en="At least 1 lowercase letter (a–z)" data-ar="حرف صغير واحد على الأقل (a–z)">At least 1 lowercase letter (a–z)</li>
+                <li data-en="At least 1 number (0–9)" data-ar="رقم واحد على الأقل (0–9)">At least 1 number (0–9)</li>
+              </ul>
+            </div>
+
             <form id="signup-form">
               <div class="field">
                 <label for="signup-email" data-en="Email" data-ar="الإيميل">Email</label>
-                <input id="signup-email" type="email" required placeholder="you@example.com" />
+                <input id="signup-email" type="email" required placeholder="you@example.com" autocomplete="email" />
               </div>
 
               <div class="field">
                 <label for="signup-password" data-en="Password" data-ar="كلمة السر">Password</label>
-                <input id="signup-password" type="password" required minlength="6" placeholder="At least 6 characters" />
+                <input
+                  id="signup-password"
+                  type="password"
+                  required
+                  minlength="6"
+                  maxlength="12"
+                  placeholder="6–12 chars, Upper + lower + number"
+                  autocomplete="new-password"
+                />
+              </div>
+
+              <div class="field">
+                <label for="signup-password2" data-en="Confirm password" data-ar="تأكيد كلمة السر">Confirm password</label>
+                <input
+                  id="signup-password2"
+                  type="password"
+                  required
+                  minlength="6"
+                  maxlength="12"
+                  placeholder="Re-type password"
+                  autocomplete="new-password"
+                />
               </div>
 
               <div class="field">
                 <label for="signup-name" data-en="Name or nickname (optional)" data-ar="الاسم أو لقب (اختياري)">
                   Name or nickname (optional)
                 </label>
-                <input id="signup-name" type="text" placeholder="Mohamad, Anonymous Dad, Tired Mama…" />
+                <input id="signup-name" type="text" placeholder="Mohamad, Anonymous Dad, Tired Mama…" autocomplete="nickname" />
               </div>
 
               <div class="field-inline">
@@ -320,10 +359,18 @@
             </form>
 
             <p class="note"
-               data-en="Note: After you sign up, you may receive a confirmation email depending on your Supabase settings."
-               data-ar="ملاحظة: بعد إنشاء الحساب، ممكن يوصلك إيميل تأكيد حسب إعدادات Supabase.">
-              Note: After you sign up, you may receive a confirmation email depending on your Supabase settings.
+               data-en="Email confirmation is ON in Supabase. After signup, check your inbox and click the confirmation link before signing in."
+               data-ar="تأكيد الإيميل مفعّل في Supabase. بعد إنشاء الحساب، افتح بريدك واضغط رابط التأكيد قبل تسجيل الدخول.">
+              Email confirmation is ON in Supabase. After signup, check your inbox and click the confirmation link before signing in.
             </p>
+
+            <div style="margin-top:0.7rem;">
+              <button id="resend-confirm-btn" class="btn-link" type="button"
+                data-en="Resend confirmation email"
+                data-ar="إعادة إرسال إيميل التأكيد">
+                Resend confirmation email
+              </button>
+            </div>
           </div>
 
           <!-- SIGN IN -->
@@ -338,16 +385,22 @@
             <form id="signin-form">
               <div class="field">
                 <label for="signin-email" data-en="Email" data-ar="الإيميل">Email</label>
-                <input id="signin-email" type="email" required placeholder="you@example.com" />
+                <input id="signin-email" type="email" required placeholder="you@example.com" autocomplete="email" />
               </div>
 
               <div class="field">
                 <label for="signin-password" data-en="Password" data-ar="كلمة السر">Password</label>
-                <input id="signin-password" type="password" required minlength="6" />
+                <input id="signin-password" type="password" required minlength="6" maxlength="12" autocomplete="current-password" />
               </div>
 
               <button type="submit" class="btn-secondary" data-en="Sign in" data-ar="تسجيل الدخول">Sign in</button>
             </form>
+
+            <div style="margin-top:0.75rem;">
+              <button id="reset-btn" class="btn-link" type="button"
+                data-en="Forgot password?"
+                data-ar="نسيت كلمة السر؟">Forgot password?</button>
+            </div>
 
             <div class="signout-wrap" id="signout-wrap">
               <button id="signout-btn" class="btn-secondary" type="button"
@@ -366,148 +419,206 @@
             <p id="auth-status" class="note" style="margin-top:0.4rem;"></p>
 
             <p class="note" style="margin-top:0.6rem;"
-               data-en="If email confirmation is enabled, you may need to click the link in your inbox before you can sign in."
-               data-ar="إذا كان تفعيل الإيميل مفعّل، ممكن تحتاج تضغط على الرابط في بريدك قبل ما تقدر تسجّل الدخول.">
-              If email confirmation is enabled, you may need to click the link in your inbox before you can sign in.
+               data-en="If you clicked a confirmation link and still appear signed out, refresh this page once."
+               data-ar="إذا ضغطت رابط التأكيد ولسا مبين غير مسجّل، اعمل Refresh مرة.">
+              If you clicked a confirmation link and still appear signed out, refresh this page once.
             </p>
           </div>
         </div>
       </section>
     </main>
 
-    <!-- FOOTER -->
     <footer>Harmony Community © 2025</footer>
   </div>
 
-  <!-- Supabase client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
     (function () {
-      const LANG_KEY = 'harmony_lang';
+      const LANG_KEY = "harmony_lang";
 
-      const langSelect = document.getElementById('language-select');
-      const navAuthLabel = document.getElementById('nav-auth-label');
-      const signupForm = document.getElementById('signup-form');
-      const signinForm = document.getElementById('signin-form');
-      const authStatus = document.getElementById('auth-status');
-      const currentUserLabel = document.getElementById('current-user-label');
-      const signoutWrap = document.getElementById('signout-wrap');
-      const signoutBtn = document.getElementById('signout-btn');
+      const langSelect = document.getElementById("language-select");
+      const navAuthLabel = document.getElementById("nav-auth-label");
+      const signupForm = document.getElementById("signup-form");
+      const signinForm = document.getElementById("signin-form");
+      const authStatus = document.getElementById("auth-status");
+      const currentUserLabel = document.getElementById("current-user-label");
+      const signoutWrap = document.getElementById("signout-wrap");
+      const signoutBtn = document.getElementById("signout-btn");
+      const resetBtn = document.getElementById("reset-btn");
+      const resendConfirmBtn = document.getElementById("resend-confirm-btn");
 
-      let currentLang = 'en';
+      let currentLang = "en";
 
       function getInitialLang() {
         try {
           const saved = localStorage.getItem(LANG_KEY);
-          if (saved === 'ar' || saved === 'en') return saved;
+          if (saved === "ar" || saved === "en") return saved;
         } catch (e) {}
-        return 'en';
+        return "en";
       }
 
       function applyLanguage(lang) {
         currentLang = lang;
 
-        const elements = document.querySelectorAll('[data-en]');
-        elements.forEach(el => {
-          const en = el.getAttribute('data-en');
-          const ar = el.getAttribute('data-ar') || en;
-          el.innerHTML = (lang === 'ar') ? ar : en;
+        document.querySelectorAll("[data-en]").forEach((el) => {
+          const en = el.getAttribute("data-en");
+          const ar = el.getAttribute("data-ar") || en;
+          el.innerHTML = lang === "ar" ? ar : en;
         });
 
-        document.documentElement.lang = (lang === 'ar') ? 'ar' : 'en';
-        document.documentElement.dir  = (lang === 'ar') ? 'rtl' : 'ltr';
+        document.documentElement.lang = lang === "ar" ? "ar" : "en";
+        document.documentElement.dir  = lang === "ar" ? "rtl" : "ltr";
       }
 
       function setStatus(message, isError) {
         if (!authStatus) return;
-        authStatus.textContent = message || '';
-        authStatus.classList.remove('status-ok', 'status-error');
+        authStatus.textContent = message || "";
+        authStatus.classList.remove("status-ok", "status-error");
         if (!message) return;
-        authStatus.classList.add(isError ? 'status-error' : 'status-ok');
+        authStatus.classList.add(isError ? "status-error" : "status-ok");
       }
 
       function updateNavLabelNotSigned(lang) {
         if (!navAuthLabel) return;
-        const en = navAuthLabel.getAttribute('data-en') || 'Not signed in';
-        const ar = navAuthLabel.getAttribute('data-ar') || en;
-        navAuthLabel.textContent = (lang === 'ar') ? ar : en;
+        const en = navAuthLabel.getAttribute("data-en") || "Not signed in";
+        const ar = navAuthLabel.getAttribute("data-ar") || en;
+        navAuthLabel.textContent = lang === "ar" ? ar : en;
       }
 
       function updateCurrentUserNotSigned(lang) {
         if (!currentUserLabel) return;
-        const en = currentUserLabel.getAttribute('data-en') || 'Status: not signed in.';
-        const ar = currentUserLabel.getAttribute('data-ar') || en;
-        currentUserLabel.textContent = (lang === 'ar') ? ar : en;
+        const en = currentUserLabel.getAttribute("data-en") || "Status: not signed in.";
+        const ar = currentUserLabel.getAttribute("data-ar") || en;
+        currentUserLabel.textContent = lang === "ar" ? ar : en;
       }
 
       function showSignout(show) {
         if (!signoutWrap) return;
-        signoutWrap.style.display = show ? 'block' : 'none';
+        signoutWrap.style.display = show ? "block" : "none";
       }
 
-      // === Supabase auth ===
-      const SUPABASE_URL = 'https://tnohzvrpqiaiupwyaxcp.supabase.co';
-      const SUPABASE_ANON_KEY = 'sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K';
-      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      const SUPABASE_URL = "https://tnohzvrpqiaiupwyaxcp.supabase.co";
+      const SUPABASE_ANON_KEY = "sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K";
 
-      // Important for email confirmation redirects (works on localhost + GitHub Pages)
+      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true
+        }
+      });
+
+      // ✅ Redirect URL works for both localhost + GitHub Pages
       function getRedirectUrl() {
         const origin = window.location.origin;
-        const pathBase = window.location.pathname.includes('/-harmonycommunity/')
-          ? '/-harmonycommunity/'
-          : '/';
-        return origin + pathBase + 'signin.html';
+        const isGithubRepo = window.location.pathname.includes("/-harmonycommunity/");
+        const basePath = isGithubRepo ? "/-harmonycommunity/" : "/";
+        return origin + basePath + "signin.html";
+      }
+
+      function isPasswordValid(pw) {
+        // 6–12, at least 1 uppercase, 1 lowercase, 1 digit
+        if (typeof pw !== "string") return false;
+        if (pw.length < 6 || pw.length > 12) return false;
+        if (!/[A-Z]/.test(pw)) return false;
+        if (!/[a-z]/.test(pw)) return false;
+        if (!/[0-9]/.test(pw)) return false;
+        return true;
+      }
+
+      function passwordRulesMsg() {
+        return (currentLang === "ar")
+          ? "كلمة السر لازم تكون 6–12 أحرف، فيها رقم، وحرف كبير، وحرف صغير."
+          : "Password must be 6–12 chars and include a number, an uppercase letter, and a lowercase letter.";
       }
 
       async function refreshUserLabel(langOverride) {
         const lang = langOverride || currentLang;
 
-        const { data, error } = await supabase.auth.getUser();
-        if (error || !data || !data.user) {
+        try {
+          const { data, error } = await supabase.auth.getUser();
+          if (error || !data || !data.user) {
+            updateCurrentUserNotSigned(lang);
+            updateNavLabelNotSigned(lang);
+            showSignout(false);
+            return;
+          }
+
+          const user = data.user;
+          const meta = user.user_metadata || {};
+          const displayName = meta.display_name || user.email;
+          const alwaysAnon = !!meta.always_anonymous;
+
+          const label = alwaysAnon
+            ? (lang === "ar" ? "مسجّل: مجهول (الاسم مخفي)" : "Signed in: Anonymous (name hidden)")
+            : (lang === "ar" ? "مسجّل: " + displayName : "Signed in: " + displayName);
+
+          if (navAuthLabel) navAuthLabel.textContent = label;
+          if (currentUserLabel) currentUserLabel.textContent = label;
+          showSignout(true);
+        } catch (e) {
           updateCurrentUserNotSigned(lang);
           updateNavLabelNotSigned(lang);
           showSignout(false);
-          return;
         }
-
-        const user = data.user;
-        const meta = user.user_metadata || {};
-        const displayName = meta.display_name || user.email;
-        const alwaysAnon = !!meta.always_anonymous;
-
-        let label;
-        if (alwaysAnon) {
-          label = (lang === 'ar')
-            ? 'مسجّل: مجهول (الاسم مخفي)'
-            : 'Signed in: Anonymous (name hidden)';
-        } else {
-          label = (lang === 'ar')
-            ? 'مسجّل: ' + displayName
-            : 'Signed in: ' + displayName;
-        }
-
-        if (navAuthLabel) navAuthLabel.textContent = label;
-        if (currentUserLabel) currentUserLabel.textContent = label;
-        showSignout(true);
       }
 
-      // Handle auth state changes (refresh labels automatically)
-      supabase.auth.onAuthStateChange((_event, _session) => {
+      // ✅ IMPORTANT: handle email-confirmation / magic-link redirect (?code=...)
+      async function handleRedirectCode() {
+        const url = new URL(window.location.href);
+        const code = url.searchParams.get("code");
+        if (!code) return;
+
+        setStatus(currentLang === "ar" ? "جاري تأكيد الدخول…" : "Confirming sign-in…", false);
+
+        try {
+          const { error } = await supabase.auth.exchangeCodeForSession(window.location.href);
+          if (error) {
+            setStatus((currentLang === "ar" ? "خطأ: " : "Error: ") + error.message, true);
+            return;
+          }
+
+          url.searchParams.delete("code");
+          window.history.replaceState({}, document.title, url.toString());
+
+          setStatus(currentLang === "ar" ? "تم التأكيد بنجاح ✅" : "Confirmed successfully ✅", false);
+          await refreshUserLabel();
+        } catch (e) {
+          setStatus(currentLang === "ar" ? "صار خطأ بالتأكيد." : "Confirmation failed.", true);
+        }
+      }
+
+      supabase.auth.onAuthStateChange(() => {
         refreshUserLabel();
       });
 
-      // Sign up
       if (signupForm) {
-        signupForm.addEventListener('submit', async (e) => {
+        signupForm.addEventListener("submit", async (e) => {
           e.preventDefault();
 
-          setStatus(currentLang === 'ar' ? 'جاري إنشاء حسابك…' : 'Creating your account…', false);
+          const email = document.getElementById("signup-email").value.trim();
+          const password = document.getElementById("signup-password").value;
+          const password2 = document.getElementById("signup-password2").value;
+          const name = document.getElementById("signup-name").value.trim();
+          const alwaysAnon = document.getElementById("signup-anon").checked;
 
-          const email = document.getElementById('signup-email').value.trim();
-          const password = document.getElementById('signup-password').value;
-          const name = document.getElementById('signup-name').value.trim();
-          const alwaysAnon = document.getElementById('signup-anon').checked;
+          // ✅ Password validation
+          if (!isPasswordValid(password)) {
+            setStatus((currentLang === "ar" ? "خطأ: " : "Error: ") + passwordRulesMsg(), true);
+            return;
+          }
+
+          // ✅ Confirm password
+          if (password !== password2) {
+            setStatus(
+              currentLang === "ar" ? "خطأ: كلمتا السر غير متطابقتين." : "Error: Passwords do not match.",
+              true
+            );
+            return;
+          }
+
+          setStatus(currentLang === "ar" ? "جاري إنشاء حسابك…" : "Creating your account…", false);
 
           const { error } = await supabase.auth.signUp({
             email,
@@ -522,12 +633,12 @@
           });
 
           if (error) {
-            setStatus((currentLang === 'ar' ? 'خطأ: ' : 'Error: ') + error.message, true);
+            setStatus((currentLang === "ar" ? "خطأ: " : "Error: ") + error.message, true);
           } else {
             setStatus(
-              currentLang === 'ar'
-                ? 'تم إنشاء الحساب! إذا وصل إيميل تأكيد، افتحه واضغط الرابط، بعدها ارجع وسجّل دخول.'
-                : 'Account created! If a confirmation email was sent, open it and click the link, then come back and sign in.',
+              currentLang === "ar"
+                ? "تم إنشاء الحساب ✅ تحقق من بريدك واضغط رابط التأكيد."
+                : "Account created ✅ Check your inbox and click the confirmation link.",
               false
             );
             signupForm.reset();
@@ -536,49 +647,100 @@
         });
       }
 
-      // Sign in
+      // ✅ Resend confirmation email
+      if (resendConfirmBtn) {
+        resendConfirmBtn.addEventListener("click", async () => {
+          const email = (document.getElementById("signup-email").value || "").trim();
+          if (!email) {
+            setStatus(currentLang === "ar" ? "اكتب الإيميل في خانة التسجيل أولاً." : "Enter your email in the signup email field first.", true);
+            return;
+          }
+
+          setStatus(currentLang === "ar" ? "جاري إعادة إرسال إيميل التأكيد…" : "Resending confirmation email…", false);
+
+          try {
+            const { error } = await supabase.auth.resend({
+              type: "signup",
+              email,
+              options: { emailRedirectTo: getRedirectUrl() }
+            });
+
+            if (error) {
+              setStatus((currentLang === "ar" ? "خطأ: " : "Error: ") + error.message, true);
+            } else {
+              setStatus(currentLang === "ar" ? "تم الإرسال ✅ تحقق من بريدك." : "Sent ✅ Check your inbox.", false);
+            }
+          } catch (e) {
+            setStatus(currentLang === "ar" ? "صار خطأ. جرّب مرة ثانية." : "Something went wrong. Please try again.", true);
+          }
+        });
+      }
+
       if (signinForm) {
-        signinForm.addEventListener('submit', async (e) => {
+        signinForm.addEventListener("submit", async (e) => {
           e.preventDefault();
 
-          setStatus(currentLang === 'ar' ? 'جاري تسجيل الدخول…' : 'Signing you in…', false);
+          setStatus(currentLang === "ar" ? "جاري تسجيل الدخول…" : "Signing you in…", false);
 
-          const email = document.getElementById('signin-email').value.trim();
-          const password = document.getElementById('signin-password').value;
+          const email = document.getElementById("signin-email").value.trim();
+          const password = document.getElementById("signin-password").value;
 
           const { error } = await supabase.auth.signInWithPassword({ email, password });
 
           if (error) {
-            setStatus((currentLang === 'ar' ? 'خطأ: ' : 'Error: ') + error.message, true);
+            setStatus((currentLang === "ar" ? "خطأ: " : "Error: ") + error.message, true);
           } else {
-            setStatus(currentLang === 'ar' ? 'تم تسجيل الدخول بنجاح.' : 'Signed in successfully.', false);
+            setStatus(currentLang === "ar" ? "تم تسجيل الدخول ✅" : "Signed in ✅", false);
             signinForm.reset();
             refreshUserLabel();
           }
         });
       }
 
-      // Sign out
+      if (resetBtn) {
+        resetBtn.addEventListener("click", async () => {
+          const email = (document.getElementById("signin-email").value || "").trim();
+          if (!email) {
+            setStatus(currentLang === "ar" ? "اكتب الإيميل أولاً." : "Enter your email first.", true);
+            return;
+          }
+
+          setStatus(currentLang === "ar" ? "جاري إرسال رابط تغيير كلمة السر…" : "Sending password reset link…", false);
+
+          const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: getRedirectUrl()
+          });
+
+          if (error) {
+            setStatus((currentLang === "ar" ? "خطأ: " : "Error: ") + error.message, true);
+          } else {
+            setStatus(
+              currentLang === "ar" ? "تم الإرسال ✅ تحقق من بريدك." : "Sent ✅ Check your inbox.",
+              false
+            );
+          }
+        });
+      }
+
       if (signoutBtn) {
-        signoutBtn.addEventListener('click', async () => {
-          setStatus(currentLang === 'ar' ? 'جاري تسجيل الخروج…' : 'Signing out…', false);
+        signoutBtn.addEventListener("click", async () => {
+          setStatus(currentLang === "ar" ? "جاري تسجيل الخروج…" : "Signing out…", false);
           const { error } = await supabase.auth.signOut();
           if (error) {
-            setStatus((currentLang === 'ar' ? 'خطأ: ' : 'Error: ') + error.message, true);
+            setStatus((currentLang === "ar" ? "خطأ: " : "Error: ") + error.message, true);
           } else {
-            setStatus(currentLang === 'ar' ? 'تم تسجيل الخروج.' : 'Signed out.', false);
+            setStatus(currentLang === "ar" ? "تم تسجيل الخروج." : "Signed out.", false);
             refreshUserLabel();
           }
         });
       }
 
-      // === Init language ===
       const initialLang = getInitialLang();
       applyLanguage(initialLang);
 
       if (langSelect) {
         langSelect.value = initialLang;
-        langSelect.addEventListener('change', () => {
+        langSelect.addEventListener("change", () => {
           const lang = langSelect.value;
           try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
           applyLanguage(lang);
@@ -586,8 +748,9 @@
         });
       }
 
-      // On first load, check if already signed in
+      // Init
       refreshUserLabel(initialLang);
+      handleRedirectCode();
     })();
   </script>
 </body>
