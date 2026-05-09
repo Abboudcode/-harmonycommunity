@@ -287,7 +287,14 @@
       let allStories = [];
       let activeFilter = "all";
 
-      const ALLOWED_FILTERS = new Set(["all", "Kids", "Teens", "Adult", "Marriage", "Finance"]);
+      const FILTER_LABELS = {
+        all: "all",
+        kids: "Kids",
+        teens: "Teens",
+        adult: "Adult",
+        marriage: "Marriage",
+        finance: "Finance"
+      };
 
       function getInitialLang() {
         try {
@@ -337,20 +344,23 @@
         window.location.href = "story.html?id=" + encodeURIComponent(String(id));
       }
 
+      function normalizeFilter(value) {
+        const key = String(value || "all").trim().toLowerCase();
+        return FILTER_LABELS[key] || "all";
+      }
+
       function getFilterFromUrl() {
         try {
           const url = new URL(window.location.href);
           const cat = url.searchParams.get("category");
-          return cat ? String(cat) : "all";
+          return normalizeFilter(cat);
         } catch (e) {
           return "all";
         }
       }
 
       function setActiveFilter(newFilter, updateUrl) {
-        let f = (newFilter || "all").toString();
-        if (f.toLowerCase() === "all") f = "all";
-        if (!ALLOWED_FILTERS.has(f)) f = "all";
+        const f = normalizeFilter(newFilter);
         activeFilter = f;
 
         // UI
@@ -380,7 +390,7 @@
 
         const filtered = allStories.filter((s) => {
           if (activeFilter === "all") return true;
-          return (s.category || "") === activeFilter;
+          return normalizeFilter(s.category) === activeFilter;
         });
 
         storiesList.innerHTML = "";
@@ -434,8 +444,8 @@
         });
       }
 
-      const SUPABASE_URL = "https://tnohzvrpqiaiupwyaxcp.supabase.co";
-      const SUPABASE_ANON_KEY = "sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K";
+      const SUPABASE_URL = "https://ndqhfftzumulkydznwgf.supabase.co";
+      const SUPABASE_ANON_KEY = "sb_publishable_GaGYEneIKdnCJCTcslESkg_1fL6EP-K";
       const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
       async function refreshUserLabel(langOverride) {
@@ -465,11 +475,23 @@
 
       async function loadStories() {
         try {
-          const { data, error } = await supabase
+          let { data, error } = await supabase
             .from("stories")
-            .select("id, title, content, category, is_anonymous, created_at")
+            .select("id, title, content, category, is_anonymous, created_at, media_url, media_type")
             .order("created_at", { ascending: false })
             .limit(60);
+
+          // Fallback for older Supabase tables that do not have media_url/media_type yet.
+          if (error) {
+            console.warn("Retrying stories load without media columns:", error);
+            const fallback = await supabase
+              .from("stories")
+              .select("id, title, content, category, is_anonymous, created_at")
+              .order("created_at", { ascending: false })
+              .limit(60);
+            data = fallback.data;
+            error = fallback.error;
+          }
 
           if (error) {
             console.error("Supabase load error:", error);
