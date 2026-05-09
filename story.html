@@ -359,8 +359,8 @@
       let myActive = new Set();
       let counts = { like: 0, heart: 0, same: 0, support: 0 };
 
-      const SUPABASE_URL = "https://tnohzvrpqiaiupwyaxcp.supabase.co";
-      const SUPABASE_ANON_KEY = "sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K";
+      const SUPABASE_URL = "https://ndqhfftzumulkydznwgf.supabase.co";
+      const SUPABASE_ANON_KEY = "sb_publishable_GaGYEneIKdnCJCTcslESkg_1fL6EP-K";
       const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
       function getInitialLang() {
@@ -408,8 +408,12 @@
 
       function getIdFromUrl() {
         const params = new URLSearchParams(window.location.search);
-        const id = params.get("id");
-        return String(id || "").trim();
+        const id = params.get("id") || params.get("story") || params.get("story_id");
+        if (id) return String(id).trim();
+
+        // Also support links like story.html#123 in case we use them later.
+        const hash = String(window.location.hash || "").replace("#", "").trim();
+        return hash || "";
       }
 
       async function refreshUserLabel(langOverride) {
@@ -563,7 +567,7 @@
         }
 
         try {
-          const { data, error } = await supabase
+          let { data, error } = await supabase
             .from("stories")
             .select("*")
             .eq("id", storyId)
