@@ -305,7 +305,7 @@
         Please sign in first, then come back to share your story.
       </p>
       <div class="row" style="margin-top:.6rem;">
-        <a class="btn-primary" href="signin.html" data-en="Go to Sign In" data-ar="اذهب لتسجيل الدخول">Go to Sign In</a>
+        <a class="btn-primary" href="signin.html?redirect=share" data-en="Go to Sign In" data-ar="اذهب لتسجيل الدخول">Go to Sign In</a>
       </div>
     </div>
 
@@ -519,14 +519,14 @@
   }
 
   // Supabase
-  const SUPABASE_URL = "https://tnohzvrpqiaiupwyaxcp.supabase.co";
-  const SUPABASE_ANON_KEY = "sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K";
+  const SUPABASE_URL = "https://ndqhfftzumulkydznwgf.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_GaGYEneIKdnCJCTcslESkg_1fL6EP-K";
   const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
   });
 
-  // ⚠️ Bucket name: create this bucket in Supabase Storage (Public)
-  const MEDIA_BUCKET = "story-media";
+  // Storage bucket names to try. Your older setup used "media"; this also supports "story-media" if you created it later.
+  const MEDIA_BUCKETS = ["media", "story-media"];
 
   function formatBytes(bytes) {
     if (!bytes && bytes !== 0) return "";
@@ -639,20 +639,32 @@
     const rand = Math.random().toString(16).slice(2);
     const path = `${escapePathPart(userId)}/${ts}_${rand}.${safeExt}`;
 
-    const { error: upErr } = await supabase.storage
-      .from(MEDIA_BUCKET)
-      .upload(path, file, { upsert: false, contentType: file.type || undefined });
+    let uploadError = null;
+    let usedBucket = null;
 
-    if (upErr) {
-      // Common issue: bucket not found or not public
+    for (const bucket of MEDIA_BUCKETS) {
+      const { error } = await supabase.storage
+        .from(bucket)
+        .upload(path, file, { upsert: false, contentType: file.type || undefined });
+
+      if (!error) {
+        usedBucket = bucket;
+        uploadError = null;
+        break;
+      }
+
+      uploadError = error;
+    }
+
+    if (!usedBucket) {
       throw new Error(
         (currentLang === "ar"
-          ? ("فشل رفع الملف: " + upErr.message + " (تأكد من وجود Bucket باسم story-media وأنه Public)")
-          : ("Upload failed: " + upErr.message + " (make sure a public bucket named story-media exists)"))
+          ? ("فشل رفع الملف: " + (uploadError && uploadError.message ? uploadError.message : "Storage error") + " (تأكد من وجود Bucket باسم media أو story-media وأنه Public)")
+          : ("Upload failed: " + (uploadError && uploadError.message ? uploadError.message : "Storage error") + " (make sure a public bucket named media or story-media exists)"))
       );
     }
 
-    const { data } = supabase.storage.from(MEDIA_BUCKET).getPublicUrl(path);
+    const { data } = supabase.storage.from(usedBucket).getPublicUrl(path);
     const publicUrl = data && data.publicUrl ? data.publicUrl : null;
 
     return {
