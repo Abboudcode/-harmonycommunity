@@ -327,6 +327,7 @@
   <script src="site-config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.8"></script>
   <script src="site-utils.js"></script>
+  <script src="story-discussion.js"></script>
 
   <script>
     (function () {
@@ -434,9 +435,15 @@
           }
 
           const user = data.user;
+          if (user.is_anonymous) {
+            if (navAuthLabel) navAuthLabel.textContent = (document.documentElement.lang === "ar") ? "ضيف — لا تحتاج إلى حساب" : "Guest — no account needed";
+            const guestStatus = document.getElementById("current-user-label");
+            if (guestStatus) guestStatus.textContent = (document.documentElement.lang === "ar") ? "تتصفح كضيف. التسجيل اختياري." : "You are browsing as a guest. Registration is optional.";
+            return;
+          }
           const meta = user.user_metadata || {};
           const displayName = meta.display_name || "Member";
-          const alwaysAnon = !!meta.always_anonymous;
+          const alwaysAnon = !!user.is_anonymous || !!meta.always_anonymous;
 
           navAuthLabel.textContent = alwaysAnon
             ? (lang === "ar" ? "مسجّل: مجهول (الاسم مخفي)" : "Signed in: Anonymous (name hidden)")
@@ -601,6 +608,7 @@
           elContent.textContent = data.content || "";
 
           renderMedia(data);
+          document.dispatchEvent(new CustomEvent("harmony:story", {detail:data}));
 
           // reactions local
           loadLocalReactions();

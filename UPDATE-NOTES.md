@@ -37,4 +37,4 @@ Run with Node 24:
 A separate local PostgreSQL check validates the security migration and repeatability.
 Live email delivery, storage uploads, database access and visual browser layout still require acceptance testing.
 The broad feature upgrade from the earlier desktop-folder work has NOT been substituted into the live bilingual website.
-Further feature integration should build on this repository version after write access and backend configuration are available.
+Guest stories and comments are now implemented in this working copy; see GUEST-ACCESS.md for activation.
