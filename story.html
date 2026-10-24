@@ -230,6 +230,7 @@
       margin-top: auto;
     }
   </style>
+<link rel="stylesheet" href="site-fixes.css">
 </head>
 
 <body>
@@ -323,7 +324,9 @@
     <footer>Harmony Community © 2025</footer>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="site-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.8"></script>
+  <script src="site-utils.js"></script>
 
   <script>
     (function () {
@@ -359,9 +362,9 @@
       let myActive = new Set();
       let counts = { like: 0, heart: 0, same: 0, support: 0 };
 
-      const SUPABASE_URL = "https://ndqhfftzumulkydznwgf.supabase.co";
-      const SUPABASE_ANON_KEY = "sb_publishable_GaGYEneIKdnCJCTcslESkg_1fL6EP-K";
-      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      const SUPABASE_URL = window.HARMONY_SITE_CONFIG.url;
+      const SUPABASE_ANON_KEY = window.HARMONY_SITE_CONFIG.publicKey;
+      const supabase = window.HarmonySite.client;
 
       function getInitialLang() {
         try {
@@ -377,7 +380,7 @@
         document.querySelectorAll("[data-en]").forEach((el) => {
           const en = el.getAttribute("data-en");
           const ar = el.getAttribute("data-ar") || en;
-          el.innerHTML = lang === "ar" ? ar : en;
+          el.textContent = lang === "ar" ? ar : en;
         });
 
         document.documentElement.lang = lang === "ar" ? "ar" : "en";
@@ -432,7 +435,7 @@
 
           const user = data.user;
           const meta = user.user_metadata || {};
-          const displayName = meta.display_name || user.email;
+          const displayName = meta.display_name || "Member";
           const alwaysAnon = !!meta.always_anonymous;
 
           navAuthLabel.textContent = alwaysAnon
@@ -532,7 +535,8 @@
           return;
         }
 
-        const u = String(url);
+        const u = HarmonySite.safeMediaURL(url);
+        if (!u) { mediaHost.replaceChildren(); mediaHost.style.display = "none"; return; }
         const lower = u.toLowerCase();
         const isVideo =
           mediaType.toLowerCase().includes("video") ||

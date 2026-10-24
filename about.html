@@ -262,6 +262,7 @@
       }
     }
   </style>
+<link rel="stylesheet" href="site-fixes.css">
 </head>
 <body>
 <div class="page">
@@ -476,7 +477,9 @@
 </div>
 
 <!-- Supabase client -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="site-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.8"></script>
+  <script src="site-utils.js"></script>
 
 <script>
   (function () {
@@ -500,7 +503,7 @@
       elements.forEach(el => {
         const en = el.getAttribute('data-en');
         const ar = el.getAttribute('data-ar') || en;
-        el.innerHTML = (lang === 'ar') ? ar : en;
+        el.textContent = (lang === 'ar') ? ar : en;
       });
 
       document.documentElement.lang = (lang === 'ar') ? 'ar' : 'en';
@@ -515,9 +518,9 @@
     }
 
     // Supabase auth label (same project)
-    const SUPABASE_URL = 'https://tnohzvrpqiaiupwyaxcp.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_BkvdSI8x7RxczomMIRAbOA_MLTw8g8K';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const SUPABASE_URL = window.HARMONY_SITE_CONFIG.url;
+    const SUPABASE_ANON_KEY = window.HARMONY_SITE_CONFIG.publicKey;
+    const supabase = window.HarmonySite.client;
 
     async function refreshUserLabel(langOverride) {
       const lang = langOverride || (document.documentElement.lang || 'en');
@@ -530,7 +533,7 @@
 
       const user = data.user;
       const meta = user.user_metadata || {};
-      const displayName = meta.display_name || user.email;
+      const displayName = meta.display_name || "Member";
       const alwaysAnon = !!meta.always_anonymous;
 
       let label;

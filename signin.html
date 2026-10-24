@@ -234,6 +234,7 @@
     html[dir="rtl"] .field label,
     html[dir="rtl"] .page-title-block { text-align: start; }
   </style>
+<link rel="stylesheet" href="site-fixes.css">
 </head>
 
 <body>
@@ -315,9 +316,9 @@
                   id="signup-password"
                   type="password"
                   required
-                  minlength="6"
-                  maxlength="12"
-                  placeholder="6–12 chars, Upper + lower + number"
+                  minlength="8"
+                  maxlength="128"
+                  placeholder="8–128 characters"
                   autocomplete="new-password"
                 />
               </div>
@@ -328,8 +329,8 @@
                   id="signup-password2"
                   type="password"
                   required
-                  minlength="6"
-                  maxlength="12"
+                  minlength="8"
+                  maxlength="128"
                   placeholder="Re-type password"
                   autocomplete="new-password"
                 />
@@ -390,7 +391,7 @@
 
               <div class="field">
                 <label for="signin-password" data-en="Password" data-ar="كلمة السر">Password</label>
-                <input id="signin-password" type="password" required minlength="6" maxlength="12" autocomplete="current-password" />
+                <input id="signin-password" type="password" required maxlength="128" autocomplete="current-password" />
               </div>
 
               <button type="submit" class="btn-secondary" data-en="Sign in" data-ar="تسجيل الدخول">Sign in</button>
@@ -431,7 +432,9 @@
     <footer>Harmony Community © 2025</footer>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="site-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.8"></script>
+  <script src="site-utils.js"></script>
 
   <script>
     (function () {
@@ -464,7 +467,7 @@
         document.querySelectorAll("[data-en]").forEach((el) => {
           const en = el.getAttribute("data-en");
           const ar = el.getAttribute("data-ar") || en;
-          el.innerHTML = lang === "ar" ? ar : en;
+          el.textContent = lang === "ar" ? ar : en;
         });
 
         document.documentElement.lang = lang === "ar" ? "ar" : "en";
@@ -498,16 +501,10 @@
         signoutWrap.style.display = show ? "block" : "none";
       }
 
-      const SUPABASE_URL = "https://ndqhfftzumulkydznwgf.supabase.co";
-      const SUPABASE_ANON_KEY = "sb_publishable_GaGYEneIKdnCJCTcslESkg_1fL6EP-K";
+      const SUPABASE_URL = window.HARMONY_SITE_CONFIG.url;
+      const SUPABASE_ANON_KEY = window.HARMONY_SITE_CONFIG.publicKey;
 
-      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true
-        }
-      });
+      const supabase = window.HarmonySite.client;
 
       // ✅ Redirect URL works for localhost and GitHub Pages
       function getBasePath() {
@@ -538,19 +535,16 @@
       }
 
       function isPasswordValid(pw) {
-        // 6–12, at least 1 uppercase, 1 lowercase, 1 digit
+        // Accept long passwords without arbitrary composition restrictions.
         if (typeof pw !== "string") return false;
-        if (pw.length < 6 || pw.length > 12) return false;
-        if (!/[A-Z]/.test(pw)) return false;
-        if (!/[a-z]/.test(pw)) return false;
-        if (!/[0-9]/.test(pw)) return false;
+        if (pw.length < 8 || pw.length > 128) return false;
         return true;
       }
 
       function passwordRulesMsg() {
         return (currentLang === "ar")
-          ? "كلمة السر لازم تكون 6–12 أحرف، فيها رقم، وحرف كبير، وحرف صغير."
-          : "Password must be 6–12 chars and include a number, an uppercase letter, and a lowercase letter.";
+          ? "كلمة السر لازم تكون من 8 إلى 128 حرفاً."
+          : "Password must be between 8 and 128 characters.";
       }
 
       async function refreshUserLabel(langOverride) {
@@ -567,7 +561,7 @@
 
           const user = data.user;
           const meta = user.user_metadata || {};
-          const displayName = meta.display_name || user.email;
+          const displayName = meta.display_name || "Member";
           const alwaysAnon = !!meta.always_anonymous;
 
           const label = alwaysAnon
@@ -593,7 +587,7 @@
         setStatus(currentLang === "ar" ? "جاري تأكيد الدخول…" : "Confirming sign-in…", false);
 
         try {
-          const { error } = await supabase.auth.exchangeCodeForSession(window.location.href);
+          const { error } = await supabase.auth.exchangeCodeForSession(code);
           if (error) {
             setStatus((currentLang === "ar" ? "خطأ: " : "Error: ") + error.message, true);
             return;
@@ -610,7 +604,7 @@
       }
 
       supabase.auth.onAuthStateChange(() => {
-        refreshUserLabel();
+        setTimeout(() => refreshUserLabel(), 0);
       });
 
       if (signupForm) {
@@ -775,7 +769,7 @@
 
       // Init
       refreshUserLabel(initialLang);
-      handleRedirectCode();
+      // Supabase SDK processes confirmation and recovery redirects once.
     })();
   </script>
 </body>

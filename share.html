@@ -249,6 +249,7 @@
     .lock-banner strong{display:block;margin-bottom:.25rem}
     .lock-banner p{color:var(--text-muted);font-size:.92rem}
   </style>
+<link rel="stylesheet" href="site-fixes.css">
 </head>
 
 <body>
@@ -443,7 +444,9 @@
   <footer>Harmony Community © 2025</footer>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="site-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.8"></script>
+  <script src="site-utils.js"></script>
 
 <script>
 (function () {
@@ -487,7 +490,7 @@
     document.querySelectorAll("[data-en]").forEach((el) => {
       const en = el.getAttribute("data-en");
       const ar = el.getAttribute("data-ar") || en;
-      el.innerHTML = (lang === "ar") ? ar : en;
+      el.textContent = (lang === "ar") ? ar : en;
     });
 
     document.querySelectorAll("[data-en-placeholder]").forEach((el) => {
@@ -519,11 +522,9 @@
   }
 
   // Supabase
-  const SUPABASE_URL = "https://ndqhfftzumulkydznwgf.supabase.co";
-  const SUPABASE_ANON_KEY = "sb_publishable_GaGYEneIKdnCJCTcslESkg_1fL6EP-K";
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-  });
+  const SUPABASE_URL = window.HARMONY_SITE_CONFIG.url;
+  const SUPABASE_ANON_KEY = window.HARMONY_SITE_CONFIG.publicKey;
+  const supabase = window.HarmonySite.client;
 
   // Storage bucket names to try. Your older setup used "media"; this also supports "story-media" if you created it later.
   const MEDIA_BUCKETS = ["media", "story-media"];
@@ -549,6 +550,7 @@
     fileSizeEl.style.display = "inline";
     fileSizeEl.textContent = formatBytes(file.size);
 
+    HarmonySite.validateFile(file);
     const isImg = file.type && file.type.startsWith("image/");
     const isVid = file.type && file.type.startsWith("video/");
     fileTypePill.style.display = "inline-flex";
@@ -604,7 +606,7 @@
     }
 
     const meta = user.user_metadata || {};
-    const displayName = meta.display_name || user.email;
+    const displayName = meta.display_name || "Member";
     const alwaysAnon = !!meta.always_anonymous;
 
     if (navAuthLabel) {
@@ -621,6 +623,7 @@
     const file = mediaInput && mediaInput.files && mediaInput.files[0] ? mediaInput.files[0] : null;
     if (!file) return { media_url: null, media_type: null };
 
+    HarmonySite.validateFile(file);
     const isImg = file.type && file.type.startsWith("image/");
     const isVid = file.type && file.type.startsWith("video/");
     if (!isImg && !isVid) {
@@ -628,15 +631,15 @@
     }
 
     // size limit (optional)
-    const maxBytes = 25 * 1024 * 1024; // 25MB
+    const maxBytes = 20 * 1024 * 1024; // 25MB
     if (file.size > maxBytes) {
       throw new Error(currentLang === "ar" ? "حجم الملف كبير جداً. جرّب ملف أصغر." : "File is too large. Please use a smaller file.");
     }
 
-    const ext = (file.name && file.name.includes(".")) ? file.name.split(".").pop().toLowerCase() : (isImg ? "jpg" : "mp4");
+    const ext = HarmonySite.fileTypes[file.type];
     const safeExt = escapePathPart(ext);
     const ts = Date.now();
-    const rand = Math.random().toString(16).slice(2);
+    const rand = crypto.randomUUID();
     const path = `${escapePathPart(userId)}/${ts}_${rand}.${safeExt}`;
 
     let uploadError = null;
@@ -669,116 +672,50 @@
 
     return {
       media_url: publicUrl,
-      media_type: isImg ? "image" : "video"
+      media_type: isImg ? "image" : "video",
+      storage_path: path,
+      storage_bucket: usedBucket
     };
   }
 
   async function insertStory(payload) {
-    // Try with optional columns (user_id, media_url, media_type)
-    const attempt1 = await supabase
-      .from("stories")
-      .insert(payload)
-      .select("id")
-      .single();
-
-    if (!attempt1.error) return attempt1;
-
-    // Fallback: remove optional fields if your table doesn't have them yet
-    const fallback = { ...payload };
-    delete fallback.user_id;
-    delete fallback.media_url;
-    delete fallback.media_type;
-
-    const attempt2 = await supabase
-      .from("stories")
-      .insert(fallback)
-      .select("id")
-      .single();
-
-    return attempt2;
+    // A failed write must never retry with ownership or media fields removed.
+    return supabase.from("stories").insert(payload).select("id").single();
   }
 
-  if (shareForm) {
-    shareForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
+  let publishing = false;
+  if (shareForm) shareForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (publishing) return;
+    publishing = true;
+    let media = null, saved = false;
+    try {
       const user = await ensureSignedIn();
-      if (!user) {
-        setStatus(
-          "Please sign in first.",
-          "رجاءً سجّل دخول أولاً.",
-          "err"
-        );
-        if (lockBanner) lockBanner.style.display = "block";
-        return;
-      }
-
-      const title = (titleEl.value || "").trim();
-      const content = (detailsEl.value || "").trim();
+      if (!user) throw new Error(currentLang === "ar" ? "رجاءً سجّل الدخول أولاً." : "Please sign in first.");
+      const title = (titleEl.value || "").trim(), content = (detailsEl.value || "").trim();
       const category = categoryEl.value || "Kids";
-
-      if (!title || !content) {
-        setStatus(
-          "Please fill in title and story details.",
-          "رجاءً عبّي العنوان وتفاصيل القصة.",
-          "err"
-        );
-        return;
+      if (!title || title.length > 160 || !content || content.length > 10000) throw new Error(currentLang === "ar" ? "اكتب عنواناً حتى 160 حرفاً وقصة حتى 10000 حرف." : "Enter a title up to 160 characters and a story up to 10,000 characters.");
+      disableForm(true);
+      setStatus("Publishing…", "جاري النشر…", null);
+      media = await uploadMediaIfAny(user.id);
+      const result = await insertStory({title, content, category, is_anonymous: !!user.user_metadata?.always_anonymous || !!anonEl.checked, user_id: user.id, media_url: media.media_url, media_type: media.media_type});
+      if (result.error) throw result.error;
+      saved = true;
+      setStatus("Published successfully. Redirecting…", "تم النشر بنجاح. جاري التحويل…", "ok");
+      const id = result.data?.id;
+      window.location.href = id ? "story.html?id=" + encodeURIComponent(String(id)) : "stories.html";
+    } catch (error) {
+      if (media?.storage_path && !saved) {
+        try {
+          const cleanup = await supabase.storage.from(media.storage_bucket).remove([media.storage_path]);
+          if (cleanup.error) console.warn("Unused attachment requires owner cleanup.");
+        } catch (_) { console.warn("Unused attachment requires owner cleanup."); }
       }
-
-      try {
-        disableForm(true);
-        setStatus("Publishing…", "جاري النشر…", null);
-
-        const meta = user.user_metadata || {};
-        const alwaysAnon = !!meta.always_anonymous;
-        const storyAnon = !!anonEl.checked;
-
-        // Upload media first (if any)
-        const media = await uploadMediaIfAny(user.id);
-
-        // Prepare story payload
-        const payload = {
-          title,
-          content,
-          category,
-          is_anonymous: alwaysAnon ? true : storyAnon,
-          user_id: user.id,
-          media_url: media.media_url,
-          media_type: media.media_type
-        };
-
-        const res = await insertStory(payload);
-
-        if (res.error) {
-          throw new Error(res.error.message || "Insert failed.");
-        }
-
-        const newId = res.data && res.data.id ? res.data.id : null;
-
-        setStatus(
-          "Published successfully ✅ Redirecting…",
-          "تم النشر ✅ جاري التحويل…",
-          "ok"
-        );
-
-        // Go to story page
-        setTimeout(() => {
-          if (newId) window.location.href = "story.html?id=" + encodeURIComponent(String(newId));
-          else window.location.href = "stories.html";
-        }, 700);
-
-      } catch (err) {
-        console.error(err);
-        setStatus(
-          "Error: " + (err && err.message ? err.message : "Something went wrong."),
-          "خطأ: " + (err && err.message ? err.message : "صار شي غلط."),
-          "err"
-        );
-        disableForm(false);
-      }
-    });
-  }
+      setStatus("Could not publish: " + error.message, "تعذر النشر: " + error.message, "err");
+    } finally {
+      if (!saved) { publishing = false; disableForm(false); }
+    }
+  });
 
   // Language init
   const initialLang = getInitialLang();
