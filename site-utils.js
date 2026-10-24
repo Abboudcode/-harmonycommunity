@@ -14,7 +14,22 @@
   try{const u=new URL(value),base=new URL(config.url);return u.protocol==='https:'&&u.origin===base.origin&&!u.username&&!u.password&&['/storage/v1/object/public/media/','/storage/v1/object/public/story-media/'].some(p=>u.pathname.startsWith(p))?u.href:null;}catch{return null;}
  }
  const client=window.supabase&&config?.url&&config?.publicKey?window.supabase.createClient(config.url,config.publicKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}):null;
- window.HarmonySite={client,fileTypes,validateFile,safeMediaURL,text};
+ let guestPending=null;
+ async function ensureContributor(){
+  if(!client)throw Error(text('Connection unavailable. Reload and try again.','الاتصال غير متاح. أعد التحميل وحاول مجدداً.'));
+  if(guestPending)return guestPending;
+  guestPending=(async()=>{
+   const {data,error}=await client.auth.getSession();
+   if(error)throw error;
+   if(data.session?.user)return data.session.user;
+   const result=await client.auth.signInAnonymously();
+   if(result.error)throw Error(text('Guest posting is unavailable. The site owner needs to enable guest access. Your draft has been kept.','النشر كضيف غير متاح حالياً. يحتاج صاحب الموقع إلى تفعيل وصول الضيوف. تم الاحتفاظ بمسودتك.'));
+   if(!result.data?.user)throw Error(text('Could not start guest access. Try again.','تعذر بدء جلسة الضيف. حاول مجدداً.'));
+   return result.data.user;
+  })();
+  try{return await guestPending;}finally{guestPending=null;}
+ }
+ window.HarmonySite={client,fileTypes,validateFile,safeMediaURL,text,ensureContributor};
  if(!client){
   const warning=document.createElement('p');warning.setAttribute('role','alert');warning.className='site-warning';warning.textContent=text('Connection unavailable. Check your internet connection, then reload.','الاتصال غير متاح. تحقق من الإنترنت وأعد تحميل الصفحة.');document.body.prepend(warning);return;
  }

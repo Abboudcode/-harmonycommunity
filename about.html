@@ -532,9 +532,15 @@
       }
 
       const user = data.user;
-      const meta = user.user_metadata || {};
+      if (user.is_anonymous) {
+            if (navAuthLabel) navAuthLabel.textContent = (document.documentElement.lang === "ar") ? "ضيف — لا تحتاج إلى حساب" : "Guest — no account needed";
+            const guestStatus = document.getElementById("current-user-label");
+            if (guestStatus) guestStatus.textContent = (document.documentElement.lang === "ar") ? "تتصفح كضيف. التسجيل اختياري." : "You are browsing as a guest. Registration is optional.";
+            return;
+          }
+          const meta = user.user_metadata || {};
       const displayName = meta.display_name || "Member";
-      const alwaysAnon = !!meta.always_anonymous;
+      const alwaysAnon = !!user.is_anonymous || !!meta.always_anonymous;
 
       let label;
       if (alwaysAnon) {

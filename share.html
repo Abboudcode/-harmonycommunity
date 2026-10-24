@@ -298,16 +298,9 @@
     </div>
 
     <div class="max-w lock-banner" id="lock-banner">
-      <strong data-en="You must be signed in to post." data-ar="لازم تكون مسجّل دخول لتقدر تنشر.">You must be signed in to post.</strong>
-      <p
-        data-en="Please sign in first, then come back to share your story."
-        data-ar="رجاءً سجّل دخول أولاً، وبعدها ارجع لهون لتشارك قصتك."
-      >
-        Please sign in first, then come back to share your story.
-      </p>
-      <div class="row" style="margin-top:.6rem;">
-        <a class="btn-primary" href="signin.html?redirect=share" data-en="Go to Sign In" data-ar="اذهب لتسجيل الدخول">Go to Sign In</a>
-      </div>
+      <strong data-en="No account needed." data-ar="لا تحتاج إلى حساب.">No account needed.</strong>
+      <p data-en="Share as a guest without an email or password. Keep this browser to manage your contributions; clearing browser data or switching accounts can lose guest access." data-ar="شارك كضيف دون بريد إلكتروني أو كلمة سر. احتفظ بهذا المتصفح لإدارة مشاركاتك؛ مسح بيانات المتصفح أو تبديل الحساب قد يفقدك وصول الضيف.">Share as a guest without an email or password. Keep this browser to manage your contributions; clearing browser data or switching accounts can lose guest access.</p>
+      <a class="btn-secondary" href="signin.html?redirect=share" data-en="Sign in (optional)" data-ar="تسجيل الدخول (اختياري)">Sign in (optional)</a>
     </div>
 
     <div class="max-w layout">
@@ -599,15 +592,17 @@
     currentUser = user;
 
     if (!user) {
-      if (navAuthLabel) navAuthLabel.textContent = (currentLang === "ar") ? "غير مسجّل الدخول" : "Not signed in";
+      if (navAuthLabel) navAuthLabel.textContent = (currentLang === "ar") ? "ضيف — لا تحتاج إلى حساب" : "Guest — no account needed";
       if (lockBanner) lockBanner.style.display = "block";
-      disableForm(true);
+      disableForm(false);
+      anonEl.checked = true;
+      anonEl.disabled = true;
       return;
     }
 
     const meta = user.user_metadata || {};
     const displayName = meta.display_name || "Member";
-    const alwaysAnon = !!meta.always_anonymous;
+    const alwaysAnon = !!user.is_anonymous || !!meta.always_anonymous;
 
     if (navAuthLabel) {
       navAuthLabel.textContent = alwaysAnon
@@ -617,6 +612,7 @@
 
     if (lockBanner) lockBanner.style.display = "none";
     disableForm(false);
+    if (user.is_anonymous) { anonEl.checked=true; anonEl.disabled=true; }
   }
 
   async function uploadMediaIfAny(userId) {
@@ -690,15 +686,14 @@
     publishing = true;
     let media = null, saved = false;
     try {
-      const user = await ensureSignedIn();
-      if (!user) throw new Error(currentLang === "ar" ? "رجاءً سجّل الدخول أولاً." : "Please sign in first.");
+      const user = await HarmonySite.ensureContributor();
       const title = (titleEl.value || "").trim(), content = (detailsEl.value || "").trim();
       const category = categoryEl.value || "Kids";
       if (!title || title.length > 160 || !content || content.length > 10000) throw new Error(currentLang === "ar" ? "اكتب عنواناً حتى 160 حرفاً وقصة حتى 10000 حرف." : "Enter a title up to 160 characters and a story up to 10,000 characters.");
       disableForm(true);
       setStatus("Publishing…", "جاري النشر…", null);
       media = await uploadMediaIfAny(user.id);
-      const result = await insertStory({title, content, category, is_anonymous: !!user.user_metadata?.always_anonymous || !!anonEl.checked, user_id: user.id, media_url: media.media_url, media_type: media.media_type});
+      const result = await insertStory({title, content, category, is_anonymous: !!user.is_anonymous || !!user.user_metadata?.always_anonymous || !!anonEl.checked, user_id: user.id, media_url: media.media_url, media_type: media.media_type});
       if (result.error) throw result.error;
       saved = true;
       setStatus("Published successfully. Redirecting…", "تم النشر بنجاح. جاري التحويل…", "ok");
@@ -713,7 +708,7 @@
       }
       setStatus("Could not publish: " + error.message, "تعذر النشر: " + error.message, "err");
     } finally {
-      if (!saved) { publishing = false; disableForm(false); }
+      if (!saved) { publishing = false; disableForm(false); if (currentUser?.is_anonymous || !currentUser) { anonEl.checked=true; anonEl.disabled=true; } }
     }
   });
 
