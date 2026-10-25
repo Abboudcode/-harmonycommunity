@@ -269,6 +269,7 @@
       <nav class="nav-links">
         <a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a>
         <a href="stories.html" data-en="Stories" data-ar="القصص">Stories</a>
+        <a href="reels.html" data-en="Reels" data-ar="ريلز">Reels</a>
         <a href="share.html" class="active" data-en="Share a Story" data-ar="شارك قصة">Share a Story</a>
         <a href="signin.html" data-en="Sign In" data-ar="تسجيل الدخول">Sign In</a>
         <a href="about.html" data-en="About" data-ar="عن هارموني">About</a>
@@ -290,10 +291,10 @@
     <div class="max-w hero">
       <h1 data-en="Share a Story" data-ar="شارك قصة">Share a Story</h1>
       <p
-        data-en="Share your story with kindness. You can post with your name or anonymously. Optionally attach a picture or video."
-        data-ar="شارك قصتك بلطف. فيك تنشر باسمك أو كمجهول. وباختيارك ترفق صورة أو فيديو."
+        data-en="Share your story with kindness — with your name, or anonymously."
+        data-ar="شارك قصتك بلطف — باسمك، أو كمجهول."
       >
-        Share your story with kindness. You can post with your name or anonymously. Optionally attach a picture or video.
+        Share your story with kindness — with your name, or anonymously.
       </p>
     </div>
 
@@ -322,19 +323,9 @@
         </p>
 
         <form id="share-form">
+          
           <div class="field">
-            <label for="story-category" data-en="Category" data-ar="الفئة">Category</label>
-            <select id="story-category" required>
-              <option value="Kids">Kids</option>
-              <option value="Teens">Teens</option>
-              <option value="Adult">Adult</option>
-              <option value="Marriage">Marriage</option>
-              <option value="Finance">Finance</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="story-title" data-en="Title" data-ar="العنوان">Title</label>
+            <label for="story-title" data-en="Story title" data-ar="عنوان القصة">Story title</label>
             <input
               id="story-title"
               type="text"
@@ -347,7 +338,7 @@
           </div>
 
           <div class="field">
-            <label for="story-details" data-en="Your story" data-ar="تفاصيل القصة">Your story</label>
+            <label for="story-details" data-en="Story text" data-ar="نص القصة">Story text</label>
             <textarea
               id="story-details"
               required
@@ -356,6 +347,17 @@
               data-ar-placeholder="إحكي شو عم يصير، شو إحساسك، وشو الكلمة اللي بتتمنى حدا يقولّك ياها هلّق…"
               placeholder="Share what’s going on, how it makes you feel, and what you wish someone could tell you right now…"
             ></textarea>
+          </div>
+
+          <div class="field">
+            <label for="story-category" data-en="Category" data-ar="الفئة">Category</label>
+            <select id="story-category" required>
+              <option value="Kids">Kids</option>
+              <option value="Teens">Teens</option>
+              <option value="Adult">Adult</option>
+              <option value="Marriage">Marriage</option>
+              <option value="Finance">Finance</option>
+            </select>
           </div>
 
           <div class="field">

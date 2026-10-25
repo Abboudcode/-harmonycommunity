@@ -254,6 +254,7 @@
         <nav class="nav-links">
           <a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a>
           <a href="stories.html" data-en="Stories" data-ar="القصص">Stories</a>
+          <a href="reels.html" data-en="Reels" data-ar="ريلز">Reels</a>
           <a href="share.html" data-en="Share a Story" data-ar="شارك قصة">Share a Story</a>
           <a href="signin.html" class="active" data-en="Sign In" data-ar="تسجيل الدخول">Sign In</a>
           <a href="about.html" data-en="About" data-ar="عن هارموني">About</a>
@@ -275,17 +276,69 @@
       <div class="max-w page-title-block" style="max-width:640px;margin:0 auto 1.8rem;text-align:center;">
         <h1 data-en="Sign in to Harmony" data-ar="سجّل الدخول إلى هارموني" style="font-size:1.6rem;margin-bottom:0.4rem;">Sign in to Harmony</h1>
         <p
-          data-en="Create a free account or sign in to share your story with your name or as Anonymous. Your email stays private."
-          data-ar="أنشئ حساب مجاني أو سجّل الدخول لتشارك قصتك باسمك أو كمجهول. إيميلك يبقى خاص."
+          data-en="Sign in to share your story with your name or as Anonymous — or create a free account. Your email stays private."
+          data-ar="سجّل الدخول لتشارك قصتك باسمك أو كمجهول — أو أنشئ حساب مجاني. إيميلك يبقى خاص."
           style="font-size:0.95rem;color:var(--text-muted);"
         >
-          Create a free account or sign in to share your story with your name or as Anonymous. Your email stays private.
+          Sign in to share your story with your name or as Anonymous — or create a free account. Your email stays private.
         </p>
       </div>
 
       <section>
         <div class="max-w two-col">
-          <!-- SIGN UP -->
+          <!-- SIGN IN -->
+          <div class="card">
+            <h3 data-en="Sign in to your account" data-ar="سجّل الدخول إلى حسابك">Sign in to your account</h3>
+            <p class="sub"
+               data-en="Already created an account before? Use the same email and password to sign in."
+               data-ar="عندك حساب من قبل؟ استخدم نفس الإيميل وكلمة السر لتسجّل الدخول.">
+              Already created an account before? Use the same email and password to sign in.
+            </p>
+
+            <form id="signin-form">
+              <div class="field">
+                <label for="signin-email" data-en="Email" data-ar="الإيميل">Email</label>
+                <input id="signin-email" type="email" required placeholder="you@example.com" autocomplete="email" />
+              </div>
+
+              <div class="field">
+                <label for="signin-password" data-en="Password" data-ar="كلمة السر">Password</label>
+                <input id="signin-password" type="password" required maxlength="128" autocomplete="current-password" />
+              </div>
+
+              <button type="submit" class="btn-primary" data-en="Sign in" data-ar="تسجيل الدخول">Sign in</button>
+            </form>
+
+            <div style="margin-top:0.75rem;">
+              <button id="reset-btn" class="btn-link" type="button"
+                data-en="Forgot password?"
+                data-ar="نسيت كلمة السر؟">Forgot password?</button>
+            </div>
+
+            <div class="signout-wrap" id="signout-wrap">
+              <button id="signout-btn" class="btn-secondary" type="button"
+                      data-en="Sign out"
+                      data-ar="تسجيل الخروج">
+                Sign out
+              </button>
+            </div>
+
+            <p id="current-user-label" class="note" style="margin-top:1rem;"
+               data-en="Status: not signed in."
+               data-ar="الحالة: غير مسجّل الدخول.">
+              Status: not signed in.
+            </p>
+
+            <p id="auth-status" class="note" style="margin-top:0.4rem;"></p>
+
+            <p class="note" style="margin-top:0.6rem;"
+               data-en="If you clicked a confirmation link and still appear signed out, refresh this page once."
+               data-ar="إذا ضغطت رابط التأكيد ولسا مبين غير مسجّل، اعمل Refresh مرة.">
+              If you clicked a confirmation link and still appear signed out, refresh this page once.
+            </p>
+          </div>
+
+<!-- SIGN UP -->
           <div class="card">
             <h3 data-en="Create your Harmony account" data-ar="أنشئ حسابك في هارموني">Create your Harmony account</h3>
             <p class="sub"
@@ -356,7 +409,7 @@
                 </label>
               </div>
 
-              <button type="submit" class="btn-primary" data-en="Create account" data-ar="إنشاء حساب">Create account</button>
+              <button type="submit" class="btn-secondary" data-en="Create account" data-ar="إنشاء حساب">Create account</button>
             </form>
 
             <p class="note"
@@ -372,58 +425,6 @@
                 Resend confirmation email
               </button>
             </div>
-          </div>
-
-          <!-- SIGN IN -->
-          <div class="card">
-            <h3 data-en="Sign in to your account" data-ar="سجّل الدخول إلى حسابك">Sign in to your account</h3>
-            <p class="sub"
-               data-en="Already created an account before? Use the same email and password to sign in."
-               data-ar="عندك حساب من قبل؟ استخدم نفس الإيميل وكلمة السر لتسجّل الدخول.">
-              Already created an account before? Use the same email and password to sign in.
-            </p>
-
-            <form id="signin-form">
-              <div class="field">
-                <label for="signin-email" data-en="Email" data-ar="الإيميل">Email</label>
-                <input id="signin-email" type="email" required placeholder="you@example.com" autocomplete="email" />
-              </div>
-
-              <div class="field">
-                <label for="signin-password" data-en="Password" data-ar="كلمة السر">Password</label>
-                <input id="signin-password" type="password" required maxlength="128" autocomplete="current-password" />
-              </div>
-
-              <button type="submit" class="btn-secondary" data-en="Sign in" data-ar="تسجيل الدخول">Sign in</button>
-            </form>
-
-            <div style="margin-top:0.75rem;">
-              <button id="reset-btn" class="btn-link" type="button"
-                data-en="Forgot password?"
-                data-ar="نسيت كلمة السر؟">Forgot password?</button>
-            </div>
-
-            <div class="signout-wrap" id="signout-wrap">
-              <button id="signout-btn" class="btn-secondary" type="button"
-                      data-en="Sign out"
-                      data-ar="تسجيل الخروج">
-                Sign out
-              </button>
-            </div>
-
-            <p id="current-user-label" class="note" style="margin-top:1rem;"
-               data-en="Status: not signed in."
-               data-ar="الحالة: غير مسجّل الدخول.">
-              Status: not signed in.
-            </p>
-
-            <p id="auth-status" class="note" style="margin-top:0.4rem;"></p>
-
-            <p class="note" style="margin-top:0.6rem;"
-               data-en="If you clicked a confirmation link and still appear signed out, refresh this page once."
-               data-ar="إذا ضغطت رابط التأكيد ولسا مبين غير مسجّل، اعمل Refresh مرة.">
-              If you clicked a confirmation link and still appear signed out, refresh this page once.
-            </p>
           </div>
         </div>
       </section>
