@@ -233,6 +233,17 @@
     html[dir="rtl"] .card,
     html[dir="rtl"] .field label,
     html[dir="rtl"] .page-title-block { text-align: start; }
+  
+    .profile-card { margin-bottom: 1rem; }
+    .profile-head { display: flex; gap: 14px; align-items: center; }
+    .profile-avatar { width: 64px; height: 64px; border-radius: 50%; background: #4f46e5; color: #fff; font-size: 26px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex: none; }
+    .profile-stats { display: flex; border-top: 1px solid #e5e7eb; margin-top: 14px; padding-top: 12px; }
+    .profile-stats > div { flex: 1; text-align: center; }
+    .stat-num { font-size: 20px; font-weight: 800; }
+    .profile-story-row { display: block; border-top: 1px solid #e5e7eb; padding: 10px 0; }
+    .profile-story-row:first-child { border-top: none; }
+    .profile-row { display: flex; gap: 8px; align-items: center; }
+    .profile-row input[type="text"] { flex: 1; }
   </style>
 <link rel="stylesheet" href="site-fixes.css">
 </head>
@@ -256,7 +267,7 @@
           <a href="stories.html" data-en="Stories" data-ar="القصص">Stories</a>
           <a href="reels.html" data-en="Reels" data-ar="ريلز">Reels</a>
           <a href="share.html" data-en="Share a Story" data-ar="شارك قصة">Share a Story</a>
-          <a href="signin.html" class="active" data-en="Sign In" data-ar="تسجيل الدخول">Sign In</a>
+          <a href="signin.html" class="active" data-en="Profile" data-ar="الملف الشخصي">Profile</a>
           <a href="about.html" data-en="About" data-ar="عن هارموني">About</a>
           <a href="faq.html" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a>
           <a href="contact.html" data-en="Contact" data-ar="اتصال">Contact</a>
@@ -273,7 +284,7 @@
     </header>
 
     <main>
-      <div class="max-w page-title-block" style="max-width:640px;margin:0 auto 1.8rem;text-align:center;">
+      <div class="max-w page-title-block" id="page-title-block" style="max-width:640px;margin:0 auto 1.8rem;text-align:center;">
         <h1 data-en="Sign in to Harmony" data-ar="سجّل الدخول إلى هارموني" style="font-size:1.6rem;margin-bottom:0.4rem;">Sign in to Harmony</h1>
         <p
           data-en="Sign in to share your story with your name or as Anonymous — or create a free account. Your email stays private."
@@ -284,7 +295,7 @@
         </p>
       </div>
 
-      <section>
+      <section id="auth-section">
         <div class="max-w two-col">
           <!-- SIGN IN -->
           <div class="card">
@@ -350,7 +361,7 @@
             <div class="hint-box">
               <strong data-en="Password rules:" data-ar="شروط كلمة السر:">Password rules:</strong>
               <ul>
-                <li data-en="6–12 characters" data-ar="من 6 إلى 12 حرف">6–12 characters</li>
+                <li data-en="8–128 characters" data-ar="من 8 إلى 128 حرف">8–128 characters</li>
                 <li data-en="At least 1 uppercase letter (A–Z)" data-ar="حرف كبير واحد على الأقل (A–Z)">At least 1 uppercase letter (A–Z)</li>
                 <li data-en="At least 1 lowercase letter (a–z)" data-ar="حرف صغير واحد على الأقل (a–z)">At least 1 lowercase letter (a–z)</li>
                 <li data-en="At least 1 number (0–9)" data-ar="رقم واحد على الأقل (0–9)">At least 1 number (0–9)</li>
@@ -361,6 +372,7 @@
               <div class="field">
                 <label for="signup-email" data-en="Email" data-ar="الإيميل">Email</label>
                 <input id="signup-email" type="email" required placeholder="you@example.com" autocomplete="email" />
+                <p class="note" style="margin-top:0.35rem;" data-en="Double-check the email spelling — the confirmation link goes to this exact address." data-ar="تأكد من كتابة الإيميل صح — رابط التأكيد يروح لهذا العنوان بالضبط.">Double-check the email spelling — the confirmation link goes to this exact address.</p>
               </div>
 
               <div class="field">
@@ -424,6 +436,59 @@
                 data-ar="إعادة إرسال إيميل التأكيد">
                 Resend confirmation email
               </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROFILE (shown when signed in) -->
+      <section id="profile-section" style="display:none;">
+        <div class="max-w" style="max-width:640px;margin:0 auto;">
+          <div class="card profile-card">
+            <div class="profile-head">
+              <div class="profile-avatar" id="profile-avatar">M</div>
+              <div>
+                <h3 id="profile-name" style="margin-bottom:0.2rem;">Member</h3>
+                <p class="note" id="profile-email"></p>
+                <p class="note" data-en="Only you can see your email." data-ar="إيميلك ظاهر إلك بس.">Only you can see your email.</p>
+              </div>
+            </div>
+            <div class="profile-stats">
+              <div><div class="stat-num" id="profile-stories-count">–</div><div class="note" data-en="Stories" data-ar="قصص">Stories</div></div>
+              <div><div class="stat-num" id="profile-comments-count">–</div><div class="note" data-en="Comments" data-ar="تعليقات">Comments</div></div>
+            </div>
+          </div>
+
+          <div class="card profile-card">
+            <h3 data-en="My stories" data-ar="قصصي">My stories</h3>
+            <div id="profile-stories" style="margin-top:0.5rem;"></div>
+          </div>
+
+          <div class="card profile-card">
+            <h3 data-en="Settings" data-ar="الإعدادات">Settings</h3>
+            <div class="field" style="margin-top:0.8rem;">
+              <label for="profile-nickname" data-en="Nickname" data-ar="الاسم المستعار">Nickname</label>
+              <div class="profile-row">
+                <input id="profile-nickname" type="text" maxlength="40" />
+                <button id="profile-save-name" class="btn-primary" type="button" data-en="Save" data-ar="حفظ">Save</button>
+              </div>
+            </div>
+            <div class="field-inline" style="margin-top:0.8rem;">
+              <input id="profile-anon" type="checkbox" />
+              <label for="profile-anon"><strong data-en="Always show me as Anonymous" data-ar="دائماً إظهرني كمجهول">Always show me as Anonymous</strong></label>
+            </div>
+            <div style="margin-top:0.9rem;">
+              <button id="profile-pw-toggle" class="btn-link" type="button" data-en="Change password" data-ar="تغيير كلمة السر">Change password</button>
+            </div>
+            <div id="profile-pw-form" style="display:none;margin-top:0.6rem;">
+              <p class="note" data-en="Password rules: 8–128 characters, at least 1 uppercase letter (A–Z), 1 lowercase letter (a–z), and 1 number (0–9)." data-ar="شروط كلمة السر: من 8 إلى 128 حرفاً، حرف كبير واحد على الأقل (A–Z)، وحرف صغير واحد على الأقل (a–z)، ورقم واحد على الأقل (0–9).">Password rules: 8–128 characters, at least 1 uppercase letter (A–Z), 1 lowercase letter (a–z), and 1 number (0–9).</p>
+              <div class="field"><input id="profile-newpass" type="password" maxlength="128" autocomplete="new-password" /></div>
+              <div class="field"><input id="profile-confirmpass" type="password" maxlength="128" autocomplete="new-password" /></div>
+              <button id="profile-pw-save" class="btn-secondary" type="button" data-en="Update password" data-ar="تحديث كلمة السر">Update password</button>
+            </div>
+            <p id="profile-status" class="note" style="margin-top:0.7rem;"></p>
+            <div style="margin-top:0.9rem;">
+              <button id="profile-signout-btn" class="btn-secondary" type="button" style="color:#dc2626;border-color:#fecaca;" data-en="Sign out" data-ar="تسجيل الخروج">Sign out</button>
             </div>
           </div>
         </div>
@@ -536,16 +601,147 @@
       }
 
       function isPasswordValid(pw) {
-        // Accept long passwords without arbitrary composition restrictions.
         if (typeof pw !== "string") return false;
         if (pw.length < 8 || pw.length > 128) return false;
+        if (!/[A-Z]/.test(pw) || !/[a-z]/.test(pw) || !/[0-9]/.test(pw)) return false;
         return true;
       }
 
       function passwordRulesMsg() {
         return (currentLang === "ar")
-          ? "كلمة السر لازم تكون من 8 إلى 128 حرفاً."
-          : "Password must be between 8 and 128 characters.";
+          ? "كلمة السر ضعيفة — تحتاج 8 أحرف أو أكثر، وحرفاً كبيراً واحداً، وحرفاً صغيراً واحداً، ورقماً واحداً."
+          : "Password is too weak — it needs 8+ characters, 1 uppercase letter, 1 lowercase letter, and 1 number.";
+      }
+
+
+      // ---------- Profile view (signed in) ----------
+      let profileWired = false;
+
+      function escHtml(s) {
+        return String(s || "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
+      }
+
+      function profileStatus(msg, isError) {
+        const el = document.getElementById("profile-status");
+        if (!el) return;
+        el.textContent = msg;
+        el.style.color = isError ? "#dc2626" : "";
+      }
+
+      function hideProfile() {
+        const sec = document.getElementById("profile-section");
+        if (sec) sec.style.display = "none";
+        const auth = document.getElementById("auth-section");
+        if (auth) auth.style.display = "";
+        const title = document.getElementById("page-title-block");
+        if (title) title.style.display = "";
+      }
+
+      async function showProfile(user, langOverride) {
+        const sec = document.getElementById("profile-section");
+        if (!sec || !user) return;
+        const lang = langOverride || currentLang;
+        const meta = user.user_metadata || {};
+        const alwaysAnon = !!meta.always_anonymous;
+
+        const auth = document.getElementById("auth-section");
+        if (auth) auth.style.display = "none";
+        const title = document.getElementById("page-title-block");
+        if (title) title.style.display = "none";
+        sec.style.display = "";
+
+        const name = alwaysAnon ? (lang === "ar" ? "مجهول" : "Anonymous") : (meta.display_name || (lang === "ar" ? "عضو" : "Member"));
+        const nameEl = document.getElementById("profile-name");
+        if (nameEl) nameEl.textContent = name;
+        const avatarEl = document.getElementById("profile-avatar");
+        if (avatarEl) avatarEl.textContent = (String(meta.display_name || user.email || "H").trim()[0] || "H").toUpperCase();
+        const emailEl = document.getElementById("profile-email");
+        if (emailEl) emailEl.textContent = user.email || "";
+        const nickEl = document.getElementById("profile-nickname");
+        if (nickEl && document.activeElement !== nickEl) nickEl.value = meta.display_name || "";
+        const anonEl = document.getElementById("profile-anon");
+        if (anonEl) anonEl.checked = alwaysAnon;
+
+        wireProfile();
+
+        // Stats + my stories
+        try {
+          const { data: rows } = await supabase
+            .from("stories")
+            .select("id, title, category, is_anonymous, created_at")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false })
+            .limit(30);
+          const list = Array.isArray(rows) ? rows : [];
+          const sc = document.getElementById("profile-stories-count");
+          if (sc) sc.textContent = String(list.length);
+          const wrap = document.getElementById("profile-stories");
+          if (wrap) {
+            if (!list.length) {
+              wrap.innerHTML = '<p class="note">' + (lang === "ar" ? "لسا ما شاركت أي قصة." : "You have not shared a story yet.") + '</p><p style="margin-top:0.5rem;"><a class="btn-primary" href="share.html">' + (lang === "ar" ? "شارك قصتك الأولى" : "Share your first story") + "</a></p>";
+            } else {
+              wrap.innerHTML = list.map((s) => {
+                const d = s.created_at ? new Date(s.created_at).toLocaleDateString() : "";
+                return '<a class="profile-story-row" href="story.html?id=' + encodeURIComponent(String(s.id)) + '"><strong>' + escHtml(s.title || "") + '</strong><br><span class="note">' + escHtml(s.category || "") + (d ? " · " + escHtml(d) : "") + (s.is_anonymous ? (lang === "ar" ? " · مجهول" : " · Anonymous") : "") + "</span></a>";
+              }).join("");
+            }
+          }
+        } catch (e) {}
+
+        try {
+          const res = await supabase.from("story_comments").select("id", { count: "exact", head: true }).eq("user_id", user.id);
+          const cc = document.getElementById("profile-comments-count");
+          if (cc) cc.textContent = (res && typeof res.count === "number") ? String(res.count) : (res && Array.isArray(res.data) ? String(res.data.length) : "–");
+        } catch (e) {}
+      }
+
+      function wireProfile() {
+        if (profileWired) return;
+        profileWired = true;
+
+        const saveBtn = document.getElementById("profile-save-name");
+        if (saveBtn) saveBtn.addEventListener("click", async () => {
+          const v = (document.getElementById("profile-nickname").value || "").trim();
+          if (!v) { profileStatus(currentLang === "ar" ? "اكتب الاسم أولاً." : "Type a nickname first.", true); return; }
+          const { error } = await supabase.auth.updateUser({ data: { display_name: v } });
+          if (error) profileStatus(error.message, true);
+          else { profileStatus(currentLang === "ar" ? "تم حفظ الاسم." : "Nickname saved.", false); refreshUserLabel(); }
+        });
+
+        const anonEl = document.getElementById("profile-anon");
+        if (anonEl) anonEl.addEventListener("change", async () => {
+          const { error } = await supabase.auth.updateUser({ data: { always_anonymous: anonEl.checked } });
+          if (error) { profileStatus(error.message, true); anonEl.checked = !anonEl.checked; }
+          else refreshUserLabel();
+        });
+
+        const pwToggle = document.getElementById("profile-pw-toggle");
+        if (pwToggle) pwToggle.addEventListener("click", () => {
+          const f = document.getElementById("profile-pw-form");
+          if (f) f.style.display = f.style.display === "none" ? "" : "none";
+        });
+
+        const pwSave = document.getElementById("profile-pw-save");
+        if (pwSave) pwSave.addEventListener("click", async () => {
+          const p1 = document.getElementById("profile-newpass").value;
+          const p2 = document.getElementById("profile-confirmpass").value;
+          if (!isPasswordValid(p1)) { profileStatus(passwordRulesMsg(), true); return; }
+          if (p1 !== p2) { profileStatus(currentLang === "ar" ? "كلمتا السر غير متطابقتين." : "Passwords do not match.", true); return; }
+          const { error } = await supabase.auth.updateUser({ password: p1 });
+          if (error) profileStatus(error.message, true);
+          else {
+            profileStatus(currentLang === "ar" ? "تم تحديث كلمة السر." : "Password updated.", false);
+            document.getElementById("profile-newpass").value = "";
+            document.getElementById("profile-confirmpass").value = "";
+          }
+        });
+
+        const outBtn = document.getElementById("profile-signout-btn");
+        if (outBtn) outBtn.addEventListener("click", async () => {
+          const { error } = await supabase.auth.signOut();
+          if (error) profileStatus(error.message, true);
+          else refreshUserLabel();
+        });
       }
 
       async function refreshUserLabel(langOverride) {
@@ -554,6 +750,7 @@
         try {
           const { data, error } = await supabase.auth.getUser();
           if (error || !data || !data.user) {
+            hideProfile();
             updateCurrentUserNotSigned(lang);
             updateNavLabelNotSigned(lang);
             showSignout(false);
@@ -561,6 +758,7 @@
           }
 
           const user = data.user;
+          showProfile(user, lang);
           const meta = user.user_metadata || {};
           const displayName = meta.display_name || "Member";
           const alwaysAnon = !!meta.always_anonymous;
@@ -573,6 +771,7 @@
           if (currentUserLabel) currentUserLabel.textContent = label;
           showSignout(true);
         } catch (e) {
+          hideProfile();
           updateCurrentUserNotSigned(lang);
           updateNavLabelNotSigned(lang);
           showSignout(false);
@@ -650,10 +849,12 @@
           if (error) {
             setStatus((currentLang === "ar" ? "خطأ: " : "Error: ") + error.message, true);
           } else {
+            const signinEmailEl = document.getElementById("signin-email");
+            if (signinEmailEl) signinEmailEl.value = email;
             setStatus(
               currentLang === "ar"
-                ? "تم إنشاء الحساب ✅ تحقق من بريدك واضغط رابط التأكيد."
-                : "Account created ✅ Check your inbox and click the confirmation link.",
+                ? "تم إنشاء الحساب ✅ تحقق من بريدك واضغط رابط التأكيد. (" + email + ")"
+                : "Account created ✅ Check your inbox and click the confirmation link. (" + email + ")",
               false
             );
             signupForm.reset();
