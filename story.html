@@ -186,41 +186,92 @@
       background: rgba(0,0,0,0.35);
     }
 
-    /* Reactions */
-    .reactions {
-      margin-top: 0.6rem;
-      padding-top: 0.9rem;
-      border-top: 1px solid var(--border-soft);
+    /* Owner menu (top-right of the post) */
+    .top-right { display: flex; align-items: center; gap: 0.5rem; position: relative; }
+    .menu-btn {
+      width: 34px; height: 34px; border-radius: 999px;
+      border: 1px solid #c7d2fe; background: #eef2ff; color: var(--text-main);
+      font-size: 1rem; line-height: 1; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
     }
-    .reactions-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      margin-bottom: 0.7rem;
+    .menu-btn:hover { background: #e2e7ff; }
+    .owner-menu {
+      position: absolute; top: 42px; inset-inline-end: 0; z-index: 30;
+      background: #ffffff; border: 1px solid var(--border-soft); border-radius: 12px;
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.16);
+      min-width: 190px; padding: 0.35rem; display: none;
     }
-    .reactions-title h2 { font-size: 1rem; margin: 0; }
-    .reactions-note { color: var(--text-muted); font-size: 0.85rem; }
-
-    .reaction-row { display: flex; flex-wrap: wrap; gap: 0.55rem; }
-
-    .reaction-btn {
-      border: 1px solid var(--border-soft);
-      background: #ffffff;
-      border-radius: 999px;
-      padding: 0.45rem 0.75rem;
-      font-size: 0.9rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: background 0.15s, border-color 0.15s, transform 0.08s;
+    .owner-menu.open { display: block; }
+    .owner-menu button {
+      display: block; width: 100%; text-align: start;
+      background: none; border: none; border-radius: 8px;
+      padding: 0.55rem 0.7rem; font-size: 0.92rem; cursor: pointer; color: var(--text-main);
     }
-    .reaction-btn:hover { background: #f8fafc; border-color: #dbe2ea; }
-    .reaction-btn:active { transform: translateY(1px); }
-    .reaction-btn.active { background: var(--primary-soft); border-color: rgba(75, 111, 255, 0.55); }
+    .owner-menu button:hover { background: #f8fafc; }
+    .owner-menu button.danger { color: #dc2626; }
 
-    .reaction-count { color: #334155; font-weight: 600; font-size: 0.86rem; }
+    /* Story edit form */
+    .edit-form { display: none; margin-top: 1rem; border-top: 1px solid var(--border-soft); padding-top: 1rem; }
+    .edit-form.open { display: block; }
+    .edit-form input, .edit-form textarea {
+      width: 100%; border: 1px solid var(--border-soft); border-radius: 12px;
+      padding: 0.6rem 0.75rem; font: inherit; font-size: 0.95rem; margin-bottom: 0.6rem;
+      background: #fff; color: var(--text-main);
+    }
+    .edit-form textarea { min-height: 120px; resize: vertical; }
+    .btn-primary {
+      background: var(--primary); color: #fff; border: none; border-radius: 999px;
+      padding: 0.6rem 1.1rem; font-size: 0.92rem; font-weight: 600; cursor: pointer; width: 100%;
+    }
+    .btn-secondary {
+      background: #eef2ff; color: #4f46e5; border: 1px solid #c7d2fe; border-radius: 999px;
+      padding: 0.55rem 1.1rem; font-size: 0.92rem; font-weight: 600; cursor: pointer; width: 100%; margin-top: 0.5rem;
+    }
+    .story-status { font-size: 0.88rem; font-weight: 600; margin-top: 0.6rem; display: none; }
+    .story-status.ok { color: #059669; }
+    .story-status.err { color: #dc2626; }
+
+    /* Comments */
+    .comments { margin-top: 0.6rem; padding-top: 0.9rem; border-top: 1px solid var(--border-soft); }
+    .comments-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .comments-head h2 { font-size: 1.05rem; margin: 0; }
+    .link-btn { background: none; border: none; color: var(--primary); font-weight: 600; font-size: 0.85rem; cursor: pointer; padding: 0.2rem 0.3rem; }
+    .comments-hint { color: var(--text-muted); font-size: 0.82rem; margin-top: 0.15rem; }
+    .comment-status { font-size: 0.88rem; font-weight: 600; margin-top: 0.45rem; display: none; }
+    .comment-status.ok { color: #059669; }
+    .comment-status.err { color: #dc2626; }
+    .composer { display: none; gap: 0.5rem; align-items: flex-end; margin-top: 0.7rem; }
+    .composer.open { display: flex; }
+    .composer textarea {
+      flex: 1; border: 1px solid var(--border-soft); border-radius: 999px;
+      padding: 0.55rem 0.9rem; font: inherit; font-size: 0.95rem; resize: none;
+      max-height: 110px; color: var(--text-main); background: #fff;
+    }
+    .post-btn {
+      background: var(--primary); color: #fff; border: none; border-radius: 999px;
+      padding: 0.55rem 1.05rem; font-size: 0.9rem; font-weight: 700; cursor: pointer; white-space: nowrap;
+    }
+    .post-btn:disabled { opacity: 0.5; cursor: default; }
+    .comment-row { display: flex; gap: 0.65rem; padding-top: 0.9rem; margin-top: 0.9rem; border-top: 1px solid var(--border-soft); }
+    .comment-avatar {
+      width: 36px; height: 36px; border-radius: 999px; flex: none;
+      background: #eef2ff; border: 1px solid #c7d2fe; color: #4f46e5;
+      display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.95rem;
+    }
+    .comment-main { flex: 1; min-width: 0; }
+    .comment-meta { display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
+    .comment-name { font-weight: 700; font-size: 0.9rem; }
+    .comment-time { color: var(--text-muted); font-size: 0.78rem; }
+    .comment-body { font-size: 0.94rem; line-height: 1.55; margin-top: 0.1rem; white-space: pre-wrap; word-break: break-word; }
+    .comment-actions { display: flex; gap: 1rem; margin-top: 0.35rem; }
+    .comment-actions button { background: none; border: none; font-size: 0.82rem; font-weight: 600; cursor: pointer; padding: 0; color: var(--primary); }
+    .comment-actions button.danger { color: #dc2626; }
+    .comment-edit textarea {
+      width: 100%; border: 1px solid var(--border-soft); border-radius: 12px;
+      padding: 0.55rem 0.7rem; font: inherit; font-size: 0.92rem; min-height: 60px; resize: vertical;
+    }
+    .comments-empty { color: var(--text-muted); font-size: 0.9rem; text-align: center; margin-top: 1rem; }
+    .comments-more { display: none; margin: 0.9rem auto 0; }
 
     footer {
       padding: 1.5rem 0 1.8rem;
@@ -273,7 +324,14 @@
       <div class="card" aria-live="polite">
         <div class="top-row">
           <span id="story-category" class="tag">—</span>
-          <button id="back-btn" class="back-btn" type="button" data-en="← Back to Stories" data-ar="رجوع إلى القصص">← Back to Stories</button>
+          <div class="top-right">
+            <button id="back-btn" class="back-btn" type="button" data-en="← Back to Stories" data-ar="رجوع إلى القصص">← Back to Stories</button>
+            <button id="owner-menu-btn" class="menu-btn" type="button" style="display:none" aria-label="Story options">•••</button>
+            <div id="owner-menu" class="owner-menu">
+              <button id="owner-edit" type="button" data-en="Edit my story" data-ar="تعديل قصتي">Edit my story</button>
+              <button id="owner-delete" type="button" class="danger" data-en="Delete my story" data-ar="حذف قصتي">Delete my story</button>
+            </div>
+          </div>
         </div>
 
         <h1 id="story-title">…</h1>
@@ -288,34 +346,33 @@
 
         <div id="story-content" class="content"></div>
 
-        <!-- Reactions (local device temporary) -->
-        <div class="reactions">
-          <div class="reactions-title">
-            <h2 data-en="Reactions" data-ar="التفاعلات">Reactions</h2>
-            <div id="reactions-note" class="reactions-note"></div>
+        <!-- Owner story edit form (opened from the top-right menu) -->
+        <div id="story-edit-form" class="edit-form">
+          <input id="edit-title" type="text" maxlength="160" />
+          <textarea id="edit-content" maxlength="10000"></textarea>
+          <button id="edit-save" class="btn-primary" type="button" data-en="Save story" data-ar="حفظ القصة">Save story</button>
+          <button id="edit-cancel" class="btn-secondary" type="button" data-en="Cancel" data-ar="إلغاء">Cancel</button>
+          <div id="story-status" class="story-status"></div>
+        </div>
+
+        <!-- Comments -->
+        <div class="comments" id="comments-section">
+          <div class="comments-head">
+            <h2 id="comments-title">Supportive comments</h2>
+            <button id="comments-refresh" class="link-btn" type="button" data-en="Refresh" data-ar="تحديث">Refresh</button>
           </div>
-
-          <div class="reaction-row" id="reaction-row">
-            <button class="reaction-btn" type="button" data-reaction="like">
-              👍 <span data-en="Like" data-ar="إعجاب">Like</span>
-              <span class="reaction-count" id="count-like">0</span>
-            </button>
-
-            <button class="reaction-btn" type="button" data-reaction="heart">
-              ❤️ <span data-en="Heart" data-ar="حب">Heart</span>
-              <span class="reaction-count" id="count-heart">0</span>
-            </button>
-
-            <button class="reaction-btn" type="button" data-reaction="same">
-              🤝 <span data-en="Same problem" data-ar="عندي نفس المشكلة">Same problem</span>
-              <span class="reaction-count" id="count-same">0</span>
-            </button>
-
-            <button class="reaction-btn" type="button" data-reaction="support">
-              🫂 <span data-en="Support" data-ar="دعم">Support</span>
-              <span class="reaction-count" id="count-support">0</span>
-            </button>
+          <div class="comments-hint" data-en="Be kind — comments are public." data-ar="كن لطيفاً — التعليقات ظاهرة للجميع.">Be kind — comments are public.</div>
+          <div id="comment-status" class="comment-status"></div>
+          <div class="composer" id="comment-composer">
+            <textarea id="comment-input" rows="1" maxlength="4000"></textarea>
+            <button id="comment-post" class="post-btn" type="button" disabled data-en="Post" data-ar="نشر">Post</button>
           </div>
+          <div class="comments-hint" id="comment-signin-note" style="display:none">
+            <span data-en="Sign in to join the conversation." data-ar="سجّل الدخول للمشاركة في الحوار.">Sign in to join the conversation.</span>
+            <a href="signin.html" style="color:var(--primary);font-weight:600" data-en="Sign in" data-ar="تسجيل الدخول">Sign in</a>
+          </div>
+          <div id="comments-list"></div>
+          <button id="comments-more" class="link-btn comments-more" type="button" data-en="Load more" data-ar="تحميل المزيد">Load more</button>
         </div>
       </div>
 
@@ -345,23 +402,39 @@
       const backBtn = document.getElementById("back-btn");
 
       const mediaHost = document.getElementById("story-media");
-      const reactionsNote = document.getElementById("reactions-note");
-      const reactionRow = document.getElementById("reaction-row");
 
-      const countEls = {
-        like: document.getElementById("count-like"),
-        heart: document.getElementById("count-heart"),
-        same: document.getElementById("count-same"),
-        support: document.getElementById("count-support"),
-      };
+      const ownerMenuBtn = document.getElementById("owner-menu-btn");
+      const ownerMenu = document.getElementById("owner-menu");
+      const ownerEditBtn = document.getElementById("owner-edit");
+      const ownerDeleteBtn = document.getElementById("owner-delete");
+      const editForm = document.getElementById("story-edit-form");
+      const editTitleInput = document.getElementById("edit-title");
+      const editContentInput = document.getElementById("edit-content");
+      const editSaveBtn = document.getElementById("edit-save");
+      const editCancelBtn = document.getElementById("edit-cancel");
+      const storyStatus = document.getElementById("story-status");
 
-      const REACTION_TYPES = ["like", "heart", "same", "support"];
+      const commentsTitle = document.getElementById("comments-title");
+      const commentsRefreshBtn = document.getElementById("comments-refresh");
+      const commentStatus = document.getElementById("comment-status");
+      const composer = document.getElementById("comment-composer");
+      const commentInput = document.getElementById("comment-input");
+      const commentPostBtn = document.getElementById("comment-post");
+      const signinNote = document.getElementById("comment-signin-note");
+      const commentsList = document.getElementById("comments-list");
+      const commentsMoreBtn = document.getElementById("comments-more");
 
       let currentLang = "en";
       let storyId = null;
+      let storyData = null;
+      let currentUser = null;
 
-      let myActive = new Set();
-      let counts = { like: 0, heart: 0, same: 0, support: 0 };
+      let comments = [];
+      let commentsPage = 0;
+      let commentsHasMore = false;
+      let editingCommentId = null;
+
+      function tx(en, ar) { return currentLang === "ar" ? ar : en; }
 
       const SUPABASE_URL = window.HARMONY_SITE_CONFIG.url;
       const SUPABASE_ANON_KEY = window.HARMONY_SITE_CONFIG.publicKey;
@@ -445,83 +518,274 @@
         } catch (e) {}
       }
 
-      function localKey() {
-        return "harmony_reactions_story_" + String(storyId || "");
+      function setStoryStatus(msg, isErr) {
+        if (!storyStatus) return;
+        storyStatus.style.display = msg ? "block" : "none";
+        storyStatus.className = "story-status " + (isErr ? "err" : "ok");
+        storyStatus.textContent = msg || "";
       }
 
-      function setReactionsNote() {
-        if (!reactionsNote) return;
-        reactionsNote.textContent = currentLang === "ar"
-          ? "التفاعلات محفوظة على جهازك (مؤقتاً)."
-          : "Reactions are saved on your device (temporary).";
+      function setCommentStatus(msg, isErr) {
+        if (!commentStatus) return;
+        commentStatus.style.display = msg ? "block" : "none";
+        commentStatus.className = "comment-status " + (isErr ? "err" : "ok");
+        commentStatus.textContent = msg || "";
       }
 
-      function loadLocalReactions() {
-        myActive = new Set();
-        counts = { like: 0, heart: 0, same: 0, support: 0 };
+      function isOwner() {
+        return !!(currentUser && storyData && storyData.user_id && storyData.user_id === currentUser.id);
+      }
 
-        try {
-          const raw = localStorage.getItem(localKey());
-          if (!raw) return;
-          const obj = JSON.parse(raw);
-          if (obj && Array.isArray(obj.active)) {
-            obj.active.forEach((t) => { if (REACTION_TYPES.includes(t)) myActive.add(t); });
+      function updateOwnerUI() {
+        if (ownerMenuBtn) ownerMenuBtn.style.display = isOwner() ? "inline-flex" : "none";
+        if (!isOwner() && ownerMenu) ownerMenu.classList.remove("open");
+        if (composer) composer.classList.toggle("open", !!currentUser);
+        if (signinNote) signinNote.style.display = currentUser ? "none" : "block";
+      }
+
+      function closeOwnerMenu() { if (ownerMenu) ownerMenu.classList.remove("open"); }
+
+      async function deleteStory() {
+        if (!isOwner()) return;
+        if (!window.confirm(tx("Delete your story and its comments?", "هل تريد حذف قصتك وتعليقاتها؟"))) return;
+        const { data, error } = await supabase
+          .from("stories").delete()
+          .eq("id", storyData.id).eq("user_id", currentUser.id)
+          .select("id");
+        if (error || !data || !data.length) {
+          setStoryStatus(tx("Could not delete this story.", "تعذر حذف هذه القصة."), true);
+          return;
+        }
+        window.location.href = "stories.html";
+      }
+
+      async function saveStoryEdit() {
+        if (!isOwner()) return;
+        const title = (editTitleInput.value || "").trim();
+        const content = (editContentInput.value || "").trim();
+        if (!title || !content) {
+          setStoryStatus(tx("Title and story text are required.", "العنوان ونص القصة مطلوبان."), true);
+          return;
+        }
+        const { data, error } = await supabase
+          .from("stories").update({ title, content })
+          .eq("id", storyData.id).eq("user_id", currentUser.id)
+          .select().single();
+        if (error || !data) {
+          setStoryStatus(tx("Could not save this story.", "تعذر حفظ هذه القصة."), true);
+          return;
+        }
+        storyData = data;
+        elTitle.textContent = data.title || "";
+        elContent.textContent = data.content || "";
+        if (editForm) editForm.classList.remove("open");
+        setStoryStatus(tx("Story saved.", "تم حفظ القصة."), false);
+      }
+
+      function commentName(c) {
+        return c.is_anonymous ? tx("Anonymous", "مجهول") : (c.author_name || tx("Member", "عضو"));
+      }
+
+      function formatWhen(dateStr) {
+        const d = new Date(dateStr);
+        if (isNaN(d.getTime())) return "";
+        return d.toLocaleDateString() + " · " + d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+      }
+
+      function renderComments() {
+        if (commentsTitle) {
+          commentsTitle.textContent = tx("Supportive comments", "تعليقات داعمة") + (comments.length ? " (" + comments.length + ")" : "");
+        }
+        if (commentsMoreBtn) commentsMoreBtn.style.display = commentsHasMore ? "block" : "none";
+        if (!commentsList) return;
+
+        if (!comments.length) {
+          commentsList.innerHTML = '<div class="comments-empty">' +
+            escapeHtml(tx("No comments yet. Be the first to offer support.", "لا توجد تعليقات بعد. كن أول من يقدم الدعم.")) + "</div>";
+          return;
+        }
+
+        commentsList.innerHTML = comments.map((c) => {
+          const name = commentName(c);
+          const initial = (name.trim().charAt(0) || "?").toUpperCase();
+          const own = !!(currentUser && c.user_id === currentUser.id);
+          let inner = "";
+          if (own && String(editingCommentId) === String(c.id)) {
+            inner =
+              '<div class="comment-edit">' +
+                '<textarea id="comment-edit-input" maxlength="4000">' + escapeHtml(c.body || "") + "</textarea>" +
+                '<div class="comment-actions">' +
+                  '<button type="button" data-csave="' + c.id + '">' + escapeHtml(tx("Save", "حفظ")) + "</button>" +
+                  '<button type="button" data-ccancel="1" style="color:var(--text-muted)">' + escapeHtml(tx("Cancel", "إلغاء")) + "</button>" +
+                "</div>" +
+              "</div>";
+          } else {
+            inner =
+              '<div class="comment-body">' + escapeHtml(c.body || "") + "</div>" +
+              (own
+                ? '<div class="comment-actions">' +
+                    '<button type="button" data-cedit="' + c.id + '">' + escapeHtml(tx("Edit", "تعديل")) + "</button>" +
+                    '<button type="button" class="danger" data-cdel="' + c.id + '">' + escapeHtml(tx("Delete", "حذف")) + "</button>" +
+                  "</div>"
+                : "");
           }
-          if (obj && obj.counts && typeof obj.counts === "object") {
-            REACTION_TYPES.forEach((t) => {
-              const v = obj.counts[t];
-              counts[t] = Number.isFinite(Number(v)) ? Number(v) : 0;
-            });
+          return (
+            '<div class="comment-row">' +
+              '<div class="comment-avatar">' + escapeHtml(initial) + "</div>" +
+              '<div class="comment-main">' +
+                '<div class="comment-meta"><span class="comment-name">' + escapeHtml(name) + "</span>" +
+                '<span class="comment-time">' + escapeHtml(formatWhen(c.created_at)) + "</span></div>" +
+                inner +
+              "</div>" +
+            "</div>"
+          );
+        }).join("");
+      }
+
+      async function loadComments(reset) {
+        if (!storyId) return;
+        const offset = reset ? 0 : commentsPage * 30;
+        const { data, error } = await supabase
+          .from("story_comments").select("*")
+          .eq("story_id", storyId)
+          .order("created_at", { ascending: false }).order("id", { ascending: false })
+          .range(offset, offset + 29);
+        if (error) {
+          setCommentStatus(tx("Comments are unavailable right now.", "التعليقات غير متاحة حالياً."), true);
+          return;
+        }
+        const rows = Array.isArray(data) ? data : [];
+        if (reset) comments = rows;
+        else {
+          const seen = new Set(comments.map((r) => String(r.id)));
+          rows.forEach((r) => { if (!seen.has(String(r.id))) comments.push(r); });
+        }
+        commentsPage = reset ? 1 : commentsPage + 1;
+        commentsHasMore = rows.length === 30;
+        renderComments();
+      }
+
+      async function postComment() {
+        if (!currentUser) return;
+        const body = (commentInput.value || "").trim();
+        if (!body) return;
+        const meta = currentUser.user_metadata || {};
+        const alwaysAnon = !!meta.always_anonymous;
+        commentPostBtn.disabled = true;
+        const { error } = await supabase.from("story_comments").insert({
+          story_id: storyId,
+          body,
+          user_id: currentUser.id,
+          is_anonymous: alwaysAnon,
+          author_name: alwaysAnon ? "Anonymous" : (meta.display_name || "Member"),
+        }).select().single();
+        commentPostBtn.disabled = !((commentInput.value || "").trim());
+        if (error) {
+          setCommentStatus(String(error.message || error), true);
+          return;
+        }
+        commentInput.value = "";
+        commentPostBtn.disabled = true;
+        setCommentStatus(tx("Comment posted.", "تم نشر التعليق."), false);
+        editingCommentId = null;
+        await loadComments(true);
+      }
+
+      function wireCommentClicks() {
+        if (!commentsList) return;
+        commentsList.addEventListener("click", async (e) => {
+          const editBtn = e.target.closest("[data-cedit]");
+          const delBtn = e.target.closest("[data-cdel]");
+          const saveBtn = e.target.closest("[data-csave]");
+          const cancelBtn = e.target.closest("[data-ccancel]");
+
+          if (editBtn) {
+            editingCommentId = editBtn.getAttribute("data-cedit");
+            renderComments();
+            const ta = document.getElementById("comment-edit-input");
+            if (ta) ta.focus();
+            return;
           }
-        } catch (e) {}
-      }
-
-      function saveLocalReactions() {
-        try {
-          const payload = { active: Array.from(myActive), counts };
-          localStorage.setItem(localKey(), JSON.stringify(payload));
-        } catch (e) {}
-      }
-
-      function updateReactionUI() {
-        REACTION_TYPES.forEach((t) => {
-          if (countEls[t]) countEls[t].textContent = String(counts[t] || 0);
+          if (cancelBtn) { editingCommentId = null; renderComments(); return; }
+          if (saveBtn) {
+            const id = saveBtn.getAttribute("data-csave");
+            const ta = document.getElementById("comment-edit-input");
+            const body = ta ? ta.value.trim() : "";
+            if (!body) return;
+            const { data, error } = await supabase
+              .from("story_comments").update({ body })
+              .eq("id", id).eq("user_id", currentUser.id)
+              .select().single();
+            if (!error && data) {
+              comments = comments.map((x) => (String(x.id) === String(id) ? data : x));
+              editingCommentId = null;
+              renderComments();
+              setCommentStatus(tx("Comment saved.", "تم حفظ التعليق."), false);
+            }
+            return;
+          }
+          if (delBtn) {
+            const id = delBtn.getAttribute("data-cdel");
+            if (!window.confirm(tx("Delete your comment?", "هل تريد حذف تعليقك؟"))) return;
+            const { data, error } = await supabase
+              .from("story_comments").delete()
+              .eq("id", id).eq("user_id", currentUser.id)
+              .select("id");
+            if (!error && data && data.length) {
+              comments = comments.filter((x) => String(x.id) !== String(id));
+              renderComments();
+              setCommentStatus(tx("Comment deleted.", "تم حذف التعليق."), false);
+            }
+          }
         });
+      }
 
-        if (reactionRow) {
-          reactionRow.querySelectorAll(".reaction-btn").forEach((btn) => {
-            const type = btn.getAttribute("data-reaction");
-            if (myActive.has(type)) btn.classList.add("active");
-            else btn.classList.remove("active");
+      function wireOwnerMenu() {
+        if (ownerMenuBtn) {
+          ownerMenuBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (ownerMenu) ownerMenu.classList.toggle("open");
           });
         }
-
-        setReactionsNote();
-      }
-
-      async function toggleReaction(type) {
-        if (!REACTION_TYPES.includes(type)) return;
-
-        if (myActive.has(type)) {
-          myActive.delete(type);
-          counts[type] = Math.max(0, (counts[type] || 0) - 1);
-        } else {
-          myActive.add(type);
-          counts[type] = (counts[type] || 0) + 1;
-        }
-
-        saveLocalReactions();
-        updateReactionUI();
-      }
-
-      function wireReactionClicks() {
-        if (!reactionRow) return;
-        reactionRow.addEventListener("click", async (e) => {
-          const btn = e.target.closest(".reaction-btn");
-          if (!btn) return;
-          const type = btn.getAttribute("data-reaction");
-          await toggleReaction(type);
+        document.addEventListener("click", (e) => {
+          if (ownerMenu && ownerMenu.classList.contains("open") &&
+              !ownerMenu.contains(e.target) && e.target !== ownerMenuBtn) {
+            closeOwnerMenu();
+          }
         });
+        if (ownerEditBtn) {
+          ownerEditBtn.addEventListener("click", () => {
+            closeOwnerMenu();
+            if (!storyData) return;
+            editTitleInput.value = storyData.title || "";
+            editContentInput.value = storyData.content || "";
+            setStoryStatus("", false);
+            if (editForm) editForm.classList.add("open");
+          });
+        }
+        if (ownerDeleteBtn) {
+          ownerDeleteBtn.addEventListener("click", () => { closeOwnerMenu(); deleteStory(); });
+        }
+        if (editSaveBtn) editSaveBtn.addEventListener("click", saveStoryEdit);
+        if (editCancelBtn) {
+          editCancelBtn.addEventListener("click", () => {
+            if (editForm) editForm.classList.remove("open");
+          });
+        }
+        if (commentsRefreshBtn) commentsRefreshBtn.addEventListener("click", () => loadComments(true));
+        if (commentsMoreBtn) commentsMoreBtn.addEventListener("click", () => loadComments(false));
+        if (commentPostBtn) commentPostBtn.addEventListener("click", postComment);
+        if (commentInput) {
+          commentInput.addEventListener("input", () => {
+            commentPostBtn.disabled = !(commentInput.value || "").trim();
+            commentInput.style.height = "auto";
+            commentInput.style.height = Math.min(commentInput.scrollHeight, 110) + "px";
+          });
+        }
+      }
+
+      function setCommentPlaceholder() {
+        if (commentInput) commentInput.setAttribute("placeholder", tx("Your comment", "تعليقك"));
       }
 
       function renderMedia(data) {
@@ -601,11 +865,16 @@
             : (currentLang === "ar" ? "اسم ظاهر" : "Name visible");
           elContent.textContent = data.content || "";
 
+          storyData = data;
+
           renderMedia(data);
 
-          // reactions local
-          loadLocalReactions();
-          updateReactionUI();
+          try {
+            const { data: authData } = await supabase.auth.getUser();
+            currentUser = (authData && authData.user) || null;
+          } catch (e) { currentUser = null; }
+          updateOwnerUI();
+          await loadComments(true);
 
           await refreshUserLabel(currentLang);
         } catch (e) {
@@ -617,6 +886,7 @@
 
       const initialLang = getInitialLang();
       applyLanguage(initialLang);
+      setCommentPlaceholder();
 
       if (langSelect) {
         langSelect.value = initialLang;
@@ -624,6 +894,7 @@
           const lang = langSelect.value;
           try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
           applyLanguage(lang);
+          setCommentPlaceholder();
           loadStory();
         });
       }
@@ -636,7 +907,8 @@
         });
       }
 
-      wireReactionClicks();
+      wireOwnerMenu();
+      wireCommentClicks();
       loadStory();
     })();
   </script>
