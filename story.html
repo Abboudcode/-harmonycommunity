@@ -415,6 +415,7 @@
               <button id="reaction-caret" class="reaction-caret" type="button" style="display:none" aria-label="Choose a reaction" aria-haspopup="true">▾</button>
               <div id="reaction-picker" class="reaction-picker" style="display:none" role="menu"></div>
             </div>
+            <button id="comment-btn" class="social-btn" type="button">Comment</button>
             <button id="share-btn" class="social-btn" type="button" data-en="Share story" data-ar="مشاركة القصة">Share story</button>
             <button id="send-friend-btn" class="social-btn" type="button" style="display:none" data-en="Send to a friend" data-ar="إرسال إلى صديق">Send to a friend</button>
           </div>
@@ -433,7 +434,10 @@
         <div class="comments" id="comments-section">
           <div class="comments-head">
             <h2 id="comments-title">Supportive comments</h2>
-            <button id="comments-refresh" class="link-btn" type="button" data-en="Refresh" data-ar="تحديث">Refresh</button>
+            <span style="display:flex;gap:1rem;align-items:center">
+              <button id="comments-refresh" class="link-btn" type="button" data-en="Refresh" data-ar="تحديث">Refresh</button>
+              <button id="comments-toggle" class="link-btn" type="button" style="display:none">Show less</button>
+            </span>
           </div>
           <div class="comments-hint" data-en="Be kind — comments are public." data-ar="كن لطيفاً — التعليقات ظاهرة للجميع.">Be kind — comments are public.</div>
           <div id="comment-status" class="comment-status"></div>
@@ -446,6 +450,7 @@
             <a href="signin.html" style="color:var(--primary);font-weight:600" data-en="Sign in" data-ar="تسجيل الدخول">Sign in</a>
           </div>
           <div id="comments-list"></div>
+          <button id="comments-view-all" class="link-btn comments-more" type="button" style="display:none">View all comments</button>
           <button id="comments-more" class="link-btn comments-more" type="button" data-en="Load more" data-ar="تحميل المزيد">Load more</button>
         </div>
       </div>
@@ -497,6 +502,10 @@
       const signinNote = document.getElementById("comment-signin-note");
       const commentsList = document.getElementById("comments-list");
       const commentsMoreBtn = document.getElementById("comments-more");
+      const commentBtn = document.getElementById("comment-btn");
+      const commentsToggleBtn = document.getElementById("comments-toggle");
+      const commentsViewAllBtn = document.getElementById("comments-view-all");
+      const commentsSection = document.getElementById("comments-section");
 
       const socialRow = document.getElementById("social-row");
       const reactionWrap = document.getElementById("reaction-wrap");
@@ -526,6 +535,7 @@
       let currentUser = null;
 
       let comments = [];
+      let commentsExpanded = false;
       let commentsPage = 0;
       let commentsHasMore = false;
       let editingCommentId = null;
@@ -657,8 +667,8 @@
       function updateOwnerUI() {
         if (ownerMenuBtn) ownerMenuBtn.style.display = isOwner() ? "inline-flex" : "none";
         if (!isOwner() && ownerMenu) ownerMenu.classList.remove("open");
-        if (composer) composer.classList.toggle("open", !!currentUser);
-        if (signinNote) signinNote.style.display = currentUser ? "none" : "block";
+        if (composer) composer.classList.toggle("open", !!currentUser && commentsExpanded);
+        if (signinNote) signinNote.style.display = (!currentUser && commentsExpanded) ? "block" : "none";
       }
 
       function closeOwnerMenu() { if (ownerMenu) ownerMenu.classList.remove("open"); }
@@ -1201,7 +1211,19 @@
         if (commentsTitle) {
           commentsTitle.textContent = tx("Supportive comments", "تعليقات داعمة") + (comments.length ? " (" + comments.length + ")" : "");
         }
-        if (commentsMoreBtn) commentsMoreBtn.style.display = commentsHasMore ? "block" : "none";
+        if (commentBtn) {
+          commentBtn.textContent = tx("Comment", "تعليق") + (comments.length ? " " + comments.length : "");
+        }
+        if (commentsToggleBtn) {
+          commentsToggleBtn.style.display = commentsExpanded ? "inline" : "none";
+          commentsToggleBtn.textContent = tx("Show less", "عرض أقل");
+        }
+        if (commentsViewAllBtn) {
+          commentsViewAllBtn.style.display = (!commentsExpanded && (comments.length > 1 || commentsHasMore)) ? "block" : "none";
+          commentsViewAllBtn.textContent = tx("View all comments", "عرض كل التعليقات") + (comments.length ? " (" + comments.length + ")" : "");
+        }
+        if (commentsMoreBtn) commentsMoreBtn.style.display = (commentsExpanded && commentsHasMore) ? "block" : "none";
+        updateOwnerUI();
         if (!commentsList) return;
 
         if (!comments.length) {
@@ -1210,7 +1232,8 @@
           return;
         }
 
-        commentsList.innerHTML = comments.map((c) => {
+        const visibleComments = commentsExpanded ? comments : comments.slice(0, 1);
+        commentsList.innerHTML = visibleComments.map((c) => {
           const name = commentName(c);
           const initial = (name.trim().charAt(0) || "?").toUpperCase();
           const own = !!(currentUser && c.user_id === currentUser.id);
@@ -1379,6 +1402,13 @@
         }
         if (commentsRefreshBtn) commentsRefreshBtn.addEventListener("click", () => loadComments(true));
         if (commentsMoreBtn) commentsMoreBtn.addEventListener("click", () => loadComments(false));
+        if (commentBtn) commentBtn.addEventListener("click", () => {
+          commentsExpanded = !commentsExpanded;
+          renderComments();
+          if (commentsExpanded && commentsSection && commentsSection.scrollIntoView) commentsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+        if (commentsToggleBtn) commentsToggleBtn.addEventListener("click", () => { commentsExpanded = false; renderComments(); });
+        if (commentsViewAllBtn) commentsViewAllBtn.addEventListener("click", () => { commentsExpanded = true; renderComments(); });
         if (commentPostBtn) commentPostBtn.addEventListener("click", postComment);
         if (commentInput) {
           commentInput.addEventListener("input", () => {
