@@ -244,6 +244,31 @@
     .profile-story-row:first-child { border-top: none; }
     .profile-row { display: flex; gap: 8px; align-items: center; }
     .profile-row input[type="text"] { flex: 1; }
+
+    /* Friends + Shared with me (added 2026-10-27) */
+    .friends-subtitle { font-size: 0.98rem; margin-top: 1.1rem; margin-bottom: 0.3rem; }
+    #friend-search-input {
+      flex: 1; min-width: 0; border: 1px solid #d1d5db; border-radius: 10px;
+      padding: 0.55rem 0.7rem; font-family: inherit; font-size: 0.9rem;
+    }
+    #friend-search-input:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.25); }
+    .friend-row { display: flex; gap: 10px; align-items: center; border-top: 1px solid #e5e7eb; padding: 9px 0; }
+    .friend-avatar {
+      width: 36px; height: 36px; border-radius: 50%; flex: none;
+      background: #eef2ff; border: 1px solid #c7d2fe; color: #4f46e5;
+      display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.95rem;
+    }
+    .friend-row-name { flex: 1; min-width: 0; font-weight: 600; font-size: 0.92rem; }
+    .friend-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .friend-action-btn { padding: 0.35rem 0.8rem; font-size: 0.82rem; }
+    .friend-state { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
+    .shared-row { display: block; border-top: 1px solid #e5e7eb; padding: 10px 0; }
+    .shared-row:first-child { border-top: none; }
+    .shared-new {
+      background: #4f46e5; color: #fff; border-radius: 999px;
+      font-size: 0.7rem; font-weight: 700; padding: 0.1rem 0.5rem; vertical-align: middle;
+    }
+    .shared-msg { font-size: 0.88rem; }
   </style>
 <link rel="stylesheet" href="site-fixes.css">
 </head>
@@ -464,6 +489,30 @@
             <div id="profile-stories" style="margin-top:0.5rem;"></div>
           </div>
 
+          <div class="card profile-card" id="friends-card" style="display:none;">
+            <h3 data-en="Friends" data-ar="الأصدقاء">Friends</h3>
+            <p class="note" id="friends-unavailable" style="display:none;margin-top:0.5rem;"></p>
+            <div id="friends-main" style="display:none;">
+              <div class="profile-row" style="margin-top:0.8rem;">
+                <input id="friend-search-input" type="text" maxlength="60" />
+                <button id="friend-search-btn" class="btn-primary" type="button" data-en="Search" data-ar="بحث">Search</button>
+              </div>
+              <p class="note" id="friend-search-status" style="margin-top:0.5rem;"></p>
+              <div id="friend-search-results"></div>
+              <h4 class="friends-subtitle" data-en="Friend requests" data-ar="طلبات الصداقة">Friend requests</h4>
+              <div id="friend-requests-list"></div>
+              <h4 class="friends-subtitle" data-en="My friends" data-ar="أصدقائي">My friends</h4>
+              <div id="my-friends-list"></div>
+              <p class="note" id="friends-status" style="margin-top:0.6rem;"></p>
+            </div>
+          </div>
+
+          <div class="card profile-card" id="shared-card" style="display:none;">
+            <h3 data-en="Shared with me" data-ar="تمت مشاركتها معي">Shared with me</h3>
+            <p class="note" id="shared-unavailable" style="display:none;margin-top:0.5rem;"></p>
+            <div id="shared-list" style="margin-top:0.5rem;"></div>
+          </div>
+
           <div class="card profile-card">
             <h3 data-en="Settings" data-ar="الإعدادات">Settings</h3>
             <div class="field" style="margin-top:0.8rem;">
@@ -628,6 +677,358 @@
         el.style.color = isError ? "#dc2626" : "";
       }
 
+      // ---------- Friends + Shared with me (added 2026-10-27) ----------
+      // Uses the new tables from add-social-features.sql. Every call is
+      // guarded: if a table does not exist yet, the section shows a quiet
+      // "not available yet" note and the rest of the Profile keeps working.
+
+      function ftx(en, ar) { return currentLang === "ar" ? ar : en; }
+
+      let friendsUser = null;
+      let friendsRows = [];
+      let friendsProfiles = new Map();
+      let friendsAvailable = false;
+      let lastSearchTerm = "";
+      let lastSearchResults = [];
+
+      async function upsertOwnProfile(user, nameOverride) {
+        if (!user) return false;
+        try {
+          const meta = user.user_metadata || {};
+          const name = (String(nameOverride || meta.display_name || "Member").trim().slice(0, 60)) || "Member";
+          const res = await supabase
+            .from("profiles")
+            .upsert({ id: user.id, display_name: name }, { onConflict: "id" });
+          if (res && res.error) throw res.error;
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function setFriendsStatus(msg, isError) {
+        const el = document.getElementById("friends-status");
+        if (!el) return;
+        el.textContent = msg || "";
+        el.style.color = isError ? "#dc2626" : "";
+      }
+
+      function friendOtherId(row) {
+        if (!friendsUser) return "";
+        return String(row.requester_id) === String(friendsUser.id)
+          ? String(row.addressee_id)
+          : String(row.requester_id);
+      }
+
+      function friendProfileName(id) {
+        return friendsProfiles.get(String(id)) || ftx("Member", "عضو");
+      }
+
+      function relForOther(otherId) {
+        const rows = friendsRows.filter((r) => friendOtherId(r) === String(otherId));
+        return (
+          rows.find((r) => r.status === "accepted") ||
+          rows.find((r) => r.status === "pending") ||
+          rows[0] || null
+        );
+      }
+
+      function friendActionBtn(action, userId, reqId, label) {
+        return (
+          '<button type="button" class="btn-secondary friend-action-btn" data-faction="' + action +
+          '" data-fuser="' + escHtml(String(userId)) +
+          '" data-freq="' + escHtml(String(reqId || "")) + '">' +
+          escHtml(label) + "</button>"
+        );
+      }
+
+      function personRowHtml(name, actionsHtml) {
+        const initial = (String(name || "?").trim().charAt(0) || "?").toUpperCase();
+        return (
+          '<div class="friend-row">' +
+            '<div class="friend-avatar">' + escHtml(initial) + "</div>" +
+            '<div class="friend-row-name">' + escHtml(name) + "</div>" +
+            '<div class="friend-actions">' + actionsHtml + "</div>" +
+          "</div>"
+        );
+      }
+
+      function renderFriendRequests() {
+        const wrap = document.getElementById("friend-requests-list");
+        if (!wrap || !friendsUser) return;
+        const rows = [];
+        friendsRows.forEach((r) => {
+          if (r.status !== "pending") return;
+          const other = friendOtherId(r);
+          const name = friendProfileName(other);
+          if (String(r.addressee_id) === String(friendsUser.id)) {
+            rows.push(personRowHtml(name,
+              friendActionBtn("accept", other, r.id, ftx("Accept", "قبول")) +
+              friendActionBtn("decline", other, r.id, ftx("Decline", "رفض"))));
+          } else {
+            rows.push(personRowHtml(name,
+              '<span class="friend-state">' + escHtml(ftx("Request sent", "تم إرسال الطلب")) + "</span>" +
+              friendActionBtn("cancel", other, r.id, ftx("Cancel", "إلغاء"))));
+          }
+        });
+        wrap.innerHTML = rows.length
+          ? rows.join("")
+          : '<p class="note">' + escHtml(ftx("No requests right now.", "لا طلبات حالياً.")) + "</p>";
+      }
+
+      function renderMyFriends() {
+        const wrap = document.getElementById("my-friends-list");
+        if (!wrap || !friendsUser) return;
+        const rows = [];
+        friendsRows.forEach((r) => {
+          if (r.status !== "accepted") return;
+          const other = friendOtherId(r);
+          rows.push(personRowHtml(
+            friendProfileName(other),
+            friendActionBtn("remove", other, r.id, ftx("Remove", "إزالة"))
+          ));
+        });
+        wrap.innerHTML = rows.length
+          ? rows.join("")
+          : '<p class="note">' + escHtml(ftx("No friends yet. Search by name above to add your first friend.", "لا أصدقاء بعد. ابحث بالاسم في الأعلى لإضافة أول صديق.")) + "</p>";
+      }
+
+      function renderSearchResults() {
+        const wrap = document.getElementById("friend-search-results");
+        if (!wrap || !friendsUser) return;
+        if (!lastSearchTerm || !lastSearchResults.length) {
+          wrap.innerHTML = "";
+          return;
+        }
+        wrap.innerHTML = lastSearchResults.map((p) => {
+          const name = p.display_name || ftx("Member", "عضو");
+          const rel = relForOther(p.id);
+          let actions = "";
+          if (!rel || rel.status === "declined") {
+            actions = friendActionBtn("add", p.id, "", ftx("Add Friend", "إضافة صديق"));
+          } else if (rel.status === "accepted") {
+            actions =
+              '<span class="friend-state">' + escHtml(ftx("Friends", "أصدقاء")) + "</span>" +
+              friendActionBtn("remove", p.id, rel.id, ftx("Remove", "إزالة"));
+          } else if (rel.status === "pending" && String(rel.requester_id) === String(friendsUser.id)) {
+            actions =
+              '<span class="friend-state">' + escHtml(ftx("Request sent", "تم إرسال الطلب")) + "</span>" +
+              friendActionBtn("cancel", p.id, rel.id, ftx("Cancel", "إلغاء"));
+          } else if (rel.status === "pending") {
+            actions =
+              friendActionBtn("accept", p.id, rel.id, ftx("Accept", "قبول")) +
+              friendActionBtn("decline", p.id, rel.id, ftx("Decline", "رفض"));
+          }
+          return personRowHtml(name, actions);
+        }).join("");
+      }
+
+      function renderFriends() {
+        const card = document.getElementById("friends-card");
+        if (!card) return;
+        card.style.display = "";
+        const un = document.getElementById("friends-unavailable");
+        const main = document.getElementById("friends-main");
+        const searchInput = document.getElementById("friend-search-input");
+        if (searchInput) {
+          searchInput.setAttribute("placeholder", ftx("Search by name", "ابحث بالاسم"));
+        }
+        if (!friendsAvailable) {
+          if (un) {
+            un.style.display = "";
+            un.textContent = ftx("Friends are not available yet.", "الأصدقاء غير متاحين بعد.");
+          }
+          if (main) main.style.display = "none";
+          return;
+        }
+        if (un) un.style.display = "none";
+        if (main) main.style.display = "";
+        renderFriendRequests();
+        renderMyFriends();
+        renderSearchResults();
+      }
+
+      async function loadFriendsData(user) {
+        friendsUser = user;
+        try {
+          const me = user.id;
+          const res = await supabase
+            .from("friend_requests").select("*")
+            .or("requester_id.eq." + me + ",addressee_id.eq." + me)
+            .order("created_at", { ascending: false });
+          if (res.error) throw res.error;
+          friendsRows = Array.isArray(res.data) ? res.data : [];
+          const ids = new Set();
+          friendsRows.forEach((r) => {
+            ids.add(String(r.requester_id));
+            ids.add(String(r.addressee_id));
+          });
+          ids.delete(String(me));
+          friendsProfiles = new Map();
+          if (ids.size) {
+            const pres = await supabase
+              .from("profiles").select("id, display_name")
+              .in("id", Array.from(ids));
+            if (pres.error) throw pres.error;
+            (pres.data || []).forEach((p) => {
+              friendsProfiles.set(String(p.id), p.display_name || ftx("Member", "عضو"));
+            });
+          }
+          friendsAvailable = true;
+        } catch (e) {
+          friendsAvailable = false;
+          friendsRows = [];
+        }
+        renderFriends();
+      }
+
+      async function runFriendSearch() {
+        if (!friendsUser || !friendsAvailable) return;
+        const input = document.getElementById("friend-search-input");
+        const status = document.getElementById("friend-search-status");
+        const term = input ? (input.value || "").trim() : "";
+        lastSearchTerm = term;
+        if (term.length < 2) {
+          lastSearchResults = [];
+          renderSearchResults();
+          if (status) status.textContent = ftx("Type at least 2 letters of a name.", "اكتب حرفين على الأقل من الاسم.");
+          return;
+        }
+        if (status) status.textContent = ftx("Searching…", "جاري البحث…");
+        try {
+          const safe = term.replace(/[%_\\]/g, " ").trim();
+          const res = await supabase
+            .from("profiles").select("id, display_name")
+            .ilike("display_name", "%" + safe + "%")
+            .neq("id", friendsUser.id)
+            .order("display_name")
+            .limit(20);
+          if (res.error) throw res.error;
+          lastSearchResults = Array.isArray(res.data) ? res.data : [];
+          await loadFriendsData(friendsUser);
+          if (status) {
+            status.textContent = lastSearchResults.length
+              ? ""
+              : ftx("No one found with that name.", "لا أحد بهذا الاسم.");
+          }
+          renderSearchResults();
+        } catch (e) {
+          lastSearchResults = [];
+          renderSearchResults();
+          if (status) status.textContent = ftx("Search is not available yet.", "البحث غير متاح بعد.");
+        }
+      }
+
+      async function friendAction(action, otherId, reqId) {
+        if (!friendsUser) return;
+        const me = friendsUser.id;
+        try {
+          if (action === "add") {
+            const rel = relForOther(otherId);
+            if (rel && rel.status === "declined") {
+              const d = await supabase.from("friend_requests").delete().eq("id", rel.id);
+              if (d && d.error) throw d.error;
+            }
+            const res = await supabase
+              .from("friend_requests")
+              .insert({ requester_id: me, addressee_id: otherId, status: "pending" });
+            if (res && res.error) throw res.error;
+            setFriendsStatus(ftx("Friend request sent.", "تم إرسال طلب الصداقة."), false);
+          } else if (action === "accept" || action === "decline") {
+            const res = await supabase
+              .from("friend_requests")
+              .update({
+                status: action === "accept" ? "accepted" : "declined",
+                responded_at: new Date().toISOString(),
+              })
+              .eq("id", reqId);
+            if (res && res.error) throw res.error;
+            setFriendsStatus(
+              action === "accept"
+                ? ftx("You are now friends.", "أصبحتما أصدقاء الآن.")
+                : ftx("Request declined.", "تم رفض الطلب."),
+              false
+            );
+          } else if (action === "cancel" || action === "remove") {
+            if (action === "remove" && !window.confirm(ftx("Remove this friend?", "هل تريد إزالة هذا الصديق؟"))) return;
+            const d = await supabase.from("friend_requests").delete().eq("id", reqId);
+            if (d && d.error) throw d.error;
+            setFriendsStatus(
+              action === "remove"
+                ? ftx("Friend removed.", "تمت إزالة الصديق.")
+                : ftx("Request cancelled.", "تم إلغاء الطلب."),
+              false
+            );
+          } else {
+            return;
+          }
+          await loadFriendsData(friendsUser);
+          renderSearchResults();
+        } catch (e) {
+          setFriendsStatus(ftx("That did not work. Friends may not be available yet.", "لم ينجح ذلك. قد لا تكون الصداقة متاحة بعد."), true);
+        }
+      }
+
+      async function loadShared(user) {
+        const card = document.getElementById("shared-card");
+        if (card) card.style.display = "";
+        const list = document.getElementById("shared-list");
+        const un = document.getElementById("shared-unavailable");
+        try {
+          const res = await supabase
+            .from("story_shares").select("*")
+            .eq("to_user_id", user.id)
+            .order("created_at", { ascending: false })
+            .limit(30);
+          if (res.error) throw res.error;
+          const rows = Array.isArray(res.data) ? res.data : [];
+          if (un) un.style.display = "none";
+          if (!list) return;
+          if (!rows.length) {
+            list.innerHTML =
+              '<p class="note">' +
+              escHtml(ftx("No stories have been shared with you yet.", "لم تُشارك معك أي قصة بعد.")) +
+              "</p>";
+            return;
+          }
+          const storyIds = Array.from(new Set(rows.map((r) => r.story_id)));
+          const fromIds = Array.from(new Set(rows.map((r) => String(r.from_user_id))));
+          const titles = new Map();
+          const names = new Map();
+          try {
+            const sres = await supabase.from("stories").select("id, title").in("id", storyIds);
+            if (!sres.error) (sres.data || []).forEach((s) => titles.set(String(s.id), s.title || ""));
+          } catch (e) {}
+          try {
+            const pres = await supabase.from("profiles").select("id, display_name").in("id", fromIds);
+            if (!pres.error) (pres.data || []).forEach((p) => names.set(String(p.id), p.display_name || ""));
+          } catch (e) {}
+          list.innerHTML = rows.map((r) => {
+            const title = titles.get(String(r.story_id)) || ftx("A story", "قصة");
+            const from = names.get(String(r.from_user_id)) || ftx("Member", "عضو");
+            const d = r.created_at ? new Date(r.created_at).toLocaleDateString() : "";
+            const unseen = !r.seen_at;
+            return (
+              '<a class="shared-row" href="story.html?id=' + encodeURIComponent(String(r.story_id)) +
+              '" data-share-id="' + escHtml(String(r.id)) +
+              '" data-seen="' + (unseen ? "0" : "1") + '">' +
+                "<strong>" + escHtml(title) + "</strong>" +
+                (unseen ? ' <span class="shared-new">' + escHtml(ftx("New", "جديد")) + "</span>" : "") +
+                '<br><span class="note">' + escHtml(ftx("From ", "من ") + from) +
+                (d ? " · " + escHtml(d) : "") + "</span>" +
+                (r.message ? '<br><span class="shared-msg">' + escHtml(r.message) + "</span>" : "") +
+              "</a>"
+            );
+          }).join("");
+        } catch (e) {
+          if (un) {
+            un.style.display = "";
+            un.textContent = ftx("Shared stories are not available yet.", "القصص المشاركة غير متاحة بعد.");
+          }
+          if (list) list.innerHTML = "";
+        }
+      }
+
       function hideProfile() {
         const sec = document.getElementById("profile-section");
         if (sec) sec.style.display = "none";
@@ -663,6 +1064,12 @@
         if (anonEl) anonEl.checked = alwaysAnon;
 
         wireProfile();
+
+        // Social features: keep my public profile in sync, then load
+        // Friends + Shared with me (both fail gracefully pre-SQL).
+        await upsertOwnProfile(user);
+        await loadFriendsData(user);
+        await loadShared(user);
 
         // Stats + my stories
         try {
@@ -705,7 +1112,50 @@
           if (!v) { profileStatus(currentLang === "ar" ? "اكتب الاسم أولاً." : "Type a nickname first.", true); return; }
           const { error } = await supabase.auth.updateUser({ data: { display_name: v } });
           if (error) profileStatus(error.message, true);
-          else { profileStatus(currentLang === "ar" ? "تم حفظ الاسم." : "Nickname saved.", false); refreshUserLabel(); }
+          else {
+            profileStatus(currentLang === "ar" ? "تم حفظ الاسم." : "Nickname saved.", false);
+            try {
+              const { data: ud } = await supabase.auth.getUser();
+              if (ud && ud.user) await upsertOwnProfile(ud.user, v);
+            } catch (e) {}
+            refreshUserLabel();
+          }
+        });
+
+        const friendsCard = document.getElementById("friends-card");
+        if (friendsCard) friendsCard.addEventListener("click", (e) => {
+          const btn = e.target.closest("[data-faction]");
+          if (!btn) return;
+          friendAction(
+            btn.getAttribute("data-faction"),
+            btn.getAttribute("data-fuser"),
+            btn.getAttribute("data-freq")
+          );
+        });
+
+        const friendSearchBtn = document.getElementById("friend-search-btn");
+        if (friendSearchBtn) friendSearchBtn.addEventListener("click", runFriendSearch);
+
+        const friendSearchInput = document.getElementById("friend-search-input");
+        if (friendSearchInput) friendSearchInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") { e.preventDefault(); runFriendSearch(); }
+        });
+
+        const sharedList = document.getElementById("shared-list");
+        if (sharedList) sharedList.addEventListener("click", async (e) => {
+          const a = e.target.closest("[data-share-id]");
+          if (!a) return;
+          if (a.getAttribute("data-seen") === "1") return;
+          e.preventDefault();
+          const href = a.getAttribute("href");
+          try {
+            const res = await supabase
+              .from("story_shares")
+              .update({ seen_at: new Date().toISOString() })
+              .eq("id", a.getAttribute("data-share-id"));
+            if (res && res.error) throw res.error;
+          } catch (err) {}
+          window.location.href = href;
         });
 
         const anonEl = document.getElementById("profile-anon");

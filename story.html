@@ -273,6 +273,36 @@
     .comments-empty { color: var(--text-muted); font-size: 0.9rem; text-align: center; margin-top: 1rem; }
     .comments-more { display: none; margin: 0.9rem auto 0; }
 
+    /* Social: author, reaction, sharing (added 2026-10-27) */
+    .author-row { display: flex; align-items: center; gap: 0.65rem; margin-top: 0.4rem; padding-top: 0.9rem; border-top: 1px solid var(--border-soft); }
+    .author-main { flex: 1; min-width: 0; font-size: 0.92rem; }
+    .author-name { font-weight: 700; }
+    .friend-actions { display: flex; gap: 0.45rem; align-items: center; flex-wrap: wrap; }
+    .friend-state { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; }
+    .social { margin-top: 1rem; padding-top: 0.95rem; border-top: 1px solid var(--border-soft); }
+    .social-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .social-btn {
+      background: #ffffff; border: 1px solid #c7d2fe; color: #4f46e5; border-radius: 999px;
+      padding: 0.5rem 1rem; font-size: 0.88rem; font-weight: 600; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 0.35rem; font-family: inherit;
+    }
+    .social-btn:hover { background: #eef2ff; }
+    .social-btn.active { background: #4f46e5; border-color: #4f46e5; color: #ffffff; }
+    .social-btn.small { padding: 0.35rem 0.8rem; font-size: 0.82rem; }
+    .social-btn:disabled { opacity: 0.55; cursor: default; }
+    .social-note { color: var(--text-muted); font-size: 0.8rem; margin-top: 0.4rem; }
+    .social-status { font-size: 0.86rem; font-weight: 600; margin-top: 0.45rem; display: none; }
+    .social-status.ok { color: #059669; }
+    .social-status.err { color: #dc2626; }
+    .share-panel { margin-top: 0.8rem; border: 1px solid var(--border-soft); border-radius: 12px; padding: 0.85rem; }
+    .share-panel-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.55rem; }
+    .share-panel textarea {
+      width: 100%; border: 1px solid var(--border-soft); border-radius: 12px;
+      padding: 0.55rem 0.7rem; font: inherit; font-size: 0.92rem; resize: vertical;
+    }
+    .friend-pick-row { display: flex; align-items: center; gap: 0.65rem; padding: 0.55rem 0; border-top: 1px solid var(--border-soft); }
+    .friend-pick-name { flex: 1; min-width: 0; font-weight: 600; font-size: 0.92rem; }
+
     footer {
       padding: 1.5rem 0 1.8rem;
       font-size: 0.8rem;
@@ -355,6 +385,34 @@
           <div id="story-status" class="story-status"></div>
         </div>
 
+        <!-- Author (shown when the story is not anonymous and a profile exists) -->
+        <div id="author-row" class="author-row" style="display:none">
+          <div class="comment-avatar" id="author-avatar">?</div>
+          <div class="author-main">
+            <span id="author-by"></span>
+            <span class="author-name" id="author-name"></span>
+          </div>
+          <div id="author-friend-actions" class="friend-actions"></div>
+        </div>
+
+        <!-- Social: Happened to me + sharing -->
+        <div id="social-row" class="social" style="display:none">
+          <div class="social-actions">
+            <button id="reaction-btn" class="social-btn" type="button" style="display:none" aria-pressed="false"><span id="reaction-label"></span></button>
+            <button id="share-btn" class="social-btn" type="button" data-en="Share story" data-ar="مشاركة القصة">Share story</button>
+            <button id="send-friend-btn" class="social-btn" type="button" style="display:none" data-en="Send to a friend" data-ar="إرسال إلى صديق">Send to a friend</button>
+          </div>
+          <div id="reaction-note" class="social-note"></div>
+          <div id="social-status" class="social-status"></div>
+          <div id="share-panel" class="share-panel" style="display:none">
+            <div class="share-panel-title" data-en="Send to a friend" data-ar="إرسال إلى صديق">Send to a friend</div>
+            <textarea id="share-message" maxlength="300" rows="2"></textarea>
+            <div id="share-friends-list" style="margin-top:0.4rem;"></div>
+            <div id="share-panel-status" class="social-status"></div>
+            <button id="share-panel-close" class="link-btn" type="button" style="margin-top:0.5rem;" data-en="Close" data-ar="إغلاق">Close</button>
+          </div>
+        </div>
+
         <!-- Comments -->
         <div class="comments" id="comments-section">
           <div class="comments-head">
@@ -424,6 +482,24 @@
       const commentsList = document.getElementById("comments-list");
       const commentsMoreBtn = document.getElementById("comments-more");
 
+      const socialRow = document.getElementById("social-row");
+      const reactionBtn = document.getElementById("reaction-btn");
+      const reactionLabel = document.getElementById("reaction-label");
+      const reactionNote = document.getElementById("reaction-note");
+      const shareBtn = document.getElementById("share-btn");
+      const sendFriendBtn = document.getElementById("send-friend-btn");
+      const socialStatus = document.getElementById("social-status");
+      const sharePanel = document.getElementById("share-panel");
+      const shareMessageInput = document.getElementById("share-message");
+      const shareFriendsList = document.getElementById("share-friends-list");
+      const sharePanelStatus = document.getElementById("share-panel-status");
+      const sharePanelClose = document.getElementById("share-panel-close");
+      const authorRow = document.getElementById("author-row");
+      const authorAvatar = document.getElementById("author-avatar");
+      const authorByEl = document.getElementById("author-by");
+      const authorNameEl = document.getElementById("author-name");
+      const authorFriendActions = document.getElementById("author-friend-actions");
+
       let currentLang = "en";
       let storyId = null;
       let storyData = null;
@@ -433,6 +509,13 @@
       let commentsPage = 0;
       let commentsHasMore = false;
       let editingCommentId = null;
+
+      let reactionCount = 0;
+      let reactionMine = false;
+      let reactionAvailable = false;
+      let authorProfile = null;
+      let authorRel = null;
+      const sentShareIds = new Set();
 
       function tx(en, ar) { return currentLang === "ar" ? ar : en; }
 
@@ -580,6 +663,373 @@
         elContent.textContent = data.content || "";
         if (editForm) editForm.classList.remove("open");
         setStoryStatus(tx("Story saved.", "تم حفظ القصة."), false);
+      }
+
+      // ---------- Social: reaction, author friends, sharing ----------
+      // All of these use the new tables from add-social-features.sql.
+      // Every call is guarded: if a table does not exist yet, the matching
+      // control is hidden (with a quiet note where useful) and the rest of
+      // the page keeps working exactly as before.
+
+      function setSocialStatus(msg, isErr) {
+        if (!socialStatus) return;
+        socialStatus.style.display = msg ? "block" : "none";
+        socialStatus.className = "social-status " + (isErr ? "err" : "ok");
+        socialStatus.textContent = msg || "";
+      }
+
+      function setSharePanelStatus(msg, isErr) {
+        if (!sharePanelStatus) return;
+        sharePanelStatus.style.display = msg ? "block" : "none";
+        sharePanelStatus.className = "social-status " + (isErr ? "err" : "ok");
+        sharePanelStatus.textContent = msg || "";
+      }
+
+      function storyLink() {
+        return "https://abboudcode.github.io/-harmonycommunity/story.html?id=" + encodeURIComponent(String(storyId));
+      }
+
+      async function ensureOwnProfile() {
+        if (!currentUser) return;
+        try {
+          const meta = currentUser.user_metadata || {};
+          const name = (String(meta.display_name || "Member").trim().slice(0, 60)) || "Member";
+          const res = await supabase.from("profiles").upsert(
+            { id: currentUser.id, display_name: name },
+            { onConflict: "id" }
+          );
+          if (res && res.error) throw res.error;
+        } catch (e) {}
+      }
+
+      function renderReaction() {
+        if (!reactionBtn) return;
+        reactionBtn.style.display = reactionAvailable ? "inline-flex" : "none";
+        if (reactionLabel) {
+          reactionLabel.textContent = tx("Happened to me too", "حدث معي أيضاً") +
+            (reactionCount ? " · " + reactionCount : "");
+        }
+        reactionBtn.classList.toggle("active", !!reactionMine);
+        reactionBtn.setAttribute("aria-pressed", reactionMine ? "true" : "false");
+      }
+
+      async function loadReaction() {
+        reactionAvailable = false;
+        reactionCount = 0;
+        reactionMine = false;
+        if (reactionNote) reactionNote.textContent = "";
+        try {
+          const res = await supabase
+            .from("story_reactions").select("user_id")
+            .eq("story_id", storyId).eq("kind", "happened_to_me");
+          if (res.error) throw res.error;
+          const rows = Array.isArray(res.data) ? res.data : [];
+          reactionCount = rows.length;
+          reactionMine = !!(currentUser && rows.some((r) => String(r.user_id) === String(currentUser.id)));
+          reactionAvailable = true;
+        } catch (e) {
+          reactionAvailable = false;
+          if (reactionNote) reactionNote.textContent = tx("Reactions are not available yet.", "التفاعلات غير متاحة بعد.");
+        }
+        renderReaction();
+      }
+
+      async function toggleReaction() {
+        if (!reactionAvailable) return;
+        if (!currentUser) {
+          setSocialStatus(tx("Sign in to add your reaction.", "سجّل الدخول لإضافة تفاعلك."), true);
+          return;
+        }
+        try {
+          if (reactionMine) {
+            const res = await supabase
+              .from("story_reactions").delete()
+              .eq("story_id", storyId).eq("user_id", currentUser.id).eq("kind", "happened_to_me");
+            if (res && res.error) throw res.error;
+          } else {
+            const res = await supabase
+              .from("story_reactions")
+              .insert({ story_id: storyId, user_id: currentUser.id, kind: "happened_to_me" });
+            if (res && res.error) throw res.error;
+          }
+          await loadReaction();
+        } catch (e) {
+          setSocialStatus(tx("Could not update your reaction.", "تعذر تحديث تفاعلك."), true);
+        }
+      }
+
+      function friendActionBtn(label, action) {
+        return '<button type="button" class="social-btn small" data-friend-action="' + action + '">' +
+          escapeHtml(label) + "</button>";
+      }
+
+      function renderAuthorFriend() {
+        if (!authorFriendActions) return;
+        authorFriendActions.innerHTML = "";
+        if (!currentUser || !authorProfile) return;
+        if (String(authorProfile.id) === String(currentUser.id)) return;
+        const r = authorRel;
+        if (!r || r.status === "declined") {
+          authorFriendActions.innerHTML = friendActionBtn(tx("Add Friend", "إضافة صديق"), "add");
+          return;
+        }
+        if (r.status === "accepted") {
+          authorFriendActions.innerHTML =
+            '<span class="friend-state">' + escapeHtml(tx("Friends", "أصدقاء")) + "</span>" +
+            friendActionBtn(tx("Remove", "إزالة"), "remove");
+          return;
+        }
+        if (r.status === "pending") {
+          if (String(r.requester_id) === String(currentUser.id)) {
+            authorFriendActions.innerHTML =
+              '<span class="friend-state">' + escapeHtml(tx("Request sent", "تم إرسال الطلب")) + "</span>" +
+              friendActionBtn(tx("Cancel", "إلغاء"), "cancel");
+          } else {
+            authorFriendActions.innerHTML =
+              friendActionBtn(tx("Accept request", "قبول الطلب"), "accept") +
+              friendActionBtn(tx("Decline", "رفض"), "decline");
+          }
+        }
+      }
+
+      async function loadAuthorRel() {
+        authorRel = null;
+        if (!currentUser || !authorProfile) return;
+        if (String(authorProfile.id) === String(currentUser.id)) return;
+        try {
+          const me = currentUser.id;
+          const other = authorProfile.id;
+          const res = await supabase
+            .from("friend_requests").select("*")
+            .or("and(requester_id.eq." + me + ",addressee_id.eq." + other + "),and(requester_id.eq." + other + ",addressee_id.eq." + me + ")");
+          if (res.error) throw res.error;
+          const rows = Array.isArray(res.data) ? res.data : [];
+          authorRel =
+            rows.find((r) => r.status === "accepted") ||
+            rows.find((r) => r.status === "pending") ||
+            rows[0] || null;
+        } catch (e) {
+          authorRel = null;
+        }
+      }
+
+      async function loadAuthor() {
+        authorProfile = null;
+        authorRel = null;
+        if (authorRow) authorRow.style.display = "none";
+        if (!storyData || storyData.is_anonymous || !storyData.user_id) return;
+        try {
+          const res = await supabase
+            .from("profiles").select("id, display_name")
+            .eq("id", storyData.user_id).maybeSingle();
+          if (res.error) throw res.error;
+          if (!res.data) return;
+          authorProfile = res.data;
+        } catch (e) {
+          return;
+        }
+        if (authorByEl) authorByEl.textContent = tx("Story by ", "قصة بقلم ");
+        if (authorNameEl) authorNameEl.textContent = authorProfile.display_name || tx("Member", "عضو");
+        if (authorAvatar) {
+          authorAvatar.textContent = (String(authorProfile.display_name || "?").trim().charAt(0) || "?").toUpperCase();
+        }
+        if (authorRow) authorRow.style.display = "flex";
+        await loadAuthorRel();
+        renderAuthorFriend();
+      }
+
+      async function authorFriendAction(action) {
+        if (!currentUser || !authorProfile) return;
+        const other = authorProfile.id;
+        const me = currentUser.id;
+        try {
+          if (action === "add") {
+            await ensureOwnProfile();
+            if (authorRel && authorRel.status === "declined") {
+              const d = await supabase.from("friend_requests").delete().eq("id", authorRel.id);
+              if (d && d.error) throw d.error;
+            }
+            const res = await supabase
+              .from("friend_requests")
+              .insert({ requester_id: me, addressee_id: other, status: "pending" });
+            if (res && res.error) throw res.error;
+            setSocialStatus(tx("Friend request sent.", "تم إرسال طلب الصداقة."), false);
+          } else if (action === "cancel" || action === "remove") {
+            if (!authorRel) return;
+            if (action === "remove" && !window.confirm(tx("Remove this friend?", "هل تريد إزالة هذا الصديق؟"))) return;
+            const d = await supabase.from("friend_requests").delete().eq("id", authorRel.id);
+            if (d && d.error) throw d.error;
+            setSocialStatus(
+              action === "remove"
+                ? tx("Friend removed.", "تمت إزالة الصديق.")
+                : tx("Request cancelled.", "تم إلغاء الطلب."),
+              false
+            );
+          } else if (action === "accept" || action === "decline") {
+            if (!authorRel) return;
+            const res = await supabase
+              .from("friend_requests")
+              .update({
+                status: action === "accept" ? "accepted" : "declined",
+                responded_at: new Date().toISOString(),
+              })
+              .eq("id", authorRel.id);
+            if (res && res.error) throw res.error;
+            setSocialStatus(
+              action === "accept"
+                ? tx("You are now friends.", "أصبحتما أصدقاء الآن.")
+                : tx("Request declined.", "تم رفض الطلب."),
+              false
+            );
+          } else {
+            return;
+          }
+          await loadAuthorRel();
+          renderAuthorFriend();
+        } catch (e) {
+          setSocialStatus(tx("That did not work. Friends may not be available yet.", "لم ينجح ذلك. قد لا تكون الصداقة متاحة بعد."), true);
+        }
+      }
+
+      async function shareOutside() {
+        const url = storyLink();
+        const title = storyData ? (storyData.title || "Harmony story") : "Harmony story";
+        if (navigator.share) {
+          try {
+            await navigator.share({ title, text: title, url });
+            return;
+          } catch (e) {
+            if (e && e.name === "AbortError") return;
+          }
+        }
+        try {
+          await navigator.clipboard.writeText(url);
+          setSocialStatus(tx("Link copied.", "تم نسخ الرابط."), false);
+          return;
+        } catch (e) {}
+        try {
+          const ta = document.createElement("textarea");
+          ta.value = url;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          ta.remove();
+          setSocialStatus(tx("Link copied.", "تم نسخ الرابط."), false);
+        } catch (e) {
+          setSocialStatus(url, false);
+        }
+      }
+
+      async function loadShareFriends() {
+        if (!shareFriendsList) return;
+        shareFriendsList.innerHTML =
+          '<div class="comments-empty">' + escapeHtml(tx("Loading friends…", "جاري تحميل الأصدقاء…")) + "</div>";
+        try {
+          const me = currentUser.id;
+          const res = await supabase
+            .from("friend_requests").select("*")
+            .eq("status", "accepted")
+            .or("requester_id.eq." + me + ",addressee_id.eq." + me);
+          if (res.error) throw res.error;
+          const rows = Array.isArray(res.data) ? res.data : [];
+          const ids = [];
+          rows.forEach((r) => {
+            const other = String(r.requester_id) === String(me) ? r.addressee_id : r.requester_id;
+            if (!ids.some((x) => String(x) === String(other))) ids.push(other);
+          });
+          if (!ids.length) {
+            shareFriendsList.innerHTML =
+              '<div class="comments-empty">' +
+              escapeHtml(tx("You have no friends yet. Add friends from your Profile page.", "لا أصدقاء بعد. أضف أصدقاء من صفحة ملفك الشخصي.")) +
+              "</div>";
+            return;
+          }
+          const pres = await supabase.from("profiles").select("id, display_name").in("id", ids);
+          if (pres.error) throw pres.error;
+          const names = new Map((pres.data || []).map((p) => [String(p.id), p.display_name || tx("Member", "عضو")]));
+          shareFriendsList.innerHTML = ids.map((id) => {
+            const name = names.get(String(id)) || tx("Member", "عضو");
+            const sent = sentShareIds.has(String(id));
+            return (
+              '<div class="friend-pick-row">' +
+                '<div class="comment-avatar">' + escapeHtml((String(name).trim().charAt(0) || "?").toUpperCase()) + "</div>" +
+                '<div class="friend-pick-name">' + escapeHtml(name) + "</div>" +
+                '<button type="button" class="social-btn small" data-send-to="' + escapeHtml(String(id)) + '"' +
+                  (sent ? " disabled" : "") + ">" +
+                  escapeHtml(sent ? tx("Sent", "تم الإرسال") : tx("Send", "إرسال")) +
+                "</button>" +
+              "</div>"
+            );
+          }).join("");
+        } catch (e) {
+          shareFriendsList.innerHTML =
+            '<div class="comments-empty">' +
+            escapeHtml(tx("Sharing with friends is not available yet.", "المشاركة مع الأصدقاء غير متاحة بعد.")) +
+            "</div>";
+        }
+      }
+
+      async function sendStoryToFriend(toId, btn) {
+        if (!currentUser) return;
+        if (btn) btn.disabled = true;
+        try {
+          await ensureOwnProfile();
+          const msg = shareMessageInput ? (shareMessageInput.value || "").trim().slice(0, 300) : "";
+          const res = await supabase
+            .from("story_shares")
+            .insert({
+              story_id: storyId,
+              from_user_id: currentUser.id,
+              to_user_id: toId,
+              message: msg || null,
+            });
+          if (res && res.error) throw res.error;
+          sentShareIds.add(String(toId));
+          setSharePanelStatus(tx("Story sent.", "تم إرسال القصة."), false);
+          await loadShareFriends();
+        } catch (e) {
+          if (btn) btn.disabled = false;
+          setSharePanelStatus(tx("Could not send this story.", "تعذر إرسال هذه القصة."), true);
+        }
+      }
+
+      function wireSocial() {
+        if (reactionBtn) reactionBtn.addEventListener("click", toggleReaction);
+        if (shareBtn) shareBtn.addEventListener("click", shareOutside);
+        if (sendFriendBtn) {
+          sendFriendBtn.addEventListener("click", () => {
+            if (!currentUser) {
+              setSocialStatus(tx("Sign in to send this story to a friend.", "سجّل الدخول لإرسال هذه القصة إلى صديق."), true);
+              return;
+            }
+            if (!sharePanel) return;
+            const open = sharePanel.style.display !== "none";
+            sharePanel.style.display = open ? "none" : "block";
+            if (!open) {
+              setSharePanelStatus("", false);
+              loadShareFriends();
+            }
+          });
+        }
+        if (sharePanelClose) {
+          sharePanelClose.addEventListener("click", () => {
+            if (sharePanel) sharePanel.style.display = "none";
+          });
+        }
+        if (authorFriendActions) {
+          authorFriendActions.addEventListener("click", (e) => {
+            const btn = e.target.closest("[data-friend-action]");
+            if (!btn) return;
+            authorFriendAction(btn.getAttribute("data-friend-action"));
+          });
+        }
+        if (shareFriendsList) {
+          shareFriendsList.addEventListener("click", (e) => {
+            const btn = e.target.closest("[data-send-to]");
+            if (!btn || btn.disabled) return;
+            sendStoryToFriend(btn.getAttribute("data-send-to"), btn);
+          });
+        }
       }
 
       function commentName(c) {
@@ -786,6 +1236,7 @@
 
       function setCommentPlaceholder() {
         if (commentInput) commentInput.setAttribute("placeholder", tx("Your comment", "تعليقك"));
+        if (shareMessageInput) shareMessageInput.setAttribute("placeholder", tx("Add a short note (optional)", "أضف ملاحظة قصيرة (اختياري)"));
       }
 
       function renderMedia(data) {
@@ -874,6 +1325,10 @@
             currentUser = (authData && authData.user) || null;
           } catch (e) { currentUser = null; }
           updateOwnerUI();
+          if (socialRow) socialRow.style.display = "block";
+          if (sendFriendBtn) sendFriendBtn.style.display = currentUser ? "inline-flex" : "none";
+          await loadReaction();
+          await loadAuthor();
           await loadComments(true);
 
           await refreshUserLabel(currentLang);
@@ -909,6 +1364,7 @@
 
       wireOwnerMenu();
       wireCommentClicks();
+      wireSocial();
       loadStory();
     })();
   </script>
