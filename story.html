@@ -287,7 +287,18 @@
       display: inline-flex; align-items: center; gap: 0.35rem; font-family: inherit;
     }
     .social-btn:hover { background: #eef2ff; }
-    .social-btn.active { background: #4f46e5; border-color: #4f46e5; color: #ffffff; }
+    .social-btn.active { background: #eef2ff; border-color: #4f46e5; color: #4f46e5; }
+    .reaction-wrap { position: relative; display: inline-flex; align-items: center; }
+    .reaction-caret { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.8rem; padding: 0.35rem 0.3rem; font-family: inherit; }
+    .reaction-summary { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.45rem; display: none; align-items: center; gap: 0.3rem; }
+    .reaction-picker {
+      position: absolute; bottom: calc(100% + 8px); inset-inline-start: 0; background: #ffffff;
+      border: 1px solid var(--border-soft); border-radius: 999px; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+      padding: 0.3rem 0.45rem; display: flex; gap: 0.15rem; z-index: 40;
+    }
+    .reaction-picker button { background: none; border: none; font-size: 1.3rem; line-height: 1; cursor: pointer; padding: 0.25rem; border-radius: 999px; font-family: inherit; }
+    .reaction-picker button:hover { background: #eef2ff; transform: scale(1.15); }
+    .reaction-emoji-gray { filter: grayscale(1); opacity: 0.65; }
     .social-btn.small { padding: 0.35rem 0.8rem; font-size: 0.82rem; }
     .social-btn:disabled { opacity: 0.55; cursor: default; }
     .social-note { color: var(--text-muted); font-size: 0.8rem; margin-top: 0.4rem; }
@@ -397,8 +408,13 @@
 
         <!-- Social: Happened to me + sharing -->
         <div id="social-row" class="social" style="display:none">
+          <div id="reaction-summary" class="reaction-summary"></div>
           <div class="social-actions">
-            <button id="reaction-btn" class="social-btn" type="button" style="display:none" aria-pressed="false"><span id="reaction-label"></span></button>
+            <div class="reaction-wrap" id="reaction-wrap">
+              <button id="reaction-btn" class="social-btn" type="button" style="display:none" aria-pressed="false"><span id="reaction-label"></span></button>
+              <button id="reaction-caret" class="reaction-caret" type="button" style="display:none" aria-label="Choose a reaction" aria-haspopup="true">▾</button>
+              <div id="reaction-picker" class="reaction-picker" style="display:none" role="menu"></div>
+            </div>
             <button id="share-btn" class="social-btn" type="button" data-en="Share story" data-ar="مشاركة القصة">Share story</button>
             <button id="send-friend-btn" class="social-btn" type="button" style="display:none" data-en="Send to a friend" data-ar="إرسال إلى صديق">Send to a friend</button>
           </div>
@@ -483,8 +499,12 @@
       const commentsMoreBtn = document.getElementById("comments-more");
 
       const socialRow = document.getElementById("social-row");
+      const reactionWrap = document.getElementById("reaction-wrap");
       const reactionBtn = document.getElementById("reaction-btn");
       const reactionLabel = document.getElementById("reaction-label");
+      const reactionCaret = document.getElementById("reaction-caret");
+      const reactionPicker = document.getElementById("reaction-picker");
+      const reactionSummary = document.getElementById("reaction-summary");
       const reactionNote = document.getElementById("reaction-note");
       const shareBtn = document.getElementById("share-btn");
       const sendFriendBtn = document.getElementById("send-friend-btn");
@@ -510,8 +530,23 @@
       let commentsHasMore = false;
       let editingCommentId = null;
 
-      let reactionCount = 0;
-      let reactionMine = false;
+      // Emoji reactions (Facebook style): ONE reaction per person per
+      // story. Picking another emoji replaces yours; picking yours again
+      // removes it. Kinds are widened by add-emoji-reactions.sql — until
+      // that runs, only 'happened_to_me' writes succeed and failures just
+      // show the quiet social status line.
+      const REACTIONS = [
+        { kind: "like", emoji: "👍", en: "Like", ar: "إعجاب" },
+        { kind: "love", emoji: "❤️", en: "Love", ar: "حب" },
+        { kind: "happened_to_me", emoji: "🤝", en: "Happened to me", ar: "صار معي" },
+        { kind: "support", emoji: "🫂", en: "Support", ar: "دعم" },
+        { kind: "wow", emoji: "😮", en: "Wow", ar: "واو" },
+        { kind: "sad", emoji: "😢", en: "Sad", ar: "حزين" },
+      ];
+      const DEFAULT_REACTION = "happened_to_me";
+      let reactionCounts = {};
+      let reactionTotal = 0;
+      let reactionMyKind = null;
       let reactionAvailable = false;
       let authorProfile = null;
       let authorRel = null;
@@ -702,30 +737,81 @@
         } catch (e) {}
       }
 
+      function reactionDef(kind) {
+        return REACTIONS.find((r) => r.kind === kind) || null;
+      }
+
+      function renderSummary() {
+        if (!reactionSummary) return;
+        if (!reactionAvailable || !reactionTotal) {
+          reactionSummary.style.display = "none";
+          reactionSummary.textContent = "";
+          return;
+        }
+        const top = REACTIONS
+          .filter((r) => reactionCounts[r.kind])
+          .sort((a, b) => (reactionCounts[b.kind] || 0) - (reactionCounts[a.kind] || 0))
+          .slice(0, 3);
+        reactionSummary.textContent = top.map((r) => r.emoji).join(" ") + " " + reactionTotal;
+        reactionSummary.style.display = "flex";
+      }
+
       function renderReaction() {
         if (!reactionBtn) return;
         reactionBtn.style.display = reactionAvailable ? "inline-flex" : "none";
+        if (reactionCaret) reactionCaret.style.display = reactionAvailable ? "inline-block" : "none";
+        if (!reactionAvailable && reactionPicker) reactionPicker.style.display = "none";
+        const mine = reactionDef(reactionMyKind);
         if (reactionLabel) {
-          reactionLabel.textContent = tx("Happened to me too", "حدث معي أيضاً") +
-            (reactionCount ? " · " + reactionCount : "");
+          reactionLabel.innerHTML = mine
+            ? escapeHtml(mine.emoji) + " " + escapeHtml(tx(mine.en, mine.ar))
+            : '<span class="reaction-emoji-gray">👍</span> ' + escapeHtml(tx("Happened to me", "صار معي"));
         }
-        reactionBtn.classList.toggle("active", !!reactionMine);
-        reactionBtn.setAttribute("aria-pressed", reactionMine ? "true" : "false");
+        reactionBtn.classList.toggle("active", !!mine);
+        reactionBtn.setAttribute("aria-pressed", mine ? "true" : "false");
+        renderSummary();
+        renderPicker();
+      }
+
+      function renderPicker() {
+        if (!reactionPicker) return;
+        reactionPicker.innerHTML = REACTIONS.map((r) =>
+          '<button type="button" data-kind="' + r.kind + '" title="' + escapeHtml(tx(r.en, r.ar)) +
+          '" aria-label="' + escapeHtml(tx(r.en, r.ar)) + '">' + r.emoji + "</button>"
+        ).join("");
+      }
+
+      function openPicker() {
+        if (!reactionAvailable || !reactionPicker) return;
+        renderPicker();
+        reactionPicker.style.display = "flex";
+      }
+
+      function closePicker() {
+        if (reactionPicker) reactionPicker.style.display = "none";
+      }
+
+      function pickerOpen() {
+        return !!(reactionPicker && reactionPicker.style.display !== "none");
       }
 
       async function loadReaction() {
         reactionAvailable = false;
-        reactionCount = 0;
-        reactionMine = false;
+        reactionCounts = {};
+        reactionTotal = 0;
+        reactionMyKind = null;
         if (reactionNote) reactionNote.textContent = "";
         try {
           const res = await supabase
-            .from("story_reactions").select("user_id")
-            .eq("story_id", storyId).eq("kind", "happened_to_me");
+            .from("story_reactions").select("user_id, kind")
+            .eq("story_id", storyId);
           if (res.error) throw res.error;
           const rows = Array.isArray(res.data) ? res.data : [];
-          reactionCount = rows.length;
-          reactionMine = !!(currentUser && rows.some((r) => String(r.user_id) === String(currentUser.id)));
+          rows.forEach((r) => {
+            if (reactionDef(r.kind)) reactionCounts[r.kind] = (reactionCounts[r.kind] || 0) + 1;
+            if (currentUser && String(r.user_id) === String(currentUser.id)) reactionMyKind = r.kind;
+          });
+          reactionTotal = rows.length;
           reactionAvailable = true;
         } catch (e) {
           reactionAvailable = false;
@@ -734,27 +820,47 @@
         renderReaction();
       }
 
-      async function toggleReaction() {
+      // Set / replace / remove the signed-in user's reaction.
+      // Same kind again -> delete. Different kind -> update the row.
+      // No reaction yet -> insert. Any failure (e.g. the emoji migration
+      // has not run yet) only shows the quiet status line.
+      async function setReaction(kind) {
         if (!reactionAvailable) return;
         if (!currentUser) {
           setSocialStatus(tx("Sign in to add your reaction.", "سجّل الدخول لإضافة تفاعلك."), true);
           return;
         }
+        closePicker();
         try {
-          if (reactionMine) {
-            const res = await supabase
+          let res;
+          if (reactionMyKind === kind) {
+            res = await supabase
               .from("story_reactions").delete()
-              .eq("story_id", storyId).eq("user_id", currentUser.id).eq("kind", "happened_to_me");
-            if (res && res.error) throw res.error;
+              .eq("story_id", storyId).eq("user_id", currentUser.id);
+          } else if (reactionMyKind) {
+            res = await supabase
+              .from("story_reactions").update({ kind })
+              .eq("story_id", storyId).eq("user_id", currentUser.id);
           } else {
-            const res = await supabase
+            res = await supabase
               .from("story_reactions")
-              .insert({ story_id: storyId, user_id: currentUser.id, kind: "happened_to_me" });
-            if (res && res.error) throw res.error;
+              .insert({ story_id: storyId, user_id: currentUser.id, kind });
           }
+          if (res && res.error) throw res.error;
           await loadReaction();
         } catch (e) {
           setSocialStatus(tx("Could not update your reaction.", "تعذر تحديث تفاعلك."), true);
+        }
+      }
+
+      // Plain click on the main button: remove my reaction if I have
+      // one, otherwise set the default 'happened_to_me'.
+      async function toggleReaction() {
+        if (!reactionAvailable) return;
+        if (reactionMyKind) {
+          await setReaction(reactionMyKind);
+        } else {
+          await setReaction(DEFAULT_REACTION);
         }
       }
 
@@ -994,7 +1100,56 @@
       }
 
       function wireSocial() {
-        if (reactionBtn) reactionBtn.addEventListener("click", toggleReaction);
+        if (reactionBtn) {
+          // Long-press (touch/mouse hold) opens the emoji picker; the
+          // click that follows a long-press must not also toggle.
+          let pressTimer = null;
+          let suppressClick = false;
+          reactionBtn.addEventListener("pointerdown", () => {
+            pressTimer = setTimeout(() => { suppressClick = true; openPicker(); }, 550);
+          });
+          ["pointerup", "pointerleave", "pointercancel"].forEach((ev) =>
+            reactionBtn.addEventListener(ev, () => {
+              if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
+            })
+          );
+          reactionBtn.addEventListener("click", () => {
+            if (suppressClick) { suppressClick = false; return; }
+            toggleReaction();
+          });
+        }
+        if (reactionWrap) {
+          // Hovering the reaction button ~600ms opens the picker too.
+          let hoverTimer = null;
+          let closeTimer = null;
+          reactionWrap.addEventListener("mouseenter", () => {
+            if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+            hoverTimer = setTimeout(openPicker, 600);
+          });
+          reactionWrap.addEventListener("mouseleave", () => {
+            if (hoverTimer) { clearTimeout(hoverTimer); hoverTimer = null; }
+            closeTimer = setTimeout(closePicker, 300);
+          });
+        }
+        if (reactionCaret) {
+          reactionCaret.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (pickerOpen()) closePicker(); else openPicker();
+          });
+        }
+        if (reactionPicker) {
+          reactionPicker.addEventListener("click", (e) => {
+            const btn = e.target.closest("[data-kind]");
+            if (!btn) return;
+            setReaction(btn.getAttribute("data-kind"));
+          });
+        }
+        document.addEventListener("click", (e) => {
+          if (reactionWrap && !reactionWrap.contains(e.target)) closePicker();
+        });
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") closePicker();
+        });
         if (shareBtn) shareBtn.addEventListener("click", shareOutside);
         if (sendFriendBtn) {
           sendFriendBtn.addEventListener("click", () => {
