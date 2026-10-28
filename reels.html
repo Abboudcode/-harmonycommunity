@@ -209,6 +209,8 @@
     .reel-text { font-size: 0.9rem; color: #cbd5e1; margin-top: 0.3rem; word-break: break-word; }
     .reel-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 0.7rem; font-size: 0.8rem; color: #94a3b8; }
     .reel-open { color: #a5b4fc; font-weight: 700; }
+    .reel-social { display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; align-items: center; margin-top: 0.55rem; font-size: 0.85rem; color: #e5e7eb; }
+    .reel-social a { color: #a5b4fc; font-weight: 600; }
     .reels-cta { display: inline-block; background: #4b6fff; color: #ffffff; font-weight: 700; padding: 0.6rem 1.3rem; border-radius: 999px; }
 
     footer {
@@ -373,11 +375,12 @@
           const card = document.createElement("div");
           card.className = "reel";
           card.innerHTML = `
-            <video controls playsinline loop muted preload="metadata" src="${escapeHtml(s._safeUrl)}"></video>
+            <video controls playsinline loop muted preload="metadata" data-story-id="${String(s.id)}" src="${escapeHtml(s._safeUrl)}"></video>
             <div class="reel-info">
               <div class="reel-tag">${escapeHtml(catLabel(s.category))}</div>
               <div class="reel-title">${escapeHtml(s.title || "")}</div>
               <div class="reel-text">${escapeHtml(snippet)}</div>
+              <div class="reel-social" data-social-for="${String(s.id)}"></div>
               <div class="reel-footer">
                 <span>${s.is_anonymous ? (currentLang === "ar" ? "مجهول" : "Anonymous") : (currentLang === "ar" ? "عضو" : "Member")} · ${escapeHtml(formatDate(s.created_at))}</span>
                 <a class="reel-open" href="story.html?id=${encodeURIComponent(String(s.id))}">${currentLang === "ar" ? "افتح القصة" : "Open story"}</a>
@@ -388,16 +391,22 @@
         });
 
         // Play the reel on screen, pause the rest (muted autoplay, like other reels feeds).
+        // The first time a reel comes into view, record one view for it.
         if ("IntersectionObserver" in window) {
           observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
               const v = entry.target;
-              if (entry.isIntersecting) { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+              if (entry.isIntersecting) {
+                const p = v.play(); if (p && p.catch) p.catch(() => {});
+                const sid = v.getAttribute("data-story-id");
+                if (sid && !viewedIds.has(sid)) { viewedIds.add(sid); recordView(sid); }
+              }
               else { v.pause(); }
             });
           }, { threshold: 0.55 });
           reelsList.querySelectorAll("video").forEach((v) => observer.observe(v));
         }
+        loadSocial();
       }
 
       const supabase = window.HarmonySite.client;
@@ -415,6 +424,7 @@
             return;
           }
           const user = data.user;
+          currentUserId = user.id;
           const meta = user.user_metadata || {};
           const displayName = meta.display_name || "Member";
           const alwaysAnon = !!meta.always_anonymous;
@@ -422,6 +432,57 @@
             ? (lang === "ar" ? "مسجّل: مجهول (الاسم مخفي)" : "Signed in: Anonymous (name hidden)")
             : (lang === "ar" ? "مسجّل: " + displayName : "Signed in: " + displayName);
         } catch (e) {}
+      }
+
+
+      const REACTION_EMOJI = { like: "👍", love: "❤️", happened_to_me: "🤝", support: "🫂", wow: "😮", sad: "😢" };
+      const socialByStory = {};
+      const viewedIds = new Set();
+      let currentUserId = null;
+
+      function socialLine(id) {
+        const m = socialByStory[String(id)] || { total: 0, byKind: {}, comments: 0, views: 0 };
+        const parts = [];
+        const kinds = Object.entries(m.byKind).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]).slice(0, 3);
+        if (kinds.length) parts.push(kinds.map(([k, n]) => (REACTION_EMOJI[k] || "") + " " + n).join(" · "));
+        else parts.push((currentLang === "ar" ? "لا تفاعلات بعد" : "No reactions yet"));
+        parts.push("💬 " + m.comments);
+        parts.push("👁 " + m.views);
+        return parts.join("   ");
+      }
+
+      function paintSocial() {
+        document.querySelectorAll("[data-social-for]").forEach((el) => {
+          el.textContent = socialLine(el.getAttribute("data-social-for"));
+        });
+      }
+
+      async function loadSocial() {
+        const ids = allReels.map((s) => s.id);
+        if (!ids.length) return;
+        ids.forEach((id) => { socialByStory[String(id)] = { total: 0, byKind: {}, comments: 0, views: 0 }; });
+        try {
+          const { data } = await supabase.from("story_reactions").select("story_id, kind").in("story_id", ids);
+          (data || []).forEach((r) => {
+            const m = socialByStory[String(r.story_id)]; if (!m) return;
+            m.total += 1; m.byKind[r.kind] = (m.byKind[r.kind] || 0) + 1;
+          });
+        } catch (e) {}
+        try {
+          const { data } = await supabase.from("story_comments").select("story_id").in("story_id", ids);
+          (data || []).forEach((c) => { const m = socialByStory[String(c.story_id)]; if (m) m.comments += 1; });
+        } catch (e) {}
+        try {
+          const { data } = await supabase.from("story_views").select("story_id").in("story_id", ids);
+          (data || []).forEach((v) => { const m = socialByStory[String(v.story_id)]; if (m) m.views += 1; });
+        } catch (e) {}
+        paintSocial();
+      }
+
+      async function recordView(storyId) {
+        const m = socialByStory[String(storyId)];
+        if (m) { m.views += 1; paintSocial(); }
+        try { await supabase.from("story_views").insert({ story_id: Number(storyId), viewer_id: currentUserId }); } catch (e) {}
       }
 
       async function loadReels() {
