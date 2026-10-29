@@ -209,8 +209,21 @@
     .reel-text { font-size: 0.9rem; color: #cbd5e1; margin-top: 0.3rem; word-break: break-word; }
     .reel-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 0.7rem; font-size: 0.8rem; color: #94a3b8; }
     .reel-open { color: #a5b4fc; font-weight: 700; }
-    .reel-social { display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; align-items: center; margin-top: 0.55rem; font-size: 0.85rem; color: #e5e7eb; }
-    .reel-social a { color: #a5b4fc; font-weight: 600; }
+    .reel-summary { margin-top: 0.55rem; font-size: 0.85rem; color: #e5e7eb; min-height: 1.3em; }
+    .reel-actions { display: flex; gap: 1.15rem; align-items: flex-start; margin-top: 0.45rem; }
+    .reel-action-wrap { position: relative; display: flex; flex-direction: column; align-items: center; }
+    .reel-action { display: flex; flex-direction: column; align-items: center; gap: 0.18rem; background: none; border: none; color: #e5e7eb; font-family: inherit; text-decoration: none; }
+    button.reel-action { cursor: pointer; padding: 0; }
+    .reel-action-circle { width: 42px; height: 42px; border-radius: 999px; background: rgba(255, 255, 255, 0.10); border: 1px solid rgba(255, 255, 255, 0.22); display: flex; align-items: center; justify-content: center; font-size: 1.12rem; line-height: 1; }
+    .reel-action.active .reel-action-circle { background: rgba(99, 102, 241, 0.45); border-color: #a5b4fc; }
+    .reel-action-count { font-size: 0.78rem; font-weight: 700; color: #e5e7eb; }
+    .reel-emoji-gray { filter: grayscale(1); opacity: 0.65; }
+    .reel-picker { position: absolute; bottom: 76px; left: 50%; transform: translateX(-50%); display: none; gap: 0.15rem; background: rgba(17, 24, 39, 0.96); border: 1px solid rgba(255, 255, 255, 0.22); border-radius: 999px; padding: 0.35rem 0.5rem; z-index: 6; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35); }
+    .reel-picker.open { display: flex; }
+    .reel-picker button { background: none; border: none; font-size: 1.25rem; line-height: 1; cursor: pointer; padding: 0.22rem; border-radius: 999px; font-family: inherit; }
+    .reel-picker button:hover { background: rgba(255, 255, 255, 0.14); }
+    .reel-picker button.mine { background: rgba(255, 255, 255, 0.18); }
+    .reel-note { display: none; margin-top: 0.5rem; font-size: 0.82rem; font-weight: 600; color: #fda4af; }
     .reels-cta { display: inline-block; background: #4b6fff; color: #ffffff; font-weight: 700; padding: 0.6rem 1.3rem; border-radius: 999px; }
 
     footer {
@@ -380,7 +393,25 @@
               <div class="reel-tag">${escapeHtml(catLabel(s.category))}</div>
               <div class="reel-title">${escapeHtml(s.title || "")}</div>
               <div class="reel-text">${escapeHtml(snippet)}</div>
-              <div class="reel-social" data-social-for="${String(s.id)}"></div>
+              <div class="reel-summary" data-summary-for="${String(s.id)}"></div>
+              <div class="reel-actions">
+                <div class="reel-action-wrap">
+                  <div class="reel-picker" data-picker-for="${String(s.id)}">${pickerHtml(s.id)}</div>
+                  <button type="button" class="reel-action" data-react-for="${String(s.id)}" aria-pressed="false" aria-label="${escapeHtml(tx("Happened to me", "صار معي"))}" title="${escapeHtml(tx("Tap to react — hold for more emojis", "اضغط للتفاعل — اضغط مطولاً لمزيد من الرموز"))}">
+                    <span class="reel-action-circle"><span data-react-emoji class="reel-emoji-gray">🤝</span></span>
+                    <span class="reel-action-count" data-react-count>0</span>
+                  </button>
+                </div>
+                <a class="reel-action" href="story.html?id=${encodeURIComponent(String(s.id))}" aria-label="${escapeHtml(tx("Comments", "التعليقات"))}">
+                  <span class="reel-action-circle">💬</span>
+                  <span class="reel-action-count" data-comment-count>0</span>
+                </a>
+                <div class="reel-action" aria-label="${escapeHtml(tx("Views", "المشاهدات"))}">
+                  <span class="reel-action-circle">👁</span>
+                  <span class="reel-action-count" data-view-count>0</span>
+                </div>
+              </div>
+              <div class="reel-note" data-note-for="${String(s.id)}"></div>
               <div class="reel-footer">
                 <span>${s.is_anonymous ? (currentLang === "ar" ? "مجهول" : "Anonymous") : (currentLang === "ar" ? "عضو" : "Member")} · ${escapeHtml(formatDate(s.created_at))}</span>
                 <a class="reel-open" href="story.html?id=${encodeURIComponent(String(s.id))}">${currentLang === "ar" ? "افتح القصة" : "Open story"}</a>
@@ -424,6 +455,7 @@
             return;
           }
           const user = data.user;
+          currentUser = user;
           currentUserId = user.id;
           const meta = user.user_metadata || {};
           const displayName = meta.display_name || "Member";
@@ -435,37 +467,119 @@
       }
 
 
+      // Same 6 emoji reactions as the app and the story page (website
+      // parity with app social-8/social-9): a tap on the reaction button
+      // toggles "Happened to me"; press-and-hold opens the emoji picker.
+      // One reaction per person per story.
+      const REACTIONS = [
+        { kind: "like", emoji: "👍", en: "Like", ar: "إعجاب" },
+        { kind: "love", emoji: "❤️", en: "Love", ar: "حب" },
+        { kind: "happened_to_me", emoji: "🤝", en: "Happened to me", ar: "صار معي" },
+        { kind: "support", emoji: "🫂", en: "Support", ar: "دعم" },
+        { kind: "wow", emoji: "😮", en: "Wow", ar: "واو" },
+        { kind: "sad", emoji: "😢", en: "Sad", ar: "حزين" },
+      ];
       const REACTION_EMOJI = { like: "👍", love: "❤️", happened_to_me: "🤝", support: "🫂", wow: "😮", sad: "😢" };
+      const DEFAULT_REACTION = "happened_to_me";
       const socialByStory = {};
       const viewedIds = new Set();
       let currentUserId = null;
+      let currentUser = null;
 
-      function socialLine(id) {
-        const m = socialByStory[String(id)] || { total: 0, byKind: {}, comments: 0, views: 0 };
-        const parts = [];
-        const kinds = Object.entries(m.byKind).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]).slice(0, 3);
-        if (kinds.length) parts.push(kinds.map(([k, n]) => (REACTION_EMOJI[k] || "") + " " + n).join(" · "));
-        else parts.push((currentLang === "ar" ? "لا تفاعلات بعد" : "No reactions yet"));
-        parts.push("💬 " + m.comments);
-        parts.push("👁 " + m.views);
-        return parts.join("   ");
+      function tx(en, ar) { return currentLang === "ar" ? ar : en; }
+
+      // "Real user" = signed in with a real account. Do NOT gate this on
+      // the always_anonymous user_metadata flag: that is a DISPLAY
+      // preference (name hidden), not a guest account. This is the app's
+      // social-9 fix — the story page uses the same check, and it is why
+      // signed-in members whose name is hidden can still react here.
+      function isRealUser() {
+        return !!currentUser && !currentUser.is_anonymous;
+      }
+
+      function emptySocial() { return { total: 0, byKind: {}, mine: null, comments: 0, views: 0 }; }
+
+      function pickerHtml(storyId) {
+        return REACTIONS.map((r) =>
+          '<button type="button" data-pick-kind="' + r.kind + '" data-pick-for="' + String(storyId) +
+          '" title="' + escapeHtml(tx(r.en, r.ar)) + '" aria-label="' + escapeHtml(tx(r.en, r.ar)) + '">' + r.emoji + "</button>"
+        ).join("");
       }
 
       function paintSocial() {
-        document.querySelectorAll("[data-social-for]").forEach((el) => {
-          el.textContent = socialLine(el.getAttribute("data-social-for"));
+        document.querySelectorAll("[data-summary-for]").forEach((el) => {
+          const m = socialByStory[el.getAttribute("data-summary-for")] || emptySocial();
+          const kinds = Object.entries(m.byKind).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]).slice(0, 3);
+          el.textContent = kinds.length
+            ? kinds.map(([k, n]) => (REACTION_EMOJI[k] || "") + " " + n).join(" · ")
+            : tx("No reactions yet", "لا تفاعلات بعد");
         });
+        document.querySelectorAll("[data-react-for]").forEach((btn) => {
+          const id = btn.getAttribute("data-react-for");
+          const m = socialByStory[id] || emptySocial();
+          const wrap = btn.closest(".reel");
+          if (!wrap) return;
+          const emojiEl = wrap.querySelector("[data-react-emoji]");
+          if (emojiEl) {
+            emojiEl.textContent = m.mine ? (REACTION_EMOJI[m.mine] || "🤝") : "🤝";
+            emojiEl.classList.toggle("reel-emoji-gray", !m.mine);
+          }
+          btn.classList.toggle("active", !!m.mine);
+          btn.setAttribute("aria-pressed", m.mine ? "true" : "false");
+          const rc = wrap.querySelector("[data-react-count]"); if (rc) rc.textContent = String(m.total);
+          const cc = wrap.querySelector("[data-comment-count]"); if (cc) cc.textContent = String(m.comments);
+          const vc = wrap.querySelector("[data-view-count]"); if (vc) vc.textContent = String(m.views);
+          const picker = wrap.querySelector("[data-picker-for]");
+          if (picker) picker.querySelectorAll("[data-pick-kind]").forEach((b) => {
+            b.classList.toggle("mine", !!m.mine && b.getAttribute("data-pick-kind") === m.mine);
+          });
+        });
+      }
+
+      const noteTimers = {};
+      function showReelNote(storyId, msg) {
+        const el = document.querySelector('[data-note-for="' + String(storyId) + '"]');
+        if (!el) return;
+        el.textContent = msg || "";
+        el.style.display = msg ? "block" : "none";
+        if (noteTimers[storyId]) clearTimeout(noteTimers[storyId]);
+        if (msg) noteTimers[storyId] = setTimeout(() => { el.style.display = "none"; }, 2600);
+      }
+
+      function closePickers(exceptId) {
+        document.querySelectorAll("[data-picker-for]").forEach((p) => {
+          if (String(exceptId) !== p.getAttribute("data-picker-for")) p.classList.remove("open");
+        });
+      }
+
+      function togglePicker(storyId) {
+        const p = document.querySelector('[data-picker-for="' + String(storyId) + '"]');
+        if (!p) return;
+        const willOpen = !p.classList.contains("open");
+        closePickers(storyId);
+        p.classList.toggle("open", willOpen);
+      }
+
+      async function ensureCurrentUser() {
+        if (currentUser) return currentUser;
+        try {
+          const { data } = await supabase.auth.getUser();
+          if (data && data.user) { currentUser = data.user; currentUserId = data.user.id; }
+        } catch (e) {}
+        return currentUser;
       }
 
       async function loadSocial() {
         const ids = allReels.map((s) => s.id);
         if (!ids.length) return;
-        ids.forEach((id) => { socialByStory[String(id)] = { total: 0, byKind: {}, comments: 0, views: 0 }; });
+        await ensureCurrentUser();
+        ids.forEach((id) => { socialByStory[String(id)] = emptySocial(); });
         try {
-          const { data } = await supabase.from("story_reactions").select("story_id, kind").in("story_id", ids);
+          const { data } = await supabase.from("story_reactions").select("story_id, user_id, kind").in("story_id", ids);
           (data || []).forEach((r) => {
             const m = socialByStory[String(r.story_id)]; if (!m) return;
             m.total += 1; m.byKind[r.kind] = (m.byKind[r.kind] || 0) + 1;
+            if (currentUser && String(r.user_id) === String(currentUser.id)) m.mine = r.kind;
           });
         } catch (e) {}
         try {
@@ -479,10 +593,96 @@
         paintSocial();
       }
 
+      // Set / replace / remove the signed-in user's reaction, with the
+      // same optimistic update + rollback the app uses.
+      async function applyReaction(storyId, kind) {
+        if (!isRealUser()) {
+          showReelNote(storyId, tx("Sign in to say this happened to you too.", "سجّل الدخول لتقول إن هذا صار معك أيضاً."));
+          return;
+        }
+        const key = String(storyId);
+        const prev = socialByStory[key] || emptySocial();
+        const next = { ...prev, byKind: { ...prev.byKind } };
+        if (prev.mine) { next.byKind[prev.mine] = Math.max(0, (next.byKind[prev.mine] || 0) - 1); next.total -= 1; }
+        if (kind) { next.byKind[kind] = (next.byKind[kind] || 0) + 1; next.total += 1; }
+        next.mine = kind;
+        socialByStory[key] = next;
+        paintSocial();
+        try {
+          let res;
+          if (kind === null) {
+            res = await supabase.from("story_reactions").delete().eq("story_id", storyId).eq("user_id", currentUser.id);
+          } else if (prev.mine) {
+            res = await supabase.from("story_reactions").update({ kind }).eq("story_id", storyId).eq("user_id", currentUser.id);
+          } else {
+            res = await supabase.from("story_reactions").insert({ story_id: storyId, user_id: currentUser.id, kind });
+          }
+          if (res && res.error) throw res.error;
+        } catch (e) {
+          socialByStory[key] = prev;
+          paintSocial();
+          showReelNote(storyId, tx("Could not update your reaction.", "تعذر تحديث تفاعلك."));
+        }
+      }
+
       async function recordView(storyId) {
         const m = socialByStory[String(storyId)];
         if (m) { m.views += 1; paintSocial(); }
         try { await supabase.from("story_views").insert({ story_id: Number(storyId), viewer_id: currentUserId }); } catch (e) {}
+      }
+
+      // Reaction interactions (delegated; the list re-renders on language change).
+      if (reelsList) {
+        let holdTimer = null;
+        let holdFired = false;
+
+        reelsList.addEventListener("click", (e) => {
+          const pickBtn = e.target.closest("[data-pick-kind]");
+          if (pickBtn) {
+            const sid = pickBtn.getAttribute("data-pick-for");
+            const kind = pickBtn.getAttribute("data-pick-kind");
+            const m = socialByStory[String(sid)] || emptySocial();
+            closePickers(null);
+            applyReaction(sid, m.mine === kind ? null : kind);
+            return;
+          }
+          const reactBtn = e.target.closest("[data-react-for]");
+          if (reactBtn) {
+            if (holdFired) { holdFired = false; return; }
+            const sid = reactBtn.getAttribute("data-react-for");
+            closePickers(null);
+            if (!isRealUser()) {
+              showReelNote(sid, tx("Sign in to say this happened to you too.", "سجّل الدخول لتقول إن هذا صار معك أيضاً."));
+              return;
+            }
+            const m = socialByStory[String(sid)] || emptySocial();
+            applyReaction(sid, m.mine ? null : DEFAULT_REACTION);
+            return;
+          }
+          if (!e.target.closest(".reel-action-wrap")) closePickers(null);
+        });
+
+        reelsList.addEventListener("pointerdown", (e) => {
+          const reactBtn = e.target.closest("[data-react-for]");
+          if (!reactBtn) return;
+          const sid = reactBtn.getAttribute("data-react-for");
+          holdFired = false;
+          if (holdTimer) clearTimeout(holdTimer);
+          holdTimer = setTimeout(() => {
+            holdFired = true;
+            if (!isRealUser()) {
+              showReelNote(sid, tx("Sign in to say this happened to you too.", "سجّل الدخول لتقول إن هذا صار معك أيضاً."));
+              return;
+            }
+            togglePicker(sid);
+          }, 450);
+        });
+        ["pointerup", "pointerleave", "pointercancel"].forEach((evt) => {
+          reelsList.addEventListener(evt, () => { if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; } });
+        });
+        reelsList.addEventListener("contextmenu", (e) => {
+          if (e.target.closest("[data-react-for]")) e.preventDefault();
+        });
       }
 
       async function loadReels() {
