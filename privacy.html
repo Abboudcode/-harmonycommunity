@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Privacy Policy – Harmony Community</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Privacy Policy for Harmony Community: what we collect, how we use it, and how you can delete your account."
+  />
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --bg-card: #ffffff;
+      --primary: #4b6fff;
+      --primary-soft: #e2e7ff;
+      --text-main: #1f2933;
+      --text-muted: #6b7280;
+      --border-soft: #e5e7eb;
+      --accent: #10b981;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #eef2ff, #f9fafb 40%);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .max-w {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* HEADER / NAV */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(180deg, #050817, #0f172a);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 0;
+      gap: 1rem;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.95rem;
+      color: #e5e7eb;
+    }
+
+    .nav-links a {
+      padding: 0.3rem 0.6rem;
+      border-radius: 999px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-links a:hover {
+      background: rgba(148, 163, 184, 0.22);
+      color: #ffffff;
+    }
+
+    .nav-links a.active {
+      background: rgba(129, 140, 248, 0.35);
+      color: #ffffff;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-ghost {
+      font-size: 0.9rem;
+      color: #cbd5f5;
+      white-space: nowrap;
+    }
+
+    .language-select {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.8);
+      color: #e5e7eb;
+      font-size: 0.8rem;
+      padding: 0.25rem 0.7rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .language-select option {
+      color: #111827;
+      background: #ffffff;
+    }
+
+    @media (max-width: 720px) {
+      .nav-links {
+        display: none;
+      }
+    }
+
+    main {
+      padding: 2.8rem 0 2.2rem;
+    }
+
+    .page-title-block {
+      max-width: 720px;
+      margin: 0 auto 2rem;
+      text-align: center;
+    }
+
+    .page-title-block h1 {
+      font-size: 1.6rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .page-title-block p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.5fr);
+      gap: 1.6rem;
+    }
+
+    @media (max-width: 900px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 1.4rem 1.3rem;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.03);
+      transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.07);
+      transform: translateY(-2px);
+      border-color: #e5e7eb;
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .lead {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 0.9rem;
+    }
+
+    .body-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.65rem;
+    }
+
+    .promise-list {
+      list-style: none;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      padding-left: 0;
+    }
+
+    .promise-list li {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .promise-dot {
+      color: #22c55e;
+      font-size: 0.9rem;
+      margin-top: 0.05rem;
+    }
+
+    .note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.8rem;
+    }
+
+    footer {
+      padding: 1rem 0 1.5rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: auto;
+    }
+
+    @media (max-width: 640px) {
+      main {
+        padding-top: 2.2rem;
+      }
+
+      .nav {
+        padding: 0.6rem 0;
+      }
+
+      .card {
+        padding: 1.2rem 1.05rem;
+      }
+    }
+  </style>
+<link rel="stylesheet" href="site-fixes.css">
+</head>
+<body>
+<div class="page">
+  <!-- HEADER -->
+  <header>
+    <div class="max-w nav">
+      <div class="nav-left">
+        <div class="logo-wrapper">
+          <!-- Arc + heartbeat + Harmony text logo -->
+          <svg
+            width="180"
+            height="40"
+            viewBox="0 0 180 40"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-label="Harmony logo"
+            role="img"
+          >
+            <!-- Arc -->
+            <path
+              d="M10 22 C25 5, 55 5, 70 22"
+              fill="none"
+              stroke="#40cbb4"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+            <!-- Heartbeat / wave -->
+            <path
+              d="M12 22 L22 22 L27 15 L33 30 L38 22 L68 22"
+              fill="none"
+              stroke="#f5c451"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <!-- Text -->
+            <text
+              x="78"
+              y="27"
+              font-family="Inter, system-ui, sans-serif"
+              font-size="18"
+              font-weight="600"
+              fill="#ffffff"
+            >
+              Harmony
+            </text>
+          </svg>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="index.html"
+           data-en="Home"
+           data-ar="الرئيسية">Home</a>
+        <a href="stories.html"
+           data-en="Stories"
+           data-ar="القصص">Stories</a>
+        <a href="reels.html" data-en="Reels" data-ar="ريلز">Reels</a>
+        <a href="share.html"
+           data-en="Share a Story"
+           data-ar="شارك قصة">Share a Story</a>
+        <a href="signin.html"
+           data-en="Profile"
+           data-ar="الملف الشخصي">Profile</a>
+        <a href="about.html" class="active"
+           data-en="About"
+           data-ar="عن هارموني">About</a>
+        <a href="faq.html"
+           data-en="FAQ"
+           data-ar="الأسئلة الشائعة">FAQ</a>
+        <a href="contact.html"
+           data-en="Contact"
+           data-ar="اتصال">Contact</a>
+      </nav>
+
+      <div class="nav-right">
+        <select id="language-select" class="language-select" aria-label="Choose language">
+          <option value="en">English</option>
+          <option value="ar">العربية</option>
+        </select>
+        <div class="nav-ghost" id="nav-auth-label"
+             data-en="Not signed in"
+             data-ar="غير مسجّل الدخول">
+          Not signed in
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <div class="max-w page-title-block">
+      <h1 data-en="Privacy Policy" data-ar="سياسة الخصوصية">Privacy Policy</h1>
+      <p data-en="How Harmony Community handles your information — in plain language." data-ar="كيف يتعامل مجتمع هارموني مع معلوماتك — بلغة بسيطة.">How Harmony Community handles your information — in plain language.</p>
+    </div>
+    <section>
+      <div class="max-w">
+        <div class="card" style="margin-top:1rem;">
+          <h3 data-en="What Harmony is" data-ar="ما هي هارموني">What Harmony is</h3>
+          <p class="body-text" data-en="Harmony Community is a place to share family stories, read other people’s stories, and respond with kindness. This policy explains what information the Harmony website and app collect and why. Last updated: October 29, 2026." data-ar="هارموني مجتمع لمشاركة قصص العائلة وقراءة قصص الآخرين والرد بلطف. تشرح هذه السياسة ما المعلومات التي يجمعها موقع وتطبيق هارموني ولماذا. آخر تحديث: 29 أكتوبر 2026.">Harmony Community is a place to share family stories, read other people’s stories, and respond with kindness. This policy explains what information the Harmony website and app collect and why. Last updated: October 29, 2026.</p>
+        </div>
+        <div class="card" style="margin-top:1rem;">
+          <h3 data-en="What we collect" data-ar="ما الذي نجمعه">What we collect</h3>
+          <p class="body-text" data-en="Your account: your email address, your display name (nickname), and your password — passwords are stored securely by our authentication provider and we never see them. What you share: the stories, comments, photos and videos you post, your reactions, your friend connections, stories shared with you, and reports you send us. Technical basics: which stories were viewed, so view counts work. We do NOT collect your location, your contacts, or advertising identifiers, and we show no ads." data-ar="حسابك: بريدك الإلكتروني واسم العرض (اللقب) وكلمة السر — كلمات السر محفوظة بشكل آمن لدى مزوّد تسجيل الدخول ولا نراها أبداً. ما تشاركه: القصص والتعليقات والصور والفيديوهات التي تنشرها وتفاعلاتك وصداقاتك والقصص المشاركة معك والبلاغات التي ترسلها. أساسيات تقنية: أي القصص تمت مشاهدتها لتعمل عدّادات المشاهدة. لا نجمع موقعك ولا جهات اتصالك ولا معرّفات إعلانية، ولا نعرض إعلانات.">Your account: your email address, your display name (nickname), and your password — passwords are stored securely by our authentication provider and we never see them. What you share: the stories, comments, photos and videos you post, your reactions, your friend connections, stories shared with you, and reports you send us. Technical basics: which stories were viewed, so view counts work. We do NOT collect your location, your contacts, or advertising identifiers, and we show no ads.</p>
+        </div>
+        <div class="card" style="margin-top:1rem;">
+          <h3 data-en="Anonymous posting" data-ar="النشر كمجهول">Anonymous posting</h3>
+          <p class="body-text" data-en="You can post stories and comments anonymously, or turn on “Always show me as Anonymous” in your Profile. Other people then see “Anonymous” instead of your name. Your account still exists privately so the app can work — anonymity hides your name from people, it does not create a second secret account." data-ar="يمكنك نشر القصص والتعليقات كمجهول، أو تشغيل «إظهاري كمجهول دائماً» في ملفك الشخصي. عندها يرى الآخرون «مجهول» بدل اسمك. حسابك يبقى موجوداً بشكل خاص ليعمل التطبيق — إخفاء الاسم يخفي اسمك عن الناس ولا ينشئ حساباً سرياً ثانياً.">You can post stories and comments anonymously, or turn on “Always show me as Anonymous” in your Profile. Other people then see “Anonymous” instead of your name. Your account still exists privately so the app can work — anonymity hides your name from people, it does not create a second secret account.</p>
+        </div>
+        <div class="card" style="margin-top:1rem;">
+          <h3 data-en="How we use it" data-ar="كيف نستخدم المعلومات">How we use it</h3>
+          <p class="body-text" data-en="Only to run Harmony: showing your stories and comments to the community, counting reactions and views, connecting friends, delivering shared stories, reviewing reports, and keeping the community safe. We never sell your information, and we never share it with advertisers." data-ar="فقط لتشغيل هارموني: عرض قصصك وتعليقاتك للمجتمع، وعدّ التفاعلات والمشاهدات، وربط الأصدقاء، وتوصيل القصص المشاركة، ومراجعة البلاغات، والحفاظ على أمان المجتمع. لا نبيع معلوماتك أبداً ولا نشاركها مع معلنين.">Only to run Harmony: showing your stories and comments to the community, counting reactions and views, connecting friends, delivering shared stories, reviewing reports, and keeping the community safe. We never sell your information, and we never share it with advertisers.</p>
+        </div>
+        <div class="card" style="margin-top:1rem;">
+          <h3 data-en="Who provides the storage" data-ar="من يوفّر التخزين">Who provides the storage</h3>
+          <p class="body-text" data-en="Harmony runs on Supabase (database, sign-in, and photo/video storage) and GitHub Pages (the website). Those providers process the information above only so Harmony can work. Photos and videos you attach are stored in public community storage so other members can see your stories — do not attach anything you need to keep private." data-ar="تعمل هارموني على Supabase (قاعدة البيانات وتسجيل الدخول وتخزين الصور والفيديو) وGitHub Pages (الموقع). تعالج هذه الجهات المعلومات أعلاه فقط ليعمل التطبيق. الصور والفيديوهات التي ترفقها تُحفظ في تخزين عام للمجتمع ليراها الأعضاء — لا ترفق أي شيء تحتاج أن يبقى خاصاً.">Harmony runs on Supabase (database, sign-in, and photo/video storage) and GitHub Pages (the website). Those providers process the information above only so Harmony can work. Photos and videos you attach are stored in public community storage so other members can see your stories — do not attach anything you need to keep private.</p>
+        </div>
+        <div class="card" style="margin-top:1rem;">
+          <h3 data-en="Your choices and deleting your account" data-ar="خياراتك وحذف حسابك">Your choices and deleting your account</h3>
+          <p class="body-text" data-en="You can edit or delete your own stories and comments at any time, and change your name or anonymous setting in your Profile. You can delete your whole account in the app or website: Profile → Delete my account. That permanently deletes your account, your stories, your comments, your reactions and your profile. It cannot be undone." data-ar="يمكنك تعديل أو حذف قصصك وتعليقاتك في أي وقت، وتغيير اسمك أو إعداد المجهول من ملفك الشخصي. ويمكنك حذف حسابك بالكامل من التطبيق أو الموقع: الملف الشخصي ← حذف حسابي. هذا يحذف نهائياً حسابك وقصصك وتعليقاتك وتفاعلاتك وملفك، ولا يمكن التراجع عنه.">You can edit or delete your own stories and comments at any time, and change your name or anonymous setting in your Profile. You can delete your whole account in the app or website: Profile → Delete my account. That permanently deletes your account, your stories, your comments, your reactions and your profile. It cannot be undone.</p>
+        </div>
+        <div class="card" style="margin-top:1rem;">
+          <h3 data-en="Reporting and moderation" data-ar="الإبلاغ والإشراف">Reporting and moderation</h3>
+          <p class="body-text" data-en="Every story and comment has a Report option. Reports are reviewed by the Harmony owner, and content that breaks the rules — bullying, disrespect, or anything unsafe — is removed. If your content is reported, we may remove it to keep the community safe." data-ar="لكل قصة وتعليق خيار إبلاغ. يراجع مالك هارموني البلاغات، ويُحذف أي محتوى يخالف القواعد — التنمّر أو قلة الاحترام أو أي شيء غير آمن. إذا تم الإبلاغ عن محتواك فقد نحذفه للحفاظ على أمان المجتمع.">Every story and comment has a Report option. Reports are reviewed by the Harmony owner, and content that breaks the rules — bullying, disrespect, or anything unsafe — is removed. If your content is reported, we may remove it to keep the community safe.</p>
+        </div>
+        <div class="card" style="margin-top:1rem;">
+          <h3 data-en="Children" data-ar="الأطفال">Children</h3>
+          <p class="body-text" data-en="Harmony is for adults sharing family stories. It is not directed at children under 13, and accounts are for people old enough to have their own email account." data-ar="هارموني للبالغين لمشاركة قصص العائلة. ليست موجّهة للأطفال دون 13 عاماً، والحسابات لمن هم في عمر يسمح بامتلاك بريد إلكتروني خاص.">Harmony is for adults sharing family stories. It is not directed at children under 13, and accounts are for people old enough to have their own email account.</p>
+        </div>
+        <div class="card" style="margin-top:1rem;">
+          <h3 data-en="Contact" data-ar="اتصال">Contact</h3>
+          <p class="body-text" data-en="Questions about privacy: hello@harmony.community. If this policy changes, the new version will be posted on this page with a new date." data-ar="أسئلة عن الخصوصية: hello@harmony.community. إذا تغيّرت هذه السياسة ستُنشر النسخة الجديدة على هذه الصفحة بتاريخ جديد.">Questions about privacy: hello@harmony.community. If this policy changes, the new version will be posted on this page with a new date.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    Harmony Community © 2025
+  </footer>
+</div>
+
+<!-- Supabase client -->
+<script src="site-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.8"></script>
+  <script src="site-utils.js"></script>
+
+<script>
+  (function () {
+    const LANG_KEY = 'harmony_lang';
+
+    const langSelect = document.getElementById('language-select');
+    const navAuthLabel = document.getElementById('nav-auth-label');
+
+    function getInitialLang() {
+      try {
+        const saved = localStorage.getItem(LANG_KEY);
+        if (saved === 'ar' || saved === 'en') return saved;
+      } catch (e) {
+        // ignore
+      }
+      return 'en';
+    }
+
+    function applyLanguage(lang) {
+      const elements = document.querySelectorAll('[data-en]');
+      elements.forEach(el => {
+        const en = el.getAttribute('data-en');
+        const ar = el.getAttribute('data-ar') || en;
+        el.textContent = (lang === 'ar') ? ar : en;
+      });
+
+      document.documentElement.lang = (lang === 'ar') ? 'ar' : 'en';
+      document.documentElement.dir  = (lang === 'ar') ? 'rtl' : 'ltr';
+    }
+
+    function updateNavLabelNotSigned(lang) {
+      if (!navAuthLabel) return;
+      const en = navAuthLabel.getAttribute('data-en') || 'Not signed in';
+      const ar = navAuthLabel.getAttribute('data-ar') || en;
+      navAuthLabel.textContent = (lang === 'ar') ? ar : en;
+    }
+
+    // Supabase auth label (same project)
+    const SUPABASE_URL = window.HARMONY_SITE_CONFIG.url;
+    const SUPABASE_ANON_KEY = window.HARMONY_SITE_CONFIG.publicKey;
+    const supabase = window.HarmonySite.client;
+
+    async function refreshUserLabel(langOverride) {
+      const lang = langOverride || (document.documentElement.lang || 'en');
+
+      const { data, error } = await supabase.auth.getUser();
+      if (error || !data || !data.user) {
+        updateNavLabelNotSigned(lang);
+        return;
+      }
+
+      const user = data.user;
+      const meta = user.user_metadata || {};
+      const displayName = meta.display_name || "Member";
+      const alwaysAnon = !!meta.always_anonymous;
+
+      let label;
+      if (alwaysAnon) {
+        label = (lang === 'ar')
+          ? 'مسجّل: مجهول (الاسم مخفي)'
+          : 'Signed in: Anonymous (name hidden)';
+      } else {
+        label = (lang === 'ar')
+          ? 'مسجّل: ' + displayName
+          : 'Signed in: ' + displayName;
+      }
+
+      if (navAuthLabel) {
+        navAuthLabel.textContent = label;
+      }
+    }
+
+    // === Init language from localStorage ===
+    const initialLang = getInitialLang();
+    applyLanguage(initialLang);
+
+    if (langSelect) {
+      langSelect.value = initialLang;
+      langSelect.addEventListener('change', () => {
+        const lang = langSelect.value;
+        try {
+          localStorage.setItem(LANG_KEY, lang);
+        } catch (e) {}
+        applyLanguage(lang);
+        refreshUserLabel(lang);
+      });
+    }
+
+    // Initial auth label
+    refreshUserLabel(initialLang);
+  })();
+</script>
+</body>
+</html>

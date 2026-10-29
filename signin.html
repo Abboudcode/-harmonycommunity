@@ -539,6 +539,13 @@
             <div style="margin-top:0.9rem;">
               <button id="profile-signout-btn" class="btn-secondary" type="button" style="color:#dc2626;border-color:#fecaca;" data-en="Sign out" data-ar="تسجيل الخروج">Sign out</button>
             </div>
+            <div style="margin-top:1.1rem;border-top:1px solid #e5e7eb;padding-top:0.9rem;">
+              <a href="privacy.html" class="btn-link" data-en="Privacy Policy" data-ar="سياسة الخصوصية">Privacy Policy</a>
+              <div style="margin-top:0.7rem;">
+                <button id="profile-delete-btn" class="btn-secondary" type="button" style="color:#dc2626;border-color:#fca5a5;" data-en="Delete my account" data-ar="حذف حسابي">Delete my account</button>
+              </div>
+              <p class="note" style="margin-top:0.4rem;" data-en="Deleting your account is permanent: your account, stories, comments and reactions are deleted and cannot be brought back." data-ar="حذف الحساب نهائي: يُحذف حسابك وقصصك وتعليقاتك وتفاعلاتك ولا يمكن استرجاعها.">Deleting your account is permanent: your account, stories, comments and reactions are deleted and cannot be brought back.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -1191,6 +1198,37 @@
           const { error } = await supabase.auth.signOut();
           if (error) profileStatus(error.message, true);
           else refreshUserLabel();
+        });
+
+        // Delete account (store requirement, parity with the app): confirm,
+        // remove the member's uploaded files (under <user id>/ in both
+        // buckets), then delete_own_account() removes their stories,
+        // comments, reactions, profile and the account itself. Until that
+        // function exists (add-reports-and-account-deletion.sql) this fails
+        // with a friendly message and deletes nothing.
+        const delBtn = document.getElementById("profile-delete-btn");
+        if (delBtn) delBtn.addEventListener("click", async () => {
+          const { data } = await supabase.auth.getUser();
+          const me = data && data.user;
+          if (!me) return;
+          const ok = window.confirm(currentLang === "ar"
+            ? "حذف حسابك؟ هذا نهائي — سيتم حذف حسابك وقصصك وتعليقاتك وتفاعلاتك ولا يمكن استرجاعها."
+            : "Delete your account? This is permanent — your account, your stories, your comments and your reactions will be deleted and cannot be brought back.");
+          if (!ok) return;
+          for (const bucket of ["media", "story-media"]) {
+            try {
+              const { data: files } = await supabase.storage.from(bucket).list(me.id);
+              if (files && files.length) await supabase.storage.from(bucket).remove(files.map((f) => me.id + "/" + f.name));
+            } catch (e) { /* best effort only */ }
+          }
+          const { error } = await supabase.rpc("delete_own_account");
+          if (error) {
+            profileStatus(currentLang === "ar" ? "تعذر حذف حسابك الآن. حاول مرة أخرى لاحقاً." : "Could not delete your account yet. Please try again later.", true);
+            return;
+          }
+          try { await supabase.auth.signOut(); } catch (e) { /* account is already gone */ }
+          profileStatus(currentLang === "ar" ? "تم حذف حسابك." : "Your account has been deleted.", false);
+          refreshUserLabel();
         });
       }
 

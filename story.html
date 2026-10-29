@@ -418,6 +418,7 @@
             <button id="comment-btn" class="social-btn" type="button">Comment</button>
             <button id="share-btn" class="social-btn" type="button" data-en="Share story" data-ar="مشاركة القصة">Share story</button>
             <button id="send-friend-btn" class="social-btn" type="button" style="display:none" data-en="Send to a friend" data-ar="إرسال إلى صديق">Send to a friend</button>
+            <button id="report-btn" class="social-btn" type="button" style="display:none" data-en="Report" data-ar="إبلاغ">Report</button>
           </div>
           <div id="reaction-note" class="social-note"></div>
           <div id="social-status" class="social-status"></div>
@@ -517,6 +518,7 @@
       const reactionNote = document.getElementById("reaction-note");
       const shareBtn = document.getElementById("share-btn");
       const sendFriendBtn = document.getElementById("send-friend-btn");
+      const reportBtn = document.getElementById("report-btn");
       const socialStatus = document.getElementById("social-status");
       const sharePanel = document.getElementById("share-panel");
       const shareMessageInput = document.getElementById("share-message");
@@ -1007,6 +1009,34 @@
         }
       }
 
+      // Report a story or a comment (store requirement for user content,
+      // parity with the app). Rows land in content_reports
+      // (add-reports-and-account-deletion.sql); the owner reviews them in
+      // the Supabase dashboard. Until that SQL runs this fails with a
+      // friendly message. Real user = signed in and not an anonymous
+      // guest account — the always_anonymous display flag must NOT gate
+      // this (same rule as reactions / app social-9).
+      async function reportContent(target, forComment) {
+        const say = forComment ? setCommentStatus : setSocialStatus;
+        if (!currentUser || currentUser.is_anonymous) {
+          say(tx("Sign in to report this.", "سجّل الدخول للإبلاغ عن هذا."), true);
+          return;
+        }
+        if (!window.confirm(tx("Report this to the Harmony team? We will review it and remove it if it breaks the rules.", "إبلاغ فريق هارموني عن هذا؟ سنراجعه ونحذفه إذا خالف القواعد."))) return;
+        try {
+          const { error } = await supabase.from("content_reports").insert({
+            reporter_id: currentUser.id,
+            story_id: target.storyId != null ? Number(target.storyId) : null,
+            comment_id: target.commentId != null ? Number(target.commentId) : null,
+            reason: "Reported on Harmony website",
+          });
+          if (error) throw error;
+          say(tx("Thank you — this was reported. We will review it.", "شكراً — تم إرسال البلاغ. سنراجعه."), false);
+        } catch (e) {
+          say(tx("Could not send the report yet. Please try again later.", "تعذر إرسال البلاغ الآن. حاول مرة أخرى لاحقاً."), true);
+        }
+      }
+
       async function shareOutside() {
         const url = storyLink();
         const title = storyData ? (storyData.title || "Harmony story") : "Harmony story";
@@ -1161,6 +1191,7 @@
           if (e.key === "Escape") closePicker();
         });
         if (shareBtn) shareBtn.addEventListener("click", shareOutside);
+        if (reportBtn) reportBtn.addEventListener("click", () => { void reportContent({ storyId: storyId }, false); });
         if (sendFriendBtn) {
           sendFriendBtn.addEventListener("click", () => {
             if (!currentUser) {
@@ -1255,7 +1286,9 @@
                     '<button type="button" data-cedit="' + c.id + '">' + escapeHtml(tx("Edit", "تعديل")) + "</button>" +
                     '<button type="button" class="danger" data-cdel="' + c.id + '">' + escapeHtml(tx("Delete", "حذف")) + "</button>" +
                   "</div>"
-                : "");
+                : '<div class="comment-actions">' +
+                    '<button type="button" data-creport="' + c.id + '" style="color:var(--text-muted)">' + escapeHtml(tx("Report", "إبلاغ")) + "</button>" +
+                  "</div>");
           }
           return (
             '<div class="comment-row">' +
@@ -1322,6 +1355,11 @@
       function wireCommentClicks() {
         if (!commentsList) return;
         commentsList.addEventListener("click", async (e) => {
+          const reportCBtn = e.target.closest("[data-creport]");
+          if (reportCBtn) {
+            await reportContent({ commentId: reportCBtn.getAttribute("data-creport"), storyId: storyId }, true);
+            return;
+          }
           const editBtn = e.target.closest("[data-cedit]");
           const delBtn = e.target.closest("[data-cdel]");
           const saveBtn = e.target.closest("[data-csave]");
@@ -1512,6 +1550,7 @@
           updateOwnerUI();
           if (socialRow) socialRow.style.display = "block";
           if (sendFriendBtn) sendFriendBtn.style.display = currentUser ? "inline-flex" : "none";
+          if (reportBtn) reportBtn.style.display = (currentUser && data.user_id && String(data.user_id) === String(currentUser.id)) ? "none" : "inline-flex";
           await loadReaction();
           await loadAuthor();
           await loadComments(true);
