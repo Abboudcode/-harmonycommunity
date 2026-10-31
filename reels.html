@@ -233,6 +233,8 @@
       text-align: center;
       margin-top: auto;
     }
+  
+    a.nav-ghost { text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
   </style>
 <link rel="stylesheet" href="site-fixes.css">
 </head>
@@ -268,7 +270,7 @@
             <option value="en">English</option>
             <option value="ar">العربية</option>
           </select>
-          <div class="nav-ghost" id="nav-auth-label" data-en="Not signed in" data-ar="غير مسجّل الدخول">Not signed in</div>
+          <a class="nav-ghost" id="nav-auth-label" data-en="Not signed in" data-ar="غير مسجّل الدخول" href="signin.html">Not signed in</a>
         </div>
       </div>
     </header>
