@@ -163,6 +163,9 @@
       border-color: rgba(99, 102, 241, 0.35);
     }
 
+    .story-media { margin: 0.6rem 0; border-radius: 12px; overflow: hidden; background: #000; }
+    .story-media video, .story-media img { width: 100%; aspect-ratio: 4 / 5; max-height: 340px; object-fit: cover; display: block; border: 0; }
+
     .story-tag {
       display: inline-flex;
       align-items: center;
@@ -419,6 +422,16 @@
           const createdAt = s.created_at || "";
           const snippet = content.length > 140 ? content.slice(0, 140) + "…" : content;
 
+          // Inline media preview (matches the app): videos play muted on a
+          // loop right in the list; tapping the card opens the full story.
+          let mediaHtml = "";
+          const safeUrl = s.media_url && window.HarmonySite ? HarmonySite.safeMediaURL(s.media_url) : null;
+          if (safeUrl && (s.media_type || "").toLowerCase().startsWith("video")) {
+            mediaHtml = `<div class="story-media"><video src="${escapeHtml(safeUrl)}" autoplay muted loop playsinline preload="metadata"></video></div>`;
+          } else if (safeUrl && (s.media_type || "").toLowerCase().startsWith("image")) {
+            mediaHtml = `<div class="story-media"><img src="${escapeHtml(safeUrl)}" alt="" loading="lazy" /></div>`;
+          }
+
           const card = document.createElement("div");
           card.className = "story-card";
           card.tabIndex = 0;
@@ -427,6 +440,7 @@
           card.innerHTML = `
             <div class="story-tag">${escapeHtml(category)}</div>
             <div class="story-title">${escapeHtml(title)}</div>
+            ${mediaHtml}
             <div class="story-snippet">${escapeHtml(snippet)}</div>
             <div class="story-footer">
               <span>${escapeHtml(formatDate(createdAt))}</span>
