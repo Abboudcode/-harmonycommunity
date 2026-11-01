@@ -13,6 +13,23 @@
  function safeMediaURL(value){
   try{const u=new URL(value),base=new URL(config.url);return u.protocol==='https:'&&u.origin===base.origin&&!u.username&&!u.password&&['/storage/v1/object/public/media/','/storage/v1/object/public/story-media/'].some(p=>u.pathname.startsWith(p))?u.href:null;}catch{return null;}
  }
+ // Capture any password-recovery credentials from the URL *before* the
+ // Supabase client reads and clears them. Some in-app browsers (the Gmail /
+ // Google app webview this was found in on 2026-11-01) do not persist the
+ // session the SDK saves from the link, so the reset dialog opened but
+ // submitting failed with "Auth session missing!". The dialog keeps these
+ // in memory as a fallback and can finish the password change with them.
+ let urlRecovery=null,urlCode=null,urlTokenHash=null;
+ try{
+  const href=window.location.href,url=new URL(href),hashIdx=href.indexOf('#');
+  const fromHash=hashIdx>=0?new URLSearchParams(href.slice(hashIdx+1)):new URLSearchParams();
+  const pick=k=>url.searchParams.get(k)||fromHash.get(k);
+  if(pick('type')==='recovery'&&pick('access_token')&&pick('refresh_token')){
+   urlRecovery={access_token:pick('access_token'),refresh_token:pick('refresh_token')};
+  }
+  urlCode=url.searchParams.get('code');
+  urlTokenHash=pick('token_hash');
+ }catch{}
  const client=window.supabase&&config?.url&&config?.publicKey?window.supabase.createClient(config.url,config.publicKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}):null;
  window.HarmonySite={client,fileTypes,validateFile,safeMediaURL,text};
  if(!client){
@@ -33,11 +50,37 @@
   form.append(status,send,close);dialog.append(title,form);document.body.append(dialog);
   function translate(){dialog.querySelectorAll('[data-en]').forEach(n=>n.textContent=lang()==='ar'?n.dataset.ar:n.dataset.en);}
   new MutationObserver(translate).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});translate();
+  function tokenUserId(token){
+   try{const part=String(token).split('.')[1].replace(/-/g,'+').replace(/_/g,'/');return JSON.parse(decodeURIComponent(atob(part).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''))).sub||null;}catch{return null;}
+  }
+  async function recoverySession(){
+   // A session for a *different* account (an old sign-in in this browser)
+   // must not be used for this link's password change.
+   const wanted=urlRecovery?tokenUserId(urlRecovery.access_token):null;
+   try{const {data}=await client.auth.getSession();if(data?.session&&(!wanted||data.session.user?.id===wanted))return data.session;}catch{}
+   if(urlRecovery){try{const r=await client.auth.setSession(urlRecovery);if(r?.data?.session)return r.data.session;}catch{}}
+   if(urlCode){try{const r=await client.auth.exchangeCodeForSession(urlCode);if(r?.data?.session)return r.data.session;}catch{}}
+   if(urlTokenHash){try{const r=await client.auth.verifyOtp({token_hash:urlTokenHash,type:'recovery'});if(r?.data?.session)return r.data.session;}catch{}}
+   return null;
+  }
+  async function updateViaLinkToken(pw){
+   // Finish the change directly with the link's own access token — the
+   // auth server issued it for exactly this password change, and this
+   // works even when the browser would not persist any session at all.
+   const res=await fetch(config.url+'/auth/v1/user',{method:'PUT',headers:{'apikey':config.publicKey,'Authorization':'Bearer '+urlRecovery.access_token,'Content-Type':'application/json'},body:JSON.stringify({password:pw})});
+   if(!res.ok){let msg='';try{const j=await res.json();msg=j.msg||j.message||j.error_description||'';}catch{} throw Error(msg||('HTTP '+res.status));}
+   client.auth.setSession(urlRecovery).catch(()=>{});
+  }
   form.onsubmit=async e=>{
    e.preventDefault();if(send.disabled)return;
    if(password.value!==confirm.value){status.textContent=text('Passwords do not match.','كلمتا السر غير متطابقتين.');return;}
    send.disabled=true;
-   try{const {error}=await client.auth.updateUser({password:password.value});if(error)throw error;recovery=false;form.reset();status.textContent=text('Password updated. You can close this window.','تم تحديث كلمة السر. يمكنك إغلاق هذه النافذة.');}
+   try{
+    const session=await recoverySession();
+    if(session){const {error}=await client.auth.updateUser({password:password.value});if(error)throw error;}
+    else if(urlRecovery){await updateViaLinkToken(password.value);}
+    else{throw Error(text('This reset link has expired. Please request a new one from the sign-in page.','انتهت صلاحية رابط إعادة التعيين. اطلب رابطاً جديداً من صفحة تسجيل الدخول.'));}
+    recovery=false;form.reset();status.textContent=text('Password updated. You can close this window.','تم تحديث كلمة السر. يمكنك إغلاق هذه النافذة.');}
    catch(err){status.textContent=text('Could not update password: ','تعذر تحديث كلمة السر: ')+err.message;}
    finally{send.disabled=false;}
   };dialog.showModal();password.focus();
