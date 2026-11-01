@@ -1500,6 +1500,14 @@
 
         mediaHost.innerHTML = html;
         mediaHost.style.display = "block";
+
+        // If the story has a video cut, the player stays inside it and
+        // pauses at the cut's end. (loadStory selects "*", so trim_start
+        // / trim_end arrive with the story when the columns exist.)
+        if (isVideo && window.HarmonySite && HarmonySite.applyVideoTrim) {
+          const vid = mediaHost.querySelector("video");
+          if (vid) HarmonySite.applyVideoTrim(vid, data, { loop: false });
+        }
       }
 
       async function loadStory() {

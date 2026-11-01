@@ -123,7 +123,7 @@
       font-size:.92rem;
     }
 
-    input[type="text"], select, textarea{
+    input[type="text"], input[type="number"], select, textarea{
       width:100%;
       border-radius:12px;
       border:1px solid #d1d5db;
@@ -133,6 +133,7 @@
       background:#fff;
       transition:border-color .12s ease, box-shadow .12s ease;
     }
+    input[type="range"]{width:100%;accent-color:#4f46e5;cursor:pointer}
     textarea{min-height:170px;resize:vertical}
     input:focus, select:focus, textarea:focus{
       outline:none;
@@ -225,6 +226,39 @@
       color:#4f46e5;
       border:1px solid #e0e7ff;
     }
+
+    /* Photo edit + video cut (inside the attachment box) */
+    .edit-box{
+      margin-top:.85rem;
+      border-top:1px solid #eef2f7;
+      padding-top:.85rem;
+    }
+    .edit-box h3{font-size:.98rem;margin-bottom:.55rem}
+    .edit-preview{
+      width:100%;
+      display:block;
+      border-radius:12px;
+      border:1px solid var(--border-soft);
+      background:#0b1220;
+    }
+    img.edit-preview{height:auto}
+    video.edit-preview{max-height:340px}
+    .edit-actions{
+      display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;
+      margin-top:.6rem;
+    }
+    .edit-actions .btn-ghost.active{
+      background:#eef2ff;border-color:#6366f1;color:#4f46e5;font-weight:600;
+    }
+    .trim-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+      gap:.75rem;
+      margin-top:.7rem;
+    }
+    @media (max-width:560px){.trim-grid{grid-template-columns:minmax(0,1fr)}}
+    .trim-stepper{display:flex;gap:.4rem;align-items:center;flex-wrap:nowrap}
+    .trim-stepper .btn-ghost{padding:.55rem .8rem;flex:none}
     .side-pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem}
 
     .divider{height:1px;background:#eef2f7;margin:1rem 0}
@@ -393,6 +427,62 @@
                 data-ar="مسموح: صور أو فيديو. الأفضل يكون الحجم صغير ليتم الرفع بسرعة.">
                 Allowed: images or videos. Keep files small for faster upload.
               </div>
+
+              <!-- Photo editing: shown when a picture is attached. The
+                   edited result is what gets uploaded on publish. -->
+              <div class="edit-box" id="image-edit-box" style="display:none;">
+                <h3 data-en="Edit photo" data-ar="تعديل الصورة">Edit photo</h3>
+                <img id="image-edit-preview" class="edit-preview" alt="" />
+                <div class="edit-actions">
+                  <button class="btn-ghost" type="button" id="img-rotate-btn"
+                    data-en="Rotate" data-ar="تدوير">Rotate</button>
+                  <button class="btn-ghost" type="button" id="img-flip-btn"
+                    data-en="Flip" data-ar="قلب">Flip</button>
+                  <button class="btn-ghost" type="button" id="img-reset-btn"
+                    data-en="Reset" data-ar="إعادة ضبط">Reset</button>
+                </div>
+                <div class="edit-actions">
+                  <span class="hint" style="margin:0;" data-en="Crop:" data-ar="قصّ:">Crop:</span>
+                  <button class="btn-ghost crop-btn active" type="button" data-crop="original"
+                    data-en="Original" data-ar="الأصلي">Original</button>
+                  <button class="btn-ghost crop-btn" type="button" data-crop="1:1">1:1</button>
+                  <button class="btn-ghost crop-btn" type="button" data-crop="4:5">4:5</button>
+                  <button class="btn-ghost crop-btn" type="button" data-crop="16:9">16:9</button>
+                </div>
+              </div>
+
+              <!-- Video cut: shown when a video is attached. The preview
+                   plays only the selected part; the cut is saved with
+                   the story as trim_start / trim_end. -->
+              <div class="edit-box" id="video-trim-box" style="display:none;">
+                <h3 data-en="Video cut" data-ar="قصّ الفيديو">Video cut</h3>
+                <video id="video-trim-preview" class="edit-preview" controls playsinline preload="metadata"></video>
+                <div class="trim-grid">
+                  <div class="field" style="margin:0;">
+                    <label for="trim-start-num" data-en="Start (seconds)" data-ar="البداية (ثوانٍ)">Start (seconds)</label>
+                    <div class="trim-stepper">
+                      <button class="btn-ghost" type="button" id="trim-start-minus" aria-label="−0.5">−</button>
+                      <input id="trim-start-num" type="number" min="0" step="0.5" value="0" />
+                      <button class="btn-ghost" type="button" id="trim-start-plus" aria-label="+0.5">+</button>
+                    </div>
+                    <input id="trim-start-range" type="range" min="0" step="0.5" value="0" style="margin-top:.45rem;" />
+                  </div>
+                  <div class="field" style="margin:0;">
+                    <label for="trim-end-num" data-en="End (seconds)" data-ar="النهاية (ثوانٍ)">End (seconds)</label>
+                    <div class="trim-stepper">
+                      <button class="btn-ghost" type="button" id="trim-end-minus" aria-label="−0.5">−</button>
+                      <input id="trim-end-num" type="number" min="0" step="0.5" value="0" />
+                      <button class="btn-ghost" type="button" id="trim-end-plus" aria-label="+0.5">+</button>
+                    </div>
+                    <input id="trim-end-range" type="range" min="0" step="0.5" value="0" style="margin-top:.45rem;" />
+                  </div>
+                </div>
+                <div class="edit-actions">
+                  <button class="btn-ghost" type="button" id="trim-clear-btn"
+                    data-en="Clear cut" data-ar="إلغاء القصّ">Clear cut</button>
+                  <span class="hint" id="trim-summary" style="margin:0;"></span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -476,6 +566,21 @@
   const fileNameEl = document.getElementById("file-name");
   const fileSizeEl = document.getElementById("file-size");
   const fileTypePill = document.getElementById("file-type-pill");
+
+  // Photo edit + video cut controls
+  const imageEditBox = document.getElementById("image-edit-box");
+  const imageEditPreview = document.getElementById("image-edit-preview");
+  const imgRotateBtn = document.getElementById("img-rotate-btn");
+  const imgFlipBtn = document.getElementById("img-flip-btn");
+  const imgResetBtn = document.getElementById("img-reset-btn");
+  const videoTrimBox = document.getElementById("video-trim-box");
+  const videoTrimPreview = document.getElementById("video-trim-preview");
+  const trimStartNum = document.getElementById("trim-start-num");
+  const trimStartRange = document.getElementById("trim-start-range");
+  const trimEndNum = document.getElementById("trim-end-num");
+  const trimEndRange = document.getElementById("trim-end-range");
+  const trimClearBtn = document.getElementById("trim-clear-btn");
+  const trimSummary = document.getElementById("trim-summary");
 
   let currentLang = "en";
   let currentUser = null;
@@ -578,15 +683,257 @@
   if (pickVideoBtn) pickVideoBtn.addEventListener("click", () => pickFile("video"));
   if (removeFileBtn) removeFileBtn.addEventListener("click", () => {
     mediaInput.value = "";
-    updateFileUI(null);
+    setFile(null);
   });
 
   if (mediaInput) {
     mediaInput.addEventListener("change", () => {
       const file = mediaInput.files && mediaInput.files[0] ? mediaInput.files[0] : null;
-      updateFileUI(file);
+      setFile(file);
     });
   }
+
+  // ---------- Photo edit + video cut ----------
+  // selectedFile is the single source of truth for the attachment (the
+  // hidden file input only picks it). For photos the EDITED image is
+  // what uploads; for videos the cut is saved as trim_start / trim_end
+  // and every Harmony player honors it.
+  let selectedFile = null;
+  const imgState = { rotation: 0, flip: false, crop: "original" };
+  let editedImageBlob = null;      // set once the user actually edits
+  let editRenderPromise = Promise.resolve();
+  let editObjectUrl = null;        // object URL of the source file
+  let previewObjectUrl = null;     // object URL of the edited preview
+  let trimStart = 0, trimEnd = 0, videoDuration = 0, trimTouched = false;
+  let trimDetach = null;
+
+  function revokeUrl(which) {
+    const url = which === "edit" ? editObjectUrl : previewObjectUrl;
+    if (url && typeof URL !== "undefined" && URL.revokeObjectURL) {
+      try { URL.revokeObjectURL(url); } catch (e) {}
+    }
+    if (which === "edit") editObjectUrl = null; else previewObjectUrl = null;
+  }
+
+  function setFile(file) {
+    selectedFile = file;
+    resetEditors();
+    updateFileUI(file);
+    if (!file) return;
+    if (file.type && file.type.startsWith("image/")) setupImageEditor(file);
+    else if (file.type && file.type.startsWith("video/")) setupVideoTrim(file);
+  }
+
+  function resetEditors() {
+    imgState.rotation = 0; imgState.flip = false; imgState.crop = "original";
+    editedImageBlob = null;
+    editRenderPromise = Promise.resolve();
+    trimStart = 0; trimEnd = 0; videoDuration = 0; trimTouched = false;
+    if (trimDetach) { trimDetach(); trimDetach = null; }
+    revokeUrl("edit"); revokeUrl("preview");
+    if (imageEditBox) imageEditBox.style.display = "none";
+    if (videoTrimBox) videoTrimBox.style.display = "none";
+    if (videoTrimPreview) {
+      try { videoTrimPreview.pause(); } catch (e) {}
+      videoTrimPreview.removeAttribute("src");
+    }
+    document.querySelectorAll(".crop-btn").forEach((b) =>
+      b.classList.toggle("active", b.getAttribute("data-crop") === "original"));
+    syncTrimInputs(null);
+  }
+
+  // ----- Photo editing (canvas) -----
+  function setupImageEditor(file) {
+    if (!imageEditBox) return;
+    imageEditBox.style.display = "block";
+    if (typeof URL !== "undefined" && URL.createObjectURL) {
+      editObjectUrl = URL.createObjectURL(file);
+      if (imageEditPreview) imageEditPreview.src = editObjectUrl;
+    }
+    renderEditedImage();
+  }
+
+  function renderEditedImage() {
+    const file = selectedFile;
+    if (!file || !(file.type || "").startsWith("image/")) { editedImageBlob = null; return; }
+    const untouched = imgState.rotation === 0 && !imgState.flip && imgState.crop === "original";
+    if (untouched) {
+      // No edits: upload the original file exactly as picked.
+      editedImageBlob = null;
+      editRenderPromise = Promise.resolve();
+      if (imageEditPreview && editObjectUrl) imageEditPreview.src = editObjectUrl;
+      return;
+    }
+    if (!editObjectUrl && typeof URL !== "undefined" && URL.createObjectURL) {
+      editObjectUrl = URL.createObjectURL(file);
+    }
+    if (!editObjectUrl) { editedImageBlob = null; return; }
+    editRenderPromise = new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
+          if (!w || !h) { editedImageBlob = null; resolve(); return; }
+          const size = HarmonySite.computeImageEditSize(w, h, imgState.crop, imgState.rotation);
+          const canvas = document.createElement("canvas");
+          canvas.width = size.width; canvas.height = size.height;
+          const ctx = canvas.getContext ? canvas.getContext("2d") : null;
+          if (!ctx || !canvas.toBlob) { editedImageBlob = null; resolve(); return; }
+          const cw = size.cropWidth, ch = size.cropHeight;
+          const sx = Math.max(0, Math.round((w - cw) / 2));
+          const sy = Math.max(0, Math.round((h - ch) / 2));
+          ctx.save();
+          ctx.translate(canvas.width / 2, canvas.height / 2);
+          ctx.rotate((imgState.rotation * Math.PI) / 180);
+          if (imgState.flip) ctx.scale(-1, 1);
+          ctx.drawImage(img, sx, sy, cw, ch, -cw / 2, -ch / 2, cw, ch);
+          ctx.restore();
+          const outType = (file.type === "image/png" || file.type === "image/webp") ? file.type : "image/jpeg";
+          canvas.toBlob((blob) => {
+            editedImageBlob = blob || null;
+            if (blob && imageEditPreview && typeof URL !== "undefined" && URL.createObjectURL) {
+              revokeUrl("preview");
+              previewObjectUrl = URL.createObjectURL(blob);
+              imageEditPreview.src = previewObjectUrl;
+            }
+            resolve();
+          }, outType, 0.92);
+        } catch (e) { editedImageBlob = null; resolve(); }
+      };
+      img.onerror = () => { editedImageBlob = null; resolve(); };
+      img.src = editObjectUrl;
+    });
+  }
+
+  if (imgRotateBtn) imgRotateBtn.addEventListener("click", () => {
+    imgState.rotation = (imgState.rotation + 90) % 360;
+    renderEditedImage();
+  });
+  if (imgFlipBtn) imgFlipBtn.addEventListener("click", () => {
+    imgState.flip = !imgState.flip;
+    renderEditedImage();
+  });
+  if (imgResetBtn) imgResetBtn.addEventListener("click", () => {
+    imgState.rotation = 0; imgState.flip = false; imgState.crop = "original";
+    document.querySelectorAll(".crop-btn").forEach((b) =>
+      b.classList.toggle("active", b.getAttribute("data-crop") === "original"));
+    renderEditedImage();
+  });
+  document.querySelectorAll(".crop-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      imgState.crop = btn.getAttribute("data-crop") || "original";
+      document.querySelectorAll(".crop-btn").forEach((b) =>
+        b.classList.toggle("active", b === btn));
+      renderEditedImage();
+    });
+  });
+
+  // ----- Video cut -----
+  function setupVideoTrim(file) {
+    if (!videoTrimBox) return;
+    videoTrimBox.style.display = "block";
+    if (typeof URL !== "undefined" && URL.createObjectURL) {
+      editObjectUrl = URL.createObjectURL(file);
+      if (videoTrimPreview) videoTrimPreview.src = editObjectUrl;
+    }
+  }
+
+  function fmtTime(s) {
+    s = Math.max(0, Number(s) || 0);
+    const m = Math.floor(s / 60);
+    const sec = Math.round((s - m * 60) * 10) / 10;
+    return m + ":" + (sec < 10 ? "0" : "") + sec;
+  }
+
+  // The cut to save with the story, or null for the full video. A range
+  // covering (practically) the whole video is not a cut.
+  function currentTrim() {
+    if (!trimTouched || !videoDuration) return null;
+    const t = HarmonySite.normalizeTrim(trimStart, trimEnd);
+    if (!t) return null;
+    if (t.start <= 0 && t.end >= videoDuration - 0.05) return null;
+    return t;
+  }
+
+  function attachTrimPreview() {
+    if (trimDetach) { trimDetach(); trimDetach = null; }
+    const t = currentTrim();
+    if (t && videoTrimPreview && window.HarmonySite && HarmonySite.applyVideoTrim) {
+      trimDetach = HarmonySite.applyVideoTrim(
+        videoTrimPreview, { trim_start: t.start, trim_end: t.end }, { loop: true });
+    }
+  }
+
+  function syncTrimInputs(source) {
+    const pairs = [
+      [trimStartNum, trimStart], [trimStartRange, trimStart],
+      [trimEndNum, trimEnd], [trimEndRange, trimEnd]
+    ];
+    pairs.forEach(([el, val]) => {
+      if (el && el !== source) el.value = String(Math.round(val * 10) / 10);
+    });
+    if (trimSummary) {
+      const t = currentTrim();
+      trimSummary.textContent = t
+        ? ((currentLang === "ar" ? "القصّ: " : "Cut: ") + fmtTime(t.start) + " – " + fmtTime(t.end))
+        : ((currentLang === "ar" ? "الفيديو كامل، بدون قصّ" : "Full video, no cut"));
+    }
+  }
+
+  // Keep start/end valid: inside the video and at least 1 second apart.
+  function setTrim(which, value, source) {
+    let v = Number(value);
+    if (!Number.isFinite(v)) v = 0;
+    if (videoDuration > 0) v = Math.min(Math.max(v, 0), videoDuration);
+    if (which === "start") {
+      trimStart = v;
+      if (videoDuration > 0 && trimEnd - trimStart < 1) {
+        trimEnd = Math.min(videoDuration, trimStart + 1);
+        if (trimEnd - trimStart < 1) trimStart = Math.max(0, trimEnd - 1);
+      }
+    } else {
+      trimEnd = v;
+      if (videoDuration > 0 && trimEnd - trimStart < 1) {
+        trimStart = Math.max(0, trimEnd - 1);
+        if (trimEnd - trimStart < 1) trimEnd = Math.min(videoDuration, trimStart + 1);
+      }
+    }
+    trimTouched = true;
+    syncTrimInputs(source);
+    attachTrimPreview();
+  }
+
+  if (videoTrimPreview) videoTrimPreview.addEventListener("loadedmetadata", () => {
+    const d = Number.isFinite(videoTrimPreview.duration) ? videoTrimPreview.duration : 0;
+    videoDuration = d;
+    trimStart = 0; trimEnd = d; trimTouched = false;
+    [trimStartRange, trimEndRange].forEach((r) => { if (r) r.max = String(d || 0); });
+    if (trimStartNum) trimStartNum.max = String(d || 0);
+    if (trimEndNum) trimEndNum.max = String(d || 0);
+    if (trimDetach) { trimDetach(); trimDetach = null; }
+    syncTrimInputs(null);
+  });
+
+  if (trimStartNum) trimStartNum.addEventListener("input", () => setTrim("start", trimStartNum.value, trimStartNum));
+  if (trimStartRange) trimStartRange.addEventListener("input", () => setTrim("start", trimStartRange.value, trimStartRange));
+  if (trimEndNum) trimEndNum.addEventListener("input", () => setTrim("end", trimEndNum.value, trimEndNum));
+  if (trimEndRange) trimEndRange.addEventListener("input", () => setTrim("end", trimEndRange.value, trimEndRange));
+
+  const steppers = [
+    ["trim-start-minus", "start", -0.5], ["trim-start-plus", "start", 0.5],
+    ["trim-end-minus", "end", -0.5], ["trim-end-plus", "end", 0.5]
+  ];
+  steppers.forEach(([id, which, delta]) => {
+    const btn = document.getElementById(id);
+    if (btn) btn.addEventListener("click", () =>
+      setTrim(which, (which === "start" ? trimStart : trimEnd) + delta, null));
+  });
+
+  if (trimClearBtn) trimClearBtn.addEventListener("click", () => {
+    trimStart = 0; trimEnd = videoDuration; trimTouched = false;
+    if (trimDetach) { trimDetach(); trimDetach = null; }
+    syncTrimInputs(null);
+  });
 
   function escapePathPart(s) {
     return String(s || "").replaceAll("/", "_").replaceAll("\\", "_").replaceAll("..", "_");
@@ -624,7 +971,7 @@
   }
 
   async function uploadMediaIfAny(userId) {
-    const file = mediaInput && mediaInput.files && mediaInput.files[0] ? mediaInput.files[0] : null;
+    const file = selectedFile || (mediaInput && mediaInput.files && mediaInput.files[0] ? mediaInput.files[0] : null);
     if (!file) return { media_url: null, media_type: null };
 
     HarmonySite.validateFile(file);
@@ -634,13 +981,18 @@
       throw new Error(currentLang === "ar" ? "الملف لازم يكون صورة أو فيديو فقط." : "File must be an image or a video.");
     }
 
+    // For photos, the edited image (if the user edited it) is uploaded
+    // instead of the original file.
+    const body = (isImg && editedImageBlob) ? editedImageBlob : file;
+    const bodyType = (isImg && editedImageBlob) ? (editedImageBlob.type || file.type) : file.type;
+
     // size limit (optional)
     const maxBytes = 20 * 1024 * 1024; // 25MB
-    if (file.size > maxBytes) {
+    if (body.size > maxBytes) {
       throw new Error(currentLang === "ar" ? "حجم الملف كبير جداً. جرّب ملف أصغر." : "File is too large. Please use a smaller file.");
     }
 
-    const ext = HarmonySite.fileTypes[file.type];
+    const ext = HarmonySite.fileTypes[bodyType] || HarmonySite.fileTypes[file.type];
     const safeExt = escapePathPart(ext);
     const ts = Date.now();
     const rand = crypto.randomUUID();
@@ -652,7 +1004,7 @@
     for (const bucket of MEDIA_BUCKETS) {
       const { error } = await supabase.storage
         .from(bucket)
-        .upload(path, file, { upsert: false, contentType: file.type || undefined });
+        .upload(path, body, { upsert: false, contentType: bodyType || undefined });
 
       if (!error) {
         usedBucket = bucket;
@@ -701,11 +1053,37 @@
       if (!title || title.length > 160 || !content || content.length > 10000) throw new Error(currentLang === "ar" ? "اكتب عنواناً حتى 160 حرفاً وقصة حتى 10000 حرف." : "Enter a title up to 160 characters and a story up to 10,000 characters.");
       disableForm(true);
       setStatus("Publishing…", "جاري النشر…", null);
+      await editRenderPromise; // make sure a photo edit has finished rendering
       media = await uploadMediaIfAny(user.id);
-      const result = await insertStory({title, content, category, is_anonymous: !!user.user_metadata?.always_anonymous || !!anonEl.checked, user_id: user.id, media_url: media.media_url, media_type: media.media_type});
+      const payload = {title, content, category, is_anonymous: !!user.user_metadata?.always_anonymous || !!anonEl.checked, user_id: user.id, media_url: media.media_url, media_type: media.media_type};
+      // Video cut: include the trim only when a cut is set. If the
+      // stories table does not have the trim columns yet (the feature's
+      // SQL has not run), retry once without them and tell the user the
+      // story posted but the cut was not saved.
+      const trim = (media && media.media_type === "video") ? currentTrim() : null;
+      let trimDropped = false;
+      let result;
+      if (trim) {
+        result = await insertStory({ ...payload, trim_start: trim.start, trim_end: trim.end });
+        if (result.error && /trim/i.test(String((result.error && result.error.message) || ""))) {
+          trimDropped = true;
+          result = await insertStory(payload);
+        }
+      } else {
+        result = await insertStory(payload);
+      }
       if (result.error) throw result.error;
       saved = true;
-      setStatus("Published successfully. Redirecting…", "تم النشر بنجاح. جاري التحويل…", "ok");
+      if (trimDropped) {
+        setStatus(
+          "Published successfully — but the cut was not saved yet. The full video was posted.",
+          "تم النشر بنجاح — لكن القصّ لم يُحفظ بعد. تم نشر الفيديو كاملاً.",
+          "ok"
+        );
+        await new Promise((r) => setTimeout(r, 2500)); // let the note be read before redirecting
+      } else {
+        setStatus("Published successfully. Redirecting…", "تم النشر بنجاح. جاري التحويل…", "ok");
+      }
       const id = result.data?.id;
       window.location.href = id ? "story.html?id=" + encodeURIComponent(String(id)) : "stories.html";
     } catch (error) {
@@ -732,8 +1110,8 @@
       try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
       applyLanguage(lang);
       // refresh file UI language labels
-      const file = mediaInput && mediaInput.files && mediaInput.files[0] ? mediaInput.files[0] : null;
-      updateFileUI(file);
+      updateFileUI(selectedFile);
+      syncTrimInputs(null);
       refreshNavAuth();
     });
   }

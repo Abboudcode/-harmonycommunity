@@ -13,6 +13,53 @@
  function safeMediaURL(value){
   try{const u=new URL(value),base=new URL(config.url);return u.protocol==='https:'&&u.origin===base.origin&&!u.username&&!u.password&&['/storage/v1/object/public/media/','/storage/v1/object/public/story-media/'].some(p=>u.pathname.startsWith(p))?u.href:null;}catch{return null;}
  }
+ // Video cuts (2026-11-01): stories may carry trim_start / trim_end in
+ // seconds (both NULL = uncut). A cut is valid only when both are set,
+ // end > start, and the selection is at least 1 second long.
+ function normalizeTrim(start,end){
+  if(start==null||end==null||start===''||end==='')return null; // both must be set (Number(null) is 0)
+  const s=Number(start),e=Number(end);
+  if(!Number.isFinite(s)||!Number.isFinite(e))return null;
+  if(s<0||e<=s||e-s<1)return null;
+  return {start:s,end:e};
+ }
+ function storyTrim(story){
+  if(!story)return null;
+  return normalizeTrim(story.trim_start,story.trim_end);
+ }
+ // Keep a <video> inside the story's cut: seek to the start on load and
+ // play, and at the end either loop back to the start ({loop:true}) or
+ // pause ({loop:false}). Untrimmed stories are left completely alone.
+ // Returns a detach function that removes the listeners.
+ function applyVideoTrim(video,story,options){
+  const trim=storyTrim(story);
+  if(!video||!trim||typeof video.addEventListener!=='function')return function(){};
+  const loop=!!(options&&options.loop),start=trim.start,end=trim.end;
+  if(loop)video.loop=false; // looping is handled here, at the cut points
+  function seekStart(){try{if(video.currentTime<start-0.05||video.currentTime>=end)video.currentTime=start;}catch{}}
+  function onTime(){
+   if(video.currentTime>=end){
+    if(loop){try{video.currentTime=start;}catch{}const p=video.play?video.play():null;if(p&&p.catch)p.catch(()=>{});}
+    else{try{video.currentTime=end;}catch{}if(video.pause)video.pause();}
+   }else if(video.currentTime<start-0.25){try{video.currentTime=start;}catch{}}
+  }
+  video.addEventListener('loadedmetadata',seekStart);
+  video.addEventListener('play',seekStart);
+  video.addEventListener('timeupdate',onTime);
+  if(video.readyState>=1)seekStart();
+  return function(){video.removeEventListener('loadedmetadata',seekStart);video.removeEventListener('play',seekStart);video.removeEventListener('timeupdate',onTime);};
+ }
+ // Photo editing geometry for the share page: the center-crop size for a
+ // crop ratio ('original' | '1:1' | '4:5' | '16:9') and the final canvas
+ // size once a rotation in degrees (0/90/180/270) is applied.
+ function computeImageEditSize(w,h,ratio,rotation){
+  w=Math.max(1,Math.round(Number(w)||0));h=Math.max(1,Math.round(Number(h)||0));
+  let cw=w,ch=h;
+  const target=ratio==='1:1'?1:ratio==='4:5'?4/5:ratio==='16:9'?16/9:0;
+  if(target){if(w/h>target)cw=Math.round(h*target);else ch=Math.round(w/target);}
+  const rot=((Math.round(Number(rotation)||0)%360)+360)%360;
+  return (rot===90||rot===270)?{width:ch,height:cw,cropWidth:cw,cropHeight:ch}:{width:cw,height:ch,cropWidth:cw,cropHeight:ch};
+ }
  // Capture any password-recovery credentials from the URL *before* the
  // Supabase client reads and clears them. Some in-app browsers (the Gmail /
  // Google app webview this was found in on 2026-11-01) do not persist the
@@ -35,7 +82,7 @@
   urlError=pick('error_code')||pick('error');
  }catch{}
  const client=window.supabase&&config?.url&&config?.publicKey?window.supabase.createClient(config.url,config.publicKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}):null;
- window.HarmonySite={client,fileTypes,validateFile,safeMediaURL,text};
+ window.HarmonySite={client,fileTypes,validateFile,safeMediaURL,text,normalizeTrim,storyTrim,applyVideoTrim,computeImageEditSize};
  if(!client){
   const warning=document.createElement('p');warning.setAttribute('role','alert');warning.className='site-warning';warning.textContent=text('Connection unavailable. Check your internet connection, then reload.','الاتصال غير متاح. تحقق من الإنترنت وأعد تحميل الصفحة.');document.body.prepend(warning);return;
  }

@@ -421,6 +421,13 @@
             </div>
           `;
           reelsList.appendChild(card);
+
+          // If the story has a video cut, the reel loops only the
+          // selected part of the video.
+          const reelVideo = card.querySelector("video");
+          if (reelVideo && window.HarmonySite && HarmonySite.applyVideoTrim) {
+            HarmonySite.applyVideoTrim(reelVideo, s, { loop: true });
+          }
         });
 
         // Play the reel on screen, pause the rest (muted autoplay, like other reels feeds).
@@ -691,9 +698,21 @@
         try {
           let { data, error } = await supabase
             .from("stories")
-            .select("id, title, content, category, is_anonymous, created_at, media_url, media_type")
+            .select("id, title, content, category, is_anonymous, created_at, media_url, media_type, trim_start, trim_end")
             .order("created_at", { ascending: false })
             .limit(60);
+
+          // Fallback for tables without the trim columns yet (the cut
+          // feature's SQL may not have run): retry without them.
+          if (error) {
+            const retry = await supabase
+              .from("stories")
+              .select("id, title, content, category, is_anonymous, created_at, media_url, media_type")
+              .order("created_at", { ascending: false })
+              .limit(60);
+            data = retry.data;
+            error = retry.error;
+          }
 
           if (error) {
             // Older tables without media columns simply have no reels yet.
