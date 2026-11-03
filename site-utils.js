@@ -138,15 +138,22 @@
   form.onsubmit=async e=>{
    e.preventDefault();if(send.disabled)return;
    if(password.value!==confirm.value){status.textContent=text('Passwords do not match.','كلمتا السر غير متطابقتين.');return;}
-   send.disabled=true;
+   send.disabled=true;let succeeded=false;
    try{
     const session=await recoverySession();
     if(session){const {error}=await client.auth.updateUser({password:password.value});if(error)throw error;}
     else if(urlRecovery){await updateViaLinkToken(password.value);}
     else{throw Error(text('This reset link has expired. Please request a new one from the sign-in page.','انتهت صلاحية رابط إعادة التعيين. اطلب رابطاً جديداً من صفحة تسجيل الدخول.'));}
-    recovery=false;form.reset();status.textContent=text('Password updated. You can close this window.','تم تحديث كلمة السر. يمكنك إغلاق هذه النافذة.');}
+    succeeded=true;recovery=false;form.reset();status.textContent=text('Password updated. You can close this window.','تم تحديث كلمة السر. يمكنك إغلاق هذه النافذة.');
+    // Success (2026-11-03): this dialog should disappear on its own
+    // once the password is updated. Hide the password fields and the
+    // Update button so it cannot be submitted again, keep the success
+    // text and the Close button usable, then auto-close shortly after.
+    for(const input of [password,confirm]){input.disabled=true;const l=input.closest('label');if(l)l.hidden=true;}
+    send.hidden=true;
+    setTimeout(()=>{if(dialog.open)dialog.close();},2000);}
    catch(err){status.textContent=text('Could not update password: ','تعذر تحديث كلمة السر: ')+err.message;}
-   finally{send.disabled=false;}
+   finally{if(!succeeded)send.disabled=false;}
   };dialog.showModal();password.focus();
  }
  client.auth.onAuthStateChange(event=>{if(event==='PASSWORD_RECOVERY'){recovery=true;setTimeout(recoveryDialog,0);}});
