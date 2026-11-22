@@ -151,6 +151,10 @@
     }
     @media (max-width: 900px) { .two-col { grid-template-columns: minmax(0, 1fr); } }
 
+    .auth-toggle { display: flex; background: #e5e7eb; border-radius: 999px; padding: 4px; max-width: 640px; margin: 0 auto 1.2rem; }
+    .auth-toggle button { flex: 1; border: none; background: transparent; padding: 0.6rem 1rem; border-radius: 999px; font-weight: 700; cursor: pointer; font-size: 0.95rem; color: #111827; font-family: inherit; }
+    .auth-toggle button.active { background: #4f46e5; color: #fff; }
+
     .card {
       background: var(--bg-card);
       border-radius: var(--radius-lg);
@@ -323,9 +327,13 @@
       </div>
 
       <section id="auth-section">
-        <div class="max-w two-col">
+        <div class="auth-toggle" role="tablist">
+          <button type="button" id="auth-tab-signin" class="active" onclick="showAuth('signin')" data-en="Sign in" data-ar="تسجيل الدخول">Sign in</button>
+          <button type="button" id="auth-tab-create" onclick="showAuth('create')" data-en="Create account" data-ar="إنشاء حساب">Create account</button>
+        </div>
+        <div class="max-w two-col" id="auth-cols">
           <!-- SIGN IN -->
-          <div class="card">
+          <div class="card" id="signin-card">
             <h3 data-en="Sign in to your account" data-ar="سجّل الدخول إلى حسابك">Sign in to your account</h3>
             <p class="sub"
                data-en="Already created an account before? Use the same email and password to sign in."
@@ -377,7 +385,7 @@
           </div>
 
 <!-- SIGN UP -->
-          <div class="card">
+          <div class="card" id="signup-card" style="display:none;">
             <h3 data-en="Create account" data-ar="إنشاء حساب">Create account</h3>
             <p class="sub"
                data-en="Use this form to create a real Harmony account. We only ask for email, password and an optional name."
@@ -1461,6 +1469,21 @@
           refreshUserLabel(lang);
         });
       }
+
+      // Auth toggle: show one form at a time (sign in by default).
+      window.showAuth = function (mode) {
+        var si = document.getElementById('signin-card');
+        var su = document.getElementById('signup-card');
+        var cols = document.getElementById('auth-cols');
+        var tabS = document.getElementById('auth-tab-signin');
+        var tabC = document.getElementById('auth-tab-create');
+        if (si) si.style.display = mode === 'signin' ? '' : 'none';
+        if (su) su.style.display = mode === 'create' ? '' : 'none';
+        if (cols) cols.style.gridTemplateColumns = 'minmax(0, 1fr)';
+        if (tabS) tabS.classList.toggle('active', mode === 'signin');
+        if (tabC) tabC.classList.toggle('active', mode === 'create');
+      };
+      window.showAuth('signin');
 
       // Init
       refreshUserLabel(initialLang);
