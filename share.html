@@ -1051,6 +1051,8 @@
       const title = (titleEl.value || "").trim(), content = (detailsEl.value || "").trim();
       const category = categoryEl.value || "Kids";
       if (!title || title.length > 160 || !content || content.length > 10000) throw new Error(currentLang === "ar" ? "اكتب عنواناً حتى 160 حرفاً وقصة حتى 10000 حرف." : "Enter a title up to 160 characters and a story up to 10,000 characters.");
+      // Guideline 1.2: objectionable-content filter runs before anything uploads.
+      if (window.HarmonySafety.findBlockedWord(title) || window.HarmonySafety.findBlockedWord(content)) throw new Error(currentLang === "ar" ? "نصك يحتوي على كلمة غير مسموحة في هارموني. يرجى تغييرها والمحاولة مجدداً." : "Your text includes a word that is not allowed in Harmony. Please change it and try again.");
       disableForm(true);
       setStatus("Publishing…", "جاري النشر…", null);
       await editRenderPromise; // make sure a photo edit has finished rendering

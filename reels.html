@@ -698,7 +698,7 @@
         try {
           let { data, error } = await supabase
             .from("stories")
-            .select("id, title, content, category, is_anonymous, created_at, media_url, media_type, trim_start, trim_end")
+            .select("id, title, content, category, is_anonymous, created_at, media_url, media_type, trim_start, trim_end, user_id")
             .order("created_at", { ascending: false })
             .limit(60);
 
@@ -721,7 +721,13 @@
             return;
           }
 
-          const rows = Array.isArray(data) ? data : [];
+          let rows = Array.isArray(data) ? data : [];
+          // Guideline 1.2 (parity with the app): hidden posts and blocked
+          // members never reach this member's reels feed.
+          try {
+            await window.HarmonySafety.loadSafety();
+            rows = rows.filter((s) => !window.HarmonySafety.isHiddenStory(s.id) && !window.HarmonySafety.isBlockedUser(s.user_id));
+          } catch (e) {}
           allReels = rows
             .map((s) => ({ ...s, _safeUrl: window.HarmonySite.safeMediaURL(s.media_url) }))
             .filter((s) => s._safeUrl && String(s.media_type || "").indexOf("video") === 0);

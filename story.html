@@ -421,6 +421,8 @@
             <button id="share-btn" class="social-btn" type="button" data-en="Share story" data-ar="مشاركة القصة">Share story</button>
             <button id="send-friend-btn" class="social-btn" type="button" style="display:none" data-en="Send to a friend" data-ar="إرسال إلى صديق">Send to a friend</button>
             <button id="report-btn" class="social-btn" type="button" style="display:none" data-en="Report" data-ar="إبلاغ">Report</button>
+            <button id="hide-btn" class="social-btn" type="button" style="display:none" data-en="Hide this post" data-ar="إخفاء هذا المنشور">Hide this post</button>
+            <button id="block-btn" class="social-btn" type="button" style="display:none" data-en="Block this member" data-ar="حظر هذا العضو">Block this member</button>
           </div>
           <div id="reaction-note" class="social-note"></div>
           <div id="social-status" class="social-status"></div>
@@ -521,6 +523,8 @@
       const shareBtn = document.getElementById("share-btn");
       const sendFriendBtn = document.getElementById("send-friend-btn");
       const reportBtn = document.getElementById("report-btn");
+      const hideBtn = document.getElementById("hide-btn");
+      const blockBtn = document.getElementById("block-btn");
       const socialStatus = document.getElementById("social-status");
       const sharePanel = document.getElementById("share-panel");
       const shareMessageInput = document.getElementById("share-message");
@@ -697,6 +701,10 @@
         const content = (editContentInput.value || "").trim();
         if (!title || !content) {
           setStoryStatus(tx("Title and story text are required.", "العنوان ونص القصة مطلوبان."), true);
+          return;
+        }
+        if (window.HarmonySafety.findBlockedWord(title) || window.HarmonySafety.findBlockedWord(content)) {
+          setStoryStatus(tx("Your text includes a word that is not allowed in Harmony. Please change it and try again.", "نصك يحتوي على كلمة غير مسموحة في هارموني. يرجى تغييرها والمحاولة مجدداً."), true);
           return;
         }
         const { data, error } = await supabase
@@ -1194,6 +1202,19 @@
         });
         if (shareBtn) shareBtn.addEventListener("click", shareOutside);
         if (reportBtn) reportBtn.addEventListener("click", () => { void reportContent({ storyId: storyId }, false); });
+        // Guideline 1.2 (parity with the app): hide this post from my feed
+        // for good, or block its author so none of their content reaches me.
+        if (hideBtn) hideBtn.addEventListener("click", async () => {
+          await window.HarmonySafety.hideStory(storyId);
+          window.location.href = "stories.html";
+        });
+        if (blockBtn) blockBtn.addEventListener("click", async () => {
+          if (!currentUser) { say(tx("Sign in to block this member.", "سجّل الدخول لحظر هذا العضو."), true); return; }
+          if (!storyData || !storyData.user_id) return;
+          if (!window.confirm(tx("Block this member? Their stories and comments will no longer appear for you.", "حظر هذا العضو؟ لن تظهر قصصه وتعليقاته لك بعد الآن."))) return;
+          await window.HarmonySafety.blockUser(String(storyData.user_id));
+          window.location.href = "stories.html";
+        });
         if (sendFriendBtn) {
           sendFriendBtn.addEventListener("click", () => {
             if (!currentUser) {
@@ -1290,6 +1311,7 @@
                   "</div>"
                 : '<div class="comment-actions">' +
                     '<button type="button" data-creport="' + c.id + '" style="color:var(--text-muted)">' + escapeHtml(tx("Report", "إبلاغ")) + "</button>" +
+                    (c.user_id ? '<button type="button" data-cblock="' + escapeHtml(String(c.user_id)) + '" style="color:var(--text-muted)">' + escapeHtml(tx("Block this member", "حظر هذا العضو")) + "</button>" : "") +
                   "</div>");
           }
           return (
@@ -1323,6 +1345,11 @@
           const seen = new Set(comments.map((r) => String(r.id)));
           rows.forEach((r) => { if (!seen.has(String(r.id))) comments.push(r); });
         }
+        // Guideline 1.2: comments from blocked members are not shown.
+        try {
+          await window.HarmonySafety.loadSafety();
+          comments = comments.filter((c) => !window.HarmonySafety.isBlockedUser(c.user_id));
+        } catch (e) {}
         commentsPage = reset ? 1 : commentsPage + 1;
         commentsHasMore = rows.length === 30;
         renderComments();
@@ -1332,6 +1359,10 @@
         if (!currentUser) return;
         const body = (commentInput.value || "").trim();
         if (!body) return;
+        if (window.HarmonySafety.findBlockedWord(body)) {
+          setCommentStatus(tx("Your text includes a word that is not allowed in Harmony. Please change it and try again.", "نصك يحتوي على كلمة غير مسموحة في هارموني. يرجى تغييرها والمحاولة مجدداً."), true);
+          return;
+        }
         const meta = currentUser.user_metadata || {};
         const alwaysAnon = !!meta.always_anonymous;
         commentPostBtn.disabled = true;
@@ -1360,6 +1391,13 @@
           const reportCBtn = e.target.closest("[data-creport]");
           if (reportCBtn) {
             await reportContent({ commentId: reportCBtn.getAttribute("data-creport"), storyId: storyId }, true);
+            return;
+          }
+          const blockCBtn = e.target.closest("[data-cblock]");
+          if (blockCBtn) {
+            if (!window.confirm(tx("Block this member? Their stories and comments will no longer appear for you.", "حظر هذا العضو؟ لن تظهر قصصه وتعليقاته لك بعد الآن."))) return;
+            await window.HarmonySafety.blockUser(blockCBtn.getAttribute("data-cblock"));
+            await loadComments(true);
             return;
           }
           const editBtn = e.target.closest("[data-cedit]");
@@ -1561,6 +1599,8 @@
           if (socialRow) socialRow.style.display = "block";
           if (sendFriendBtn) sendFriendBtn.style.display = currentUser ? "inline-flex" : "none";
           if (reportBtn) reportBtn.style.display = (currentUser && data.user_id && String(data.user_id) === String(currentUser.id)) ? "none" : "inline-flex";
+          if (hideBtn) hideBtn.style.display = (currentUser && data.user_id && String(data.user_id) === String(currentUser.id)) ? "none" : "inline-flex";
+          if (blockBtn) blockBtn.style.display = (currentUser && data.user_id && String(data.user_id) !== String(currentUser.id)) ? "inline-flex" : "none";
           await loadReaction();
           await loadAuthor();
           await loadComments(true);

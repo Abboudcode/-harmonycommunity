@@ -421,6 +421,26 @@
       <div class="max-w two-col">
         <div class="card">
           <h3
+            data-en="Report inappropriate activity"
+            data-ar="الإبلاغ عن نشاط غير لائق"
+          >
+            Report inappropriate activity
+          </h3>
+          <p
+            class="body-text"
+            data-en="Every story and comment has a Report button, and you can block any member from their story page. You can also email us any time at mabboud31@gmail.com — we review every report and act within 24 hours: the content is removed and the member who posted it is ejected."
+            data-ar="كل قصة وتعليق فيه زر إبلاغ، ويمكنك حظر أي عضو من صفحة قصته. يمكنك أيضاً مراسلتنا في أي وقت على mabboud31@gmail.com — نراجع كل بلاغ ونتصرف خلال 24 ساعة: يتم حذف المحتوى وطرد العضو الذي نشره."
+          >
+            Every story and comment has a Report button, and you can block any member from their story page. You can also email us any time at mabboud31@gmail.com — we review every report and act within 24 hours: the content is removed and the member who posted it is ejected.
+          </p>
+          <p style="margin-top:0.75rem;">
+            <a class="btn-secondary" href="mailto:mabboud31@gmail.com?subject=Report%20inappropriate%20activity%20in%20Harmony"
+               data-en="Email the Harmony team" data-ar="مراسلة فريق هارموني">Email the Harmony team</a>
+          </p>
+        </div>
+
+        <div class="card">
+          <h3
             data-en="Send a message"
             data-ar="إرسل رسالة"
           >
@@ -462,20 +482,20 @@
             <button
               type="submit"
               class="btn-primary"
-              data-en="Send message (demo)"
-              data-ar="إرسال الرسالة (تجريبي)"
+              data-en="Send message"
+              data-ar="إرسال الرسالة"
             >
-              Send message (demo)
+              Send message
             </button>
 
             <div id="contact-status"></div>
 
             <p
               class="note"
-              data-en="Right now this form is a demo. In the future, your message will be sent directly so we can stay in touch."
-              data-ar="حالياً هذا النموذج تجريبي. في المستقبل، رسالتك رح توصل مباشرة حتى نقدر نظل على تواصل."
+              data-en="Pressing Send opens your email app with your message ready — it really reaches the Harmony team."
+              data-ar="الضغط على إرسال يفتح تطبيق الإيميل عندك مع رسالتك جاهزة — وتصل فعلاً إلى فريق هارموني."
             >
-              Right now this form is a demo. In the future, your message will be sent directly so we can stay in touch.
+              Pressing Send opens your email app with your message ready — it really reaches the Harmony team.
             </p>
           </form>
         </div>
@@ -499,10 +519,10 @@
           </p>
           <p
             class="body-text"
-            data-en="Email: hello@harmony.community"
-            data-ar="الإيميل: hello@harmony.community"
+            data-en="Email: mabboud31@gmail.com"
+            data-ar="الإيميل: mabboud31@gmail.com"
           >
-            Email: <strong>hello@harmony.community</strong>
+            Email: <strong>mabboud31@gmail.com</strong>
           </p>
           <p
             class="body-text"
@@ -589,15 +609,20 @@
       navAuthLabel.textContent = (lang === 'ar') ? ar : en;
     }
 
-    // Contact form demo submit
+    // Contact form: opens the visitor's email app addressed to the
+    // Harmony team with the message prefilled — the message really sends.
     if (contactForm) {
       contactForm.addEventListener('submit', function (e) {
         e.preventDefault();
+        const n = (document.getElementById('name') || {}).value || '';
+        const em = (document.getElementById('email') || {}).value || '';
+        const m = (document.getElementById('message') || {}).value || '';
+        const body = encodeURIComponent((n ? n + '\n' : '') + (em ? em + '\n\n' : '') + m);
+        window.location.href = 'mailto:mabboud31@gmail.com?subject=' + encodeURIComponent('Message from Harmony website') + '&body=' + body;
         setContactStatus(
-          'Thank you for reaching out. In this demo version, your message is not actually sent yet – but this is how it will feel when real messages are enabled. 💛',
-          'شكراً إنك تواصلت معنا. في هذه النسخة التجريبية، رسالتك لسا ما بتنبعت فعلياً – بس هذا تقريباً الإحساس لما تتفعّل الرسائل الحقيقية. 💛'
+          'Your email app opened — press Send there to deliver your message.',
+          'تم فتح تطبيق الإيميل — اضغط إرسال هناك لتوصل رسالتك.'
         );
-
       });
     }
 

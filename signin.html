@@ -456,6 +456,19 @@
                 </label>
               </div>
 
+              <div class="field-inline">
+                <input id="signup-terms" type="checkbox" />
+                <label for="signup-terms">
+                  <strong data-en="I agree to the Terms of Use (EULA)" data-ar="أوافق على شروط الاستخدام (EULA)">I agree to the Terms of Use (EULA)</strong><br />
+                  <small
+                    data-en="You must be 18 or older. There is no tolerance for objectionable content or abusive users — hateful, harassing, threatening, sexually explicit, violent or otherwise objectionable content is not allowed. Content is filtered automatically; you can report any story or comment, hide any post, and block any member at any time. We review every report and act within 24 hours — removing the offending content and ejecting the member who posted it."
+                    data-ar="يجب أن يكون عمرك 18 سنة أو أكثر. لا يوجد أي تسامح مع المحتوى المسيء أو المستخدمين المسيئين — المحتوى الذي فيه كراهية أو مضايقة أو تهديد أو محتوى جنسي صريح أو عنف أو أي إساءة أخرى ممنوع تماماً. تتم فلترة المحتوى تلقائياً؛ ويمكنك الإبلاغ عن أي قصة أو تعليق، وإخفاء أي منشور، وحظر أي عضو في أي وقت. نراجع كل بلاغ ونتصرف خلال 24 ساعة — نحذف المحتوى المسيء ونطرد العضو الذي نشره."
+                  >
+                    You must be 18 or older. There is no tolerance for objectionable content or abusive users — hateful, harassing, threatening, sexually explicit, violent or otherwise objectionable content is not allowed. Content is filtered automatically; you can report any story or comment, hide any post, and block any member at any time. We review every report and act within 24 hours — removing the offending content and ejecting the member who posted it.
+                  </small>
+                </label>
+              </div>
+
               <button type="submit" class="btn-secondary" data-en="Create account" data-ar="إنشاء حساب">Create account</button>
             </form>
 
@@ -1317,6 +1330,13 @@
           const password2 = document.getElementById("signup-password2").value;
           const name = document.getElementById("signup-name").value.trim();
           const alwaysAnon = document.getElementById("signup-anon").checked;
+          const termsOk = document.getElementById("signup-terms").checked;
+
+          // ✅ Terms of Use (EULA) agreement is required (Guideline 1.2)
+          if (!termsOk) {
+            setStatus(currentLang === "ar" ? "خطأ: يرجى الموافقة على شروط الاستخدام أولاً." : "Error: Please agree to the Terms of Use first.", true);
+            return;
+          }
 
           // ✅ Password validation
           if (!isPasswordValid(password)) {
@@ -1342,7 +1362,8 @@
               emailRedirectTo: getRedirectUrl(),
               data: {
                 display_name: name,
-                always_anonymous: alwaysAnon
+                always_anonymous: alwaysAnon,
+                terms_accepted_at: new Date().toISOString()
               }
             }
           });

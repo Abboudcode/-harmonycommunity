@@ -173,3 +173,67 @@
  }
 })();
 
+
+/* Guideline 1.2 safety (parity with the app): objectionable-content
+   filter, user blocking, and per-user hidden posts. Blocks and hides
+   apply on this device immediately (localStorage + memory) and sync
+   to Supabase (user_blocks / hidden_posts) when signed in. Every
+   server call fails quietly until add-safety-blocks.sql has run. */
+(() => {
+ 'use strict';
+ const BLOCKED_EN = ['fuck','fucking','fucked','fucker','motherfucker','shit','bullshit','bitch','bastard','asshole','whore','slut','dick','cock','pussy','porn','porno','pornography','nigger','nigga','faggot','retard','cunt','penis','vagina','blowjob','handjob','masturbate','orgasm','pedophile','paedophile','molest','incest','bestiality'];
+ const BLOCKED_AR = ['كس','طيز','زب','نيك','شرموطة','شرموط','قحبة','عرص','خول','منيوك','كسمك','كسختك','يلعن','ابن الكلب','وسخ','زبالة','جنس','اباحي','إباحي','عاهرة','قواد','لوطي','سحاقية','اغتصاب'];
+ function normalizeText(s){
+  return ' ' + String(s || '').toLowerCase()
+   .replace(/[ً-ٰٓـ]/g, '')
+   .replace(/[إأآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه')
+   .replace(/[^a-z0-9؀-ۿ]+/g, ' ').trim() + ' ';
+ }
+ const BLOCKED_SET = new Set([...BLOCKED_EN, ...BLOCKED_AR].map(w => normalizeText(w).trim()));
+ function findBlockedWord(text){
+  const norm = normalizeText(text);
+  for (const w of BLOCKED_SET) { if (w && norm.includes(' ' + w + ' ')) return w; }
+  return null;
+ }
+ let blockedSet = new Set(), hiddenSet = new Set(), loadedFor = null, loading = null;
+ const lsKey = (kind, uid) => 'harmony_' + kind + '_' + (uid || 'guest');
+ function readLocal(kind, uid){ try { const a = JSON.parse(localStorage.getItem(lsKey(kind, uid)) || '[]'); return new Set(Array.isArray(a) ? a.map(String) : []); } catch { return new Set(); } }
+ function writeLocal(kind, uid, set){ try { localStorage.setItem(lsKey(kind, uid), JSON.stringify([...set])); } catch {} }
+ async function currentUid(){ try { const c = window.HarmonySite && window.HarmonySite.client; if (!c) return null; const { data } = await c.auth.getSession(); return data && data.session && data.session.user ? data.session.user.id : null; } catch { return null; } }
+ async function loadSafety(){
+  const uid = await currentUid();
+  if (loadedFor === (uid || 'guest') && !loading) return uid;
+  if (loading) { await loading; return uid; }
+  loading = (async () => {
+   blockedSet = readLocal('blocked', uid); hiddenSet = readLocal('hidden', uid); loadedFor = uid || 'guest';
+   const c = window.HarmonySite && window.HarmonySite.client;
+   if (uid && c) {
+    try { const b = await c.from('user_blocks').select('blocked_id').eq('blocker_id', uid); if (!b.error && Array.isArray(b.data)) { b.data.forEach(r => blockedSet.add(String(r.blocked_id))); writeLocal('blocked', uid, blockedSet); } } catch {}
+    try { const h = await c.from('hidden_posts').select('story_id').eq('user_id', uid); if (!h.error && Array.isArray(h.data)) { h.data.forEach(r => hiddenSet.add(String(r.story_id))); writeLocal('hidden', uid, hiddenSet); } } catch {}
+   }
+  })();
+  try { await loading; } finally { loading = null; }
+  return uid;
+ }
+ const isBlockedUser = id => !!id && blockedSet.has(String(id));
+ const isHiddenStory = id => id != null && hiddenSet.has(String(id));
+ async function blockUser(blockedId){
+  const uid = await currentUid(); if (!blockedId || blockedId === uid) return;
+  blockedSet.add(String(blockedId)); writeLocal('blocked', uid, blockedSet);
+  const c = window.HarmonySite && window.HarmonySite.client;
+  if (uid && c) { try { await c.from('user_blocks').upsert({ blocker_id: uid, blocked_id: blockedId }, { onConflict: 'blocker_id,blocked_id' }); } catch {} }
+ }
+ async function unblockUser(blockedId){
+  const uid = await currentUid();
+  blockedSet.delete(String(blockedId)); writeLocal('blocked', uid, blockedSet);
+  const c = window.HarmonySite && window.HarmonySite.client;
+  if (uid && c) { try { await c.from('user_blocks').delete().eq('blocker_id', uid).eq('blocked_id', blockedId); } catch {} }
+ }
+ async function hideStory(storyId){
+  const uid = await currentUid();
+  hiddenSet.add(String(storyId)); writeLocal('hidden', uid, hiddenSet);
+  const c = window.HarmonySite && window.HarmonySite.client;
+  if (uid && c) { try { await c.from('hidden_posts').upsert({ user_id: uid, story_id: Number(storyId) }, { onConflict: 'user_id,story_id' }); } catch {} }
+ }
+ window.HarmonySafety = { findBlockedWord, loadSafety, isBlockedUser, isHiddenStory, blockUser, unblockUser, hideStory, getBlockedIds: () => [...blockedSet] };
+})();

@@ -504,7 +504,7 @@
         try {
           let { data, error } = await supabase
             .from("stories")
-            .select("id, title, content, category, is_anonymous, created_at, media_url, media_type, trim_start, trim_end")
+            .select("id, title, content, category, is_anonymous, created_at, media_url, media_type, trim_start, trim_end, user_id")
             .order("created_at", { ascending: false })
             .limit(60);
 
@@ -540,6 +540,12 @@
           }
 
           allStories = Array.isArray(data) ? data : [];
+          // Guideline 1.2 (parity with the app): posts this member hid and
+          // everything from members they blocked never reach their feed.
+          try {
+            await window.HarmonySafety.loadSafety();
+            allStories = allStories.filter((s) => !window.HarmonySafety.isHiddenStory(s.id) && !window.HarmonySafety.isBlockedUser(s.user_id));
+          } catch (e) {}
           renderStories();
         } catch (e) {
           console.error("Unexpected error:", e);
